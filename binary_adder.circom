@@ -59,7 +59,6 @@ template full_adder(){
 template binary_adder(n){
     signal input bits1[n];
     signal input bits2[n];
-    signal carry_bits[n];
     signal output sum_bits[n];
     
     component full_adders[n-1];
@@ -67,20 +66,20 @@ template binary_adder(n){
         full_adders[i] = full_adder();
     }
 
+    var carry = 0;
     full_adders[0].bit_a <== bits1[0];
     full_adders[0].bit_b <== bits2[0];
     full_adders[0].cin <== 0;
     full_adders[0].sum ==> sum_bits[0];
-    full_adders[0].carry ==> carry_bits[0];
+    carry = full_adders[0].carry;
 
     for (var i=1; i<n-1; i++){
         full_adders[i].bit_a <== bits1[i];
         full_adders[i].bit_b <== bits2[i];
-        full_adders[i].cin <== carry_bits[i-1];
+        full_adders[i].cin <== carry;
         full_adders[i].sum ==> sum_bits[i];
-        full_adders[i].carry ==> carry_bits[i];
+        carry = full_adders[i].carry;
     }
 
-    sum_bits[n-1] <== carry_bits[n-2];
-
+    sum_bits[n-1] <== carry;
 }
