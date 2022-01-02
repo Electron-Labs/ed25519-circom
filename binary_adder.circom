@@ -66,12 +66,11 @@ template binary_adder(n){
         full_adders[i] = full_adder();
     }
 
-    var carry = 0;
     full_adders[0].bit_a <== bits1[0];
     full_adders[0].bit_b <== bits2[0];
     full_adders[0].cin <== 0;
     full_adders[0].sum ==> sum_bits[0];
-    carry = full_adders[0].carry;
+    var carry = full_adders[0].carry;
 
     for (var i=1; i<n-1; i++){
         full_adders[i].bit_a <== bits1[i];
