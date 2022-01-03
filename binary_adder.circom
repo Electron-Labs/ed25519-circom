@@ -30,30 +30,20 @@ template half_adder(){
     carry_bit <== bit_a*bit_b;
 }
 
-template full_adder(){
-    signal input bit_a;
-    signal input bit_b;
-    signal input cin;
-    signal sum_inter;
-    signal carry_inter1;
-    signal carry_inter2;
-    signal output sum;
-    signal output carry;
-    
-    component half_adder1 = half_adder();
-    half_adder1.bit_a <== bit_a;
-    half_adder1.bit_b <== bit_b;
-    half_adder1.sum_bit ==> sum_inter;
-    half_adder1.carry_bit ==> carry_inter1;
-
-    component half_adder2 = half_adder();
-    half_adder2.bit_a <== sum_inter;
-    half_adder2.bit_b <== cin;
-    half_adder2.sum_bit ==> sum;
-    half_adder2.carry_bit ==> carry_inter2;
-
-    carry <== carry_inter1 + carry_inter2 - carry_inter1*carry_inter2;
-
+template full_adder2(){
+  signal input a;
+  signal input b;
+  signal input c;
+  signal expr1;
+  signal expr2;
+  signal expr3;
+  signal output sum;
+  signal output carry;
+  expr1 <== a*b;
+  expr2 <== b*c;
+  expr3 <== a*c;
+  sum <== a + b + c - 2*(expr1 + expr2 + expr3) + 4*expr1*c;
+  carry <== expr1 + expr2 + expr3 - 2*expr1*c;
 }
 
 template binary_adder(n){
