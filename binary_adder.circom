@@ -30,7 +30,7 @@ template half_adder(){
     carry_bit <== bit_a*bit_b;
 }
 
-template full_adder2(){
+template full_adder(){
   signal input a;
   signal input b;
   signal input c;
