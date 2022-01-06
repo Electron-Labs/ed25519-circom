@@ -1,0 +1,29 @@
+{
+  "name": "binary-ops",
+  "version": "0.0.1",
+  "description": "Binary arithmetic circuits for Circom made by Electron Labs",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha --max-old-space-size=4000"
+  },
+  "keywords": [
+    "circuit",
+    "circom",
+    "zksnark"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Electron-Labs/circom-binary-ops.git"
+  },
+  "author": "rahulghangas",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "circom_tester": "0.0.5",
+    "circomlibjs": "^0.1.0",
+    "mocha": "^9.1.3"
+  }
+}
