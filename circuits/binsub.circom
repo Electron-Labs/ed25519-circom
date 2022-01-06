@@ -27,5 +27,3 @@ template BinSub(nBits) {
     out[i] <== addWithComplement.sum[i];
   }
 }
-
-component main = BinSub(100);
