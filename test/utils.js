@@ -35,4 +35,12 @@ function bigIntToLEBuffer(x) {
 	return Buffer.from(convertToEvenLength(x.toString(16)), 'hex').reverse()
 }
 
-module.exports = { buffer2bits, convertToEvenLength, normalize, bigIntToLEBuffer };
+function pad(x, n) {
+  var total = n-x.length;
+  for (var i=0; i<total; i++) {
+    x.push(0n);
+  }
+  return x;
+}
+
+module.exports = { buffer2bits, convertToEvenLength, normalize, bigIntToLEBuffer, pad };
