@@ -70,16 +70,11 @@ describe("Modulus Test", () => {
 			const buf = utils.bigIntToLEBuffer(a);
 			const asBits = utils.buffer2bits(buf);
 			console.log(asBits.length);
-			var startTime = performance.now();
+			// var startTime = performance.now();
 			const witness = await cir.calculateWitness({ "a": asBits}, true);
-			var endTime = performance.now();
-			console.log(`Call to doSomething took ${endTime - startTime} milliseconds`);
+			// var endTime = performance.now();
+			// console.log(`Call to calculate witness took ${endTime - startTime} milliseconds`);
 
-
-			const expected = utils.pad(utils.buffer2bits(utils.bigIntToLEBuffer(bigintModArith.modPow(a, 1, p))), 264);
-			for (var i=0; i<255; i++) {
-				console.log(witness[i+1], expected[i]);
-			}
 			assert.ok(witness.slice(1, 255).every((u, i) => {
 				return u === expected[i];
 			}));
