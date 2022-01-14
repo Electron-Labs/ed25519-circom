@@ -2,7 +2,7 @@ pragma circom 2.0.0;
 
 include "binsub.circom";
 include "binadd.circom";
-include "binmul.circom";
+include "binmulfast.circom";
 include "../circomlib/circuits/mux1.circom";
 include "../circomlib/circuits/gates.circom";
 
@@ -31,7 +31,7 @@ template ModulusWith25519(n) {
     }
     mod2p.in[255] <== 0;
 
-    mul = BinMul(n-255, 5);
+    mul = BinMulFast(n-255, 5);
     for(i=0; i<n-255; i++) {
       mul.in1[i] <== a[255+i];
     }
