@@ -76,5 +76,3 @@ template BinMulFast(m, n) {
     out[i] <== result[i];
   }
 }
-
-component main = BinMulFast(128, 128);
