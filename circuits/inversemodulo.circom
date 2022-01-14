@@ -3,7 +3,7 @@ pragma circom 2.0.0;
 include "binmulfast.circom";
 include "modulus.circom";
 
-template inverse(nBits){
+template InverseModulo(nBits){
   signal input in[nBits];
   signal output out[255];
   component pow0;
