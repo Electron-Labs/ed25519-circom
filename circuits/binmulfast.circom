@@ -31,26 +31,26 @@ template BinMulFast(m, n) {
   component adders[numChunks1*numChunks2-1];
   for (i=0; i<numChunks1; i++) {
     for (j=0; j<numChunks2; j++) {
-      bitifiers[i*numChunks2 + j] = Num2Bits(64);
+      bitifiers[i*numChunks2 + j] = Num2Bits(128);
       bitifiers[i*numChunks2 + j].in <== chunkify1.out[i] * chunkify2.out[j];
 
-      if ((i+j)*32+64 < m+n) {
-        endOfBits = (i+j)*32+64;
+      if ((i+j)*64+128 < m+n) {
+        endOfBits = (i+j)*64+128;
       } else {
         endOfBits = m+n;
       }
-      for (k=0; k<(i+j)*32; k++) {
+      for (k=0; k<(i+j)*64; k++) {
         bitifiedProduct[i*numChunks2 + j][k] = 0;
       }
-      for (k=(i+j)*32; k<endOfBits; k++) {
-        bitifiedProduct[i*numChunks2 + j][k] = bitifiers[i*numChunks2 + j].out[k-(i+j)*32];
+      for (k=(i+j)*64; k<endOfBits; k++) {
+        bitifiedProduct[i*numChunks2 + j][k] = bitifiers[i*numChunks2 + j].out[k-(i+j)*64];
       }
       for (k=endOfBits; k<m+n; k++) {
         bitifiedProduct[i*numChunks2 + j][k] = 0;
       }
 
       if (i!=0 || j!=0) {
-        if (i==0 && j==1) {
+        if ((numChunks2 > 1 && i==0 && j==1) || (numChunks2 ==1 && i==1 && j==0)) {
           adders[0] = BinAdd(m+n);
           for (k=0; k<m+n; k++) {
             adders[0].in[0][k] <== bitifiedProduct[0][k];
@@ -67,7 +67,19 @@ template BinMulFast(m, n) {
     }
   }
 
-  for (i=0; i<m+n; i++) {
-    out[i] <== adders[numChunks1*numChunks2-2].out[i];
+  if (numChunks1*numChunks2 == 1) {
+    for (i=0; i<m+n; i++) {
+      out[i] <== bitifiedProduct[0][i];
+    }
+  } else {
+    if (numChunks1 * numChunks2 == 2) {
+      for (i=0; i<m+n; i++) {
+        out[i] <== adders[0].out[i];
+      }
+    } else {
+      for (i=0; i<m+n; i++) {
+        out[i] <== adders[numChunks1*numChunks2-2].out[i];
+      }
+    }
   }
 }
