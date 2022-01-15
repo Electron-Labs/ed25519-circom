@@ -38,10 +38,6 @@ describe("Fast Binary Multiplier Test", () => {
 			const witness = await cir.calculateWitness({ "in1": asBits1, "in2": asBits2}, true);
 
 			const expected = utils.normalize(utils.buffer2bits(utils.bigIntToLEBuffer(a*b)));
-			// console.log(expected.length);
-			for (var i=0; i<144; i++) {
-				console.log(witness[i+1], expected[i]);
-			}
 			assert.ok(witness.slice(1, 145).every((u, i) => {
 				return u === expected[i];
 			}));
