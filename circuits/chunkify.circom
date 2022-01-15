@@ -13,25 +13,25 @@ template Chunkify(n) {
   var offset;
   var numBitsToConvert;
   for (var chunkIndex=0; chunkIndex<numChunks; chunkIndex++) {
-    if (left < 32) {
+    if (left < 64) {
       numBitsToConvert = left;
     } else {
-      numBitsToConvert = 32;
+      numBitsToConvert = 64;
     }
 
     bitifer[chunkIndex] = Bits2Num(numBitsToConvert);
-    offset = 32 * chunkIndex;
+    offset = 64 * chunkIndex;
     for (i=0; i<numBitsToConvert; i++) {
       bitifer[chunkIndex].in[i] <== in[offset+i];
     }
     out[chunkIndex] <== bitifer[chunkIndex].out;
-    left -= 32;
+    left -= 64;
   }
 }
 
 function calcChunks(n) {
-  var numChunks = n\32;
-  if (n % 32 != 0) {
+  var numChunks = n\64;
+  if (n % 64 != 0) {
     numChunks++;
   }
   return numChunks;
