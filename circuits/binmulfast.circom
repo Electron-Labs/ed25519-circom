@@ -7,9 +7,7 @@ include "../circomlib/circuits/compconstant.circom";
 template BinMulFast(m, n) {
   signal input in1[m];
   signal input in2[n];
-
-  var totalBits = m+n;
-  signal output out[totalBits];
+  signal output out[m+n];
 
   var i;
   var j;
@@ -28,51 +26,50 @@ template BinMulFast(m, n) {
 
   component bitifiers[numChunks1*numChunks2];
   var bitifiedProduct[numChunks1*numChunks2][m+n];
-  var bitifierIndex;
   var k;
-  var offset;
   var endOfBits;
+  component adders[numChunks1*numChunks2-1];
   for (i=0; i<numChunks1; i++) {
     for (j=0; j<numChunks2; j++) {
-      bitifierIndex = i*numChunks2 + j;
-      bitifiers[bitifierIndex] = Num2Bits(64);
-      bitifiers[bitifierIndex].in <== chunkify1.out[i] * chunkify2.out[j];
+      bitifiers[i*numChunks2 + j] = Num2Bits(64);
+      bitifiers[i*numChunks2 + j].in <== chunkify1.out[i] * chunkify2.out[j];
 
-      for (k=0; k<m+n; k++) {
-        bitifiedProduct[bitifierIndex][k] = 0;
-      }
-
-      offset = (i+j)*32;
-      if (offset+64 < m+n) {
-        endOfBits = offset+64;
+      if ((i+j)*32+64 < m+n) {
+        endOfBits = (i+j)*32+64;
       } else {
         endOfBits = m+n;
       }
-      for (k=offset; k<endOfBits; k++) {
-        bitifiedProduct[bitifierIndex][k] = bitifiers[bitifierIndex].out[k-offset];
+      for (k=0; k<(i+j)*32; k++) {
+        bitifiedProduct[i*numChunks2 + j][k] = 0;
+      }
+      for (k=(i+j)*32; k<endOfBits; k++) {
+        bitifiedProduct[i*numChunks2 + j][k] = bitifiers[i*numChunks2 + j].out[k-(i+j)*32];
+      }
+      for (k=endOfBits; k<m+n; k++) {
+        bitifiedProduct[i*numChunks2 + j][k] = 0;
+      }
+
+      if (i!=0 || j!=0) {
+        if (i==0 && j==1) {
+          adders[0] = BinAdd(m+n);
+          for (k=0; k<m+n; k++) {
+            adders[0].in[0][k] <== bitifiedProduct[0][k];
+            adders[0].in[1][k] <== bitifiedProduct[1][k];
+          }
+        } else {
+          adders[i*numChunks2 + j-1] = BinAdd(m+n);
+          for (k=0; k<m+n; k++) {
+            adders[i*numChunks2 + j-1].in[0][k] <== adders[i*numChunks2 + j-2].out[k];
+            adders[i*numChunks2 + j-1].in[1][k] <== bitifiedProduct[i*numChunks2 + j][k];
+          }
+        }
       }
     }
   }
 
-  var result[m+n];
   for (i=0; i<m+n; i++) {
-    result[i] = 0;
-  }
-
-  component adders[numChunks1*numChunks2];
-  for (i=0; i<numChunks1*numChunks2; i++) {
-    adders[i] = BinAdd(m+n);
-
-    for (j=0; j<m+n; j++) {
-      adders[i].in[0][j] <== result[j];
-      adders[i].in[1][j] <== bitifiedProduct[i][j];
-    }
-    for (j=0; j<m+n; j++) {
-      result[j] = adders[i].out[j];
-    }
-  }
-
-  for (i=0; i<m+n; i++) {
-    out[i] <== result[i];
+    out[i] <== adders[numChunks1*numChunks2-2].out[i];
   }
 }
+
+component main = BinMulFast(256, 256);
