@@ -71,5 +71,3 @@ template BinMulFast(m, n) {
     out[i] <== adders[numChunks1*numChunks2-2].out[i];
   }
 }
-
-component main = BinMulFast(256, 256);
