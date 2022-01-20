@@ -31,19 +31,19 @@ template BinMulFast(m, n) {
   component adders[numChunks1*numChunks2-1];
   for (i=0; i<numChunks1; i++) {
     for (j=0; j<numChunks2; j++) {
-      bitifiers[i*numChunks2 + j] = Num2Bits(128);
+      bitifiers[i*numChunks2 + j] = Num2Bits(170);
       bitifiers[i*numChunks2 + j].in <== chunkify1.out[i] * chunkify2.out[j];
 
-      if ((i+j)*64+128 < m+n) {
-        endOfBits = (i+j)*64+128;
+      if ((i+j)*85+170 < m+n) {
+        endOfBits = (i+j)*85+170;
       } else {
         endOfBits = m+n;
       }
-      for (k=0; k<(i+j)*64; k++) {
+      for (k=0; k<(i+j)*85; k++) {
         bitifiedProduct[i*numChunks2 + j][k] = 0;
       }
-      for (k=(i+j)*64; k<endOfBits; k++) {
-        bitifiedProduct[i*numChunks2 + j][k] = bitifiers[i*numChunks2 + j].out[k-(i+j)*64];
+      for (k=(i+j)*85; k<endOfBits; k++) {
+        bitifiedProduct[i*numChunks2 + j][k] = bitifiers[i*numChunks2 + j].out[k-(i+j)*85];
       }
       for (k=endOfBits; k<m+n; k++) {
         bitifiedProduct[i*numChunks2 + j][k] = 0;
@@ -83,3 +83,5 @@ template BinMulFast(m, n) {
     }
   }
 }
+
+// component main = BinMulFast(255, 255);
