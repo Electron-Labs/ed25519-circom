@@ -42,47 +42,44 @@ template BinAdd(nBits){
 //     carry_out <== ab + bc + ca -2*ab*carry;
 // }
 
-// template BinAddIrregular(mBits, nBits) {
-//     signal input in1[mBits];
-//     signal input in1[nBits];
+template BinAddIrregular(mBits, nBits) {
+    signal input in1[mBits];
+    signal input in2[nBits];
 
-//     var bigger = mBits;
-//     var smaller = nBits;
-//     var 
-//     if (mBits < nBits) {
-//         bigger = nBits;
-//         smaller = mBits;
-//     }
+    signal output out[mBits+1];
+    var i;
+    component addking[nBits];
+    component addcarry[mBits-nBits];
 
-//     signal output out[bigger+1];
-//     var i;
-//     component addking[smaller];
-//     component addqueen[bigger-smaller];
+    for(i=0;i<nBits;i++){
+        addking[i] = fulladder();
+    }
+    for(i=0;i<mBits-nBits;i++){
+        addcarry[i] = onlycarry();
+    }
 
-//     for(i=0;i<smaller;i++){
-//         addking[i] = fulladder();
-//     }
-//     for(i=0;i<bigger-smaller;i++){
-//         addqueen[i] = onlycarry();
-//     }
+    addking[0].carry <== 0;
+    addking[0].bit1 <== in1[0];
+    addking[0].bit2 <== in2[0];
+    out[0] <== addking[0].val;
 
-//     addking[0].carry <== 0;
-//     addking[0].bit1 <== in1[0];
-//     addking[0].bit2 <== in2[0];
-//     out[0] <== addking[0].val;
+    for(i=1; i<nBits; i++){
+        addking[i].bit1 <== in1[i];
+        addking[i].bit2 <== in2[i];
+        addking[i].carry <== addking[i-1].carry_out;
+        out[i] <== addking[i].val;
+    }
 
-//     for(i=1;i<smaller;i++){
-//         addking[i].bit1 <== in1[i];
-//         addking[i].bit2 <== in2[i];
-//         addking[i].carry <== addking[i-1].carry_out;
-//         out[i] <== addking[i].val;
-//     }
+    addcarry[0].carry <== addking[nBits-1].carry_out;
+    addcarry[0].bit <== in1[nBits];
+    out[nBits] <== addcarry[0].val;
 
-//     addqueen[0].carry <== addking[smaller-1].carry_out;
-//     addqueen[0].bit <== in[0][0];
-//     addking[0].bit2 <== in[1][0];
-//     out[0] <== addking[0].val;
-// }
+    for(i=1; i<mBits-nBits; i++){
+        addcarry[i].bit <== in1[i];
+        addcarry[i].carry <== addcarry[i-1].carry_out;
+        out[nBits + i] <== addcarry[i].val;
+    }
+}
 
 template fulladder() {
     signal input bit1;
@@ -98,15 +95,15 @@ template fulladder() {
     carry_out * (carry_out - 1) === 0;
 }
 
-// template onlycarry() {
-//     signal input bit;
-//     signal input carry;
+template onlycarry() {
+    signal input bit;
+    signal input carry;
 
-//     signal output val;
-//     signal output carry_out;
+    signal output val;
+    signal output carry_out;
 
-//     val <-- (in + carry) % 2;
-//     val * (val - 1) === 0;
-//     carry_out <-- (in + carry) \ 2;
-//     carry * (carry - 1) === 0;
-// }
+    val <-- (bit + carry) % 2;
+    val * (val - 1) === 0;
+    carry_out <-- (bit + carry) \ 2;
+    carry * (carry - 1) === 0;
+}
