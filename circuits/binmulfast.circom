@@ -128,5 +128,3 @@ template LessThanPower51() {
 
   out <== 1-n2b.out[52];
 }
-
-component main = BinMulFastChunked51(5, 5);
