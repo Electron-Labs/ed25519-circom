@@ -94,6 +94,10 @@ template BinMulFastChunked51(m, n) {
   var j;
 
   var pp[m+n];
+  for(i=0; i<m+n; i++) {
+    pp[i] = 0;
+  }
+
   for (j=0; j<n; j++) {
     for (i=0; i<m; i++) {
       pp[i+j] += in1[i] * in2[j];
