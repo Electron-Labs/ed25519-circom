@@ -114,7 +114,7 @@ template BinMulFastChunked51(m, n) {
     out[i] <-- pp[i];
     lt[i] = LessThanPower51();
     lt[i].in <== out[i];
-    lt[i].out === 0;
+    lt[i].out === 1;
   }
 }
 
@@ -122,9 +122,9 @@ template LessThanPower51() {
   signal input in;
   signal output out;
 
-  component n2b = Num2Bits(52+1);
+  component n2b = Num2Bits(51+1);
 
-  n2b.in <== in+ (1<<52) - 2251799813685248;
+  n2b.in <== in+ (1<<51) - 2251799813685248;
 
-  out <== 1-n2b.out[52];
+  out <== 1-n2b.out[51];
 }
