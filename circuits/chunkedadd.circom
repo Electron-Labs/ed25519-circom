@@ -7,8 +7,12 @@ template BinAddChunked51(m, n) {
   var numOutputs = m + n\51 + 1;
   signal output out[numOutputs];
 
-  var power51 = 2251799813685248;
   var ps[numOutputs];
+  for(i=0; i<numOutputs; i++) {
+    ps[i] = 0;
+  }
+
+  var power51 = 2251799813685248;
   var i;
   var j;
   for (i=0; i<n; i++) {
@@ -45,5 +49,3 @@ template LessThanPower51() {
 
   out <== 1-n2b.out[51];
 }
-
-component main = BinAddChunked51(5, 5);
