@@ -75,7 +75,7 @@ template BinAddIrregular(mBits, nBits) {
     out[nBits] <== addcarry[0].val;
 
     for(i=1; i<mBits-nBits; i++){
-        addcarry[i].bit <== in1[i];
+        addcarry[i].bit <== in1[nBits+i];
         addcarry[i].carry <== addcarry[i-1].carry_out;
         out[nBits + i] <== addcarry[i].val;
     }
