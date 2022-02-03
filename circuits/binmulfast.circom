@@ -2,6 +2,7 @@ pragma circom 2.0.0;
 
 include "./chunkify.circom";
 include "./binadd.circom";
+include "../circomlib/circuits/bitify.circom";
 
 template BinMulFast(m, n) {
   signal input in1[m];
@@ -97,18 +98,19 @@ template BinMulFastChunked51(m, n) {
   for(i=0; i<m+n; i++) {
     pp[i] = 0;
   }
-
   for (j=0; j<n; j++) {
     for (i=0; i<m; i++) {
       pp[i+j] += in1[i] * in2[j];
     }
   }
   
+  var temp;
   for(i=0; i<m+n; i++) {
-    while(pp[i] < power51) {
-      if (i < m+n-1) {
-        pp[i] -= power51;
-        pp[i+1] += power51;
+    if (i < m+n-1 ) {
+      if (pp[i] >= power51) {
+        temp = pp[i] % power51;
+        pp[i+1] += pp[i] / power51;
+        pp[i] = temp;
       }
     }
   }
@@ -132,3 +134,5 @@ template LessThanPower51() {
 
   out <== 1-n2b.out[51];
 }
+
+component main = BinMulFastChunked51(4, 4);
