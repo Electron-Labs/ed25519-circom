@@ -64,3 +64,16 @@ describe(" Fast Binary multiplication chuncked 51 test", () =>{
 		});
 	});
 });
+
+describe("Check bits less then 51",()=>{
+	describe("when a number is passed into it of 52 bits",() =>{
+		it("should give 0 if it is not less then 51 bits else give 1", async ()=>{
+			const cir = await wasm_tester(path.join(__dirname,"circuits","binmullessthen51.circom"));
+			const witness = await cir.calculateWitness({"in": 4503599627370490});
+				
+			assert.ok(witness.slice(1, 1).every((u)=>{
+				return u = 0;
+			}));
+		});
+	});
+});
