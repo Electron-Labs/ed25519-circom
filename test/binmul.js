@@ -71,9 +71,7 @@ describe("Check bits less then 51",()=>{
 			const cir = await wasm_tester(path.join(__dirname,"circuits","binmullessthen51.circom"));
 			const witness = await cir.calculateWitness({"in": 4503599627370490});
 				
-			assert.ok(witness.slice(1, 1).every((u)=>{
-				return u = 0;
-			}));
+			assert.ok(witness.slice(1, 2) === 0);
 		});
 	});
 });
