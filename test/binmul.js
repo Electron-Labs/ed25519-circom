@@ -55,7 +55,6 @@ describe(" Fast Binary multiplication chuncked 51 test", () =>{
 			const chunk1 = utils.chunkBigInt(a);
 			const chunk2 = utils.chunkBigInt(b);
 			const witness = await cir.calculateWitness({"in1": chunk1, "in2":chunk2});
-			console.log(witness);
 			const expected = utils.chunkBigInt(a*b);
 			assert.ok(witness.slice(1, 9).every((u,i) => {
 				return u === expected[i];
