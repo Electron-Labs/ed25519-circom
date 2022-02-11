@@ -43,4 +43,15 @@ function pad(x, n) {
   return x;
 }
 
-module.exports = { buffer2bits, convertToEvenLength, normalize, bigIntToLEBuffer, pad };
+// This function will convert a bigInt into the chucks of Integers
+function chunkBigInt(n, mod=BigInt(2**51)){
+	if (!n) return [0];
+	let arr = [];
+	while (n) {
+		arr.push(BigInt(n % mod));
+		n /= mod;
+	}
+	return arr;
+}
+
+module.exports = { buffer2bits, convertToEvenLength, normalize, bigIntToLEBuffer, pad, chunkBigInt };
