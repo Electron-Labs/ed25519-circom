@@ -46,7 +46,7 @@ describe("Fast Binary Multiplier Test", () => {
 	});
 });
 
-describe(" Fast Binary multiplication chuncked 51 test", () =>{
+describe(" Fast Binary multiplication chunked 51 test", () =>{
 	describe("When Performing binary multiplication on 4 by 4 numbers chunked by 51 bits", () => {
 		it("should multiply them correctly", async ()=> {
 			const cir = await wasm_tester(path.join(__dirname,"circuits","binmulfast51.circom"));
@@ -65,12 +65,32 @@ describe(" Fast Binary multiplication chuncked 51 test", () =>{
 });
 
 describe("Check bits less then 51",()=>{
-	describe("when a number is passed into it of 52 bits",() =>{
-		it("should give 0 if it is not less then 51 bits else give 1", async ()=>{
+	describe("when a number is passed into it of 49 bits",() =>{
+		it("should give output of 1", async ()=>{
 			const cir = await wasm_tester(path.join(__dirname,"circuits","binmullessthan51.circom"));
-			const witness = await cir.calculateWitness({"in": 4503599627370490});
+			const witness = await cir.calculateWitness({"in": BigInt('450359962737049')});
 			
+			assert.ok(witness[1] === 1n);
+		});
+	});
+
+	describe("when a number is passed into it of 52 bits",() =>{
+		it("should give output of 0", async ()=>{
+			const cir = await wasm_tester(path.join(__dirname,"circuits","binmullessthan51.circom"));
+			const witness = await cir.calculateWitness({"in": BigInt('4503599627370490')});
 			assert.ok(witness[1] === 0n);
+		});
+	});
+
+	describe("when a number is passed into it of 52 bits",() =>{
+		it("should give output of 0", async ()=>{
+			const cir = await wasm_tester(path.join(__dirname,"circuits","binmullessthan51.circom"));
+			try {
+				await cir.calculateWitness({"in": BigInt('45035996273704904503599627370490')});
+			} catch(e) {
+				return;
+			}
+			assert(false);
 		});
 	});
 });
