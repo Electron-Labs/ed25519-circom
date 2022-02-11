@@ -3,3 +3,4 @@ node_modules
 *_js
 *.r1cs
 *.sym
+.DS_Store
