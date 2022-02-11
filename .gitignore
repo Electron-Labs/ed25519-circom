@@ -4,3 +4,4 @@ node_modules
 *.r1cs
 *.sym
 .DS_Store
+.vscode
