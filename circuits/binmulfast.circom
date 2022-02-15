@@ -2,7 +2,7 @@ pragma circom 2.0.0;
 
 include "./chunkify.circom";
 include "./binadd.circom";
-include "../circomlib/circuits/bitify.circom";
+include "./lt.circom";
 
 template BinMulFast(m, n) {
   signal input in1[m];
@@ -31,19 +31,19 @@ template BinMulFast(m, n) {
   component adders[numChunks1*numChunks2-1];
   for (i=0; i<numChunks1; i++) {
     for (j=0; j<numChunks2; j++) {
-      bitifiers[i*numChunks2 + j] = Num2Bits(170);
+      bitifiers[i*numChunks2 + j] = Num2Bits(102);
       bitifiers[i*numChunks2 + j].in <== chunkify1.out[i] * chunkify2.out[j];
 
-      if ((i+j)*85+170 < m+n) {
-        endOfBits = (i+j)*85+170;
+      if ((i+j)*51+102 < m+n) {
+        endOfBits = (i+j)*51+102;
       } else {
         endOfBits = m+n;
       }
-      for (k=0; k<(i+j)*85; k++) {
+      for (k=0; k<(i+j)*51; k++) {
         bitifiedProduct[i*numChunks2 + j][k] = 0;
       }
-      for (k=(i+j)*85; k<endOfBits; k++) {
-        bitifiedProduct[i*numChunks2 + j][k] = bitifiers[i*numChunks2 + j].out[k-(i+j)*85];
+      for (k=(i+j)*51; k<endOfBits; k++) {
+        bitifiedProduct[i*numChunks2 + j][k] = bitifiers[i*numChunks2 + j].out[k-(i+j)*51];
       }
       for (k=endOfBits; k<m+n; k++) {
         bitifiedProduct[i*numChunks2 + j][k] = 0;
@@ -84,53 +84,89 @@ template BinMulFast(m, n) {
   }
 }
 
-template BinMulFastChunked51(m, n) {
-  signal input in1[m];
-  signal input in2[n];
-  signal output out[m+n];
+// template BinMulFastChunked51(m, n) {
+//   signal input in1[m];
+//   signal input in2[n];
+//   signal output out[m+n];
 
-  var power51 = 2251799813685248;
+//   var power51 = 2251799813685248;
 
-  var i;
-  var j;
+//   var i;
+//   var j;
 
-  var pp[m+n];
-  for(i=0; i<m+n; i++) {
-    pp[i] = 0;
-  }
-  for (j=0; j<n; j++) {
-    for (i=0; i<m; i++) {
-      pp[i+j] += in1[i] * in2[j];
-    }
-  }
+//   var pp[m+n];
+//   for(i=0; i<m+n; i++) {
+//     pp[i] = 0;
+//   }
+//   for (j=0; j<n; j++) {
+//     for (i=0; i<m; i++) {
+//       pp[i+j] += in1[i] * in2[j];
+//     }
+//   }
   
-  var temp;
-  for(i=0; i<m+n; i++) {
-    if (i < m+n-1 ) {
-      if (pp[i] >= power51) {
-        temp = pp[i] % power51;
-        pp[i+1] += pp[i] / power51;
-        pp[i] = temp;
+//   var temp;
+//   for(i=0; i<m+n; i++) {
+//     if (i < m+n-1 ) {
+//       if (pp[i] >= power51) {
+//         temp = pp[i] % power51;
+//         pp[i+1] += pp[i] / power51;
+//         pp[i] = temp;
+//       }
+//     }
+//   }
+
+//   component lt[m+n];
+//   for(i=0; i<m+n; i++) {
+//     out[i] <-- pp[i];
+//     lt[i] = LessThanPower51();
+//     lt[i].in <== out[i];
+//     lt[i].out === 1;
+//   }
+// }
+
+template BinMulFastChunked51(m, n){ //base 2**51 multiplier
+  signal input a[m];
+  signal input b[n];
+  signal pp[n][m+n-1];
+  signal sum[m+n-1];
+  signal carry[m+n];
+  signal output product[m+n];
+
+  for (var i=0; i<n; i++){
+    for (var j=0; j<m+n-1; j++){
+      if (j<i){
+        pp[i][j] <== 0;
+      }
+      else if (j>=i && j<=n-1+i){
+        pp[i][j] <== a[j-i]*b[i];
+      }
+      else {
+        pp[i][j] <== 0;
       }
     }
   }
 
-  component lt[m+n];
-  for(i=0; i<m+n; i++) {
-    out[i] <-- pp[i];
-    lt[i] = LessThanPower51();
-    lt[i].in <== out[i];
-    lt[i].out === 1;
+  var vsum = 0;
+  for (var j=0; j<m+n-1; j++){
+    vsum = 0;
+    for (var i=0; i<n; i++){
+      vsum = vsum + pp[i][j];
+    }
+    sum[j] <== vsum;
   }
+  
+  carry[0] <== 0;
+  for (var j=0; j<m+n-1; j++){
+    product[j] <-- (sum[j]+carry[j])%2251799813685248;
+    carry[j+1] <-- (sum[j]+carry[j])\2251799813685248;
+    //Note: removing this line does not change the no of constraints
+    sum[j]+carry[j] === carry[j+1]*2251799813685248 + product[j];
+  }
+  product[m+n-1] <-- carry[m+n-1];
+
+  component lt3 = LessThanPower51();
+  lt3.in <== product[m+n-1];
+  lt3.out === 1;
 }
 
-template LessThanPower51() {
-  signal input in;
-  signal output out;
-
-  component n2b = Num2Bits(51+1);
-
-  n2b.in <== in+ (1<<51) - 2251799813685248;
-
-  out <== 1-n2b.out[51];
-}
+// component main = BinMulFastChunked51(5, 5);
