@@ -150,79 +150,143 @@ template ModulusWith25519Chunked51(n) {
   }
 }
 
-template ModulusAgainst2PChunked51() {
-  signal input in[6];
-  signal output out[5];
-  var i;
-  var j;
-  var p[255] = [1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-   1, 1, 1, 1, 1, 1, 1];
-
-  component bitifier[6];
-  var bitified[256];
-
-  for (i=0; i<5; i++) {
-    bitifier[i] = Num2Bits(51);
-    bitifier[i].in <== in[i];
-
-    for (j=0; j<51; j++) {
-      bitified[i*51 + j] = bitifier[i].out[j];
-    }
-  }
-  in[5] * (in[5] - 1) === 0;
-  bitified[255] = in[5];
-
-  component sub = BinSub(256);
-  for (i=0; i<255; i++) {
-    sub.in[0][i] <== bitified[i];
-    sub.in[1][i] <== p[i];
-  }
-  sub.in[0][255] <== bitified[255];
-  sub.in[1][255] <== 0;
-
-  component mux = MultiMux1(255);
-  for (i=0; i<255; i++) {
-    mux.c[i][0] <== bitified[i];
-    mux.c[i][1] <== sub.out[i];
-  }
-
-  mux.s <== 1 + sub.out[255] - 2*sub.out[255];
-  
-  component chunkify = Chunkify(255);
-  for (i=0; i<255; i++) {
-    chunkify.in[i] <== mux.out[i];
-  }
-  for (i=0; i<5; i++) {
-    out[i] <== chunkify.out[i];
-  }
-}
-
 // template ModulusAgainst2PChunked51() {
 //   signal input in[6];
 //   signal output out[5];
 //   var i;
 //   var j;
-//   var p[5] = [2251799813685229, 2251799813685247, 2251799813685247, 2251799813685247, 2251799813685247];
+//   var p[255] = [1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+//    1, 1, 1, 1, 1, 1, 1];
 
+//   component bitifier[6];
+//   var bitified[256];
+
+//   for (i=0; i<5; i++) {
+//     bitifier[i] = Num2Bits(51);
+//     bitifier[i].in <== in[i];
+
+//     for (j=0; j<51; j++) {
+//       bitified[i*51 + j] = bitifier[i].out[j];
+//     }
+//   }
 //   in[5] * (in[5] - 1) === 0;
+//   bitified[255] = in[5];
 
-//   var gt;
-  
-//   if (in[5] === 1) {
-//     gt = 1;
-//   } else {
+//   component sub = BinSub(256);
+//   for (i=0; i<255; i++) {
+//     sub.in[0][i] <== bitified[i];
+//     sub.in[1][i] <== p[i];
+//   }
+//   sub.in[0][255] <== bitified[255];
+//   sub.in[1][255] <== 0;
 
+//   component mux = MultiMux1(255);
+//   for (i=0; i<255; i++) {
+//     mux.c[i][0] <== bitified[i];
+//     mux.c[i][1] <== sub.out[i];
 //   }
 
+//   mux.s <== 1 + sub.out[255] - 2*sub.out[255];
+  
+//   component chunkify = Chunkify(255);
+//   for (i=0; i<255; i++) {
+//     chunkify.in[i] <== mux.out[i];
+//   }
+//   for (i=0; i<5; i++) {
+//     out[i] <== chunkify.out[i];
+//   }
 // }
+
+template ModulusAgainst2PChunked51() {
+  signal input in[6];
+  signal output out[5];
+  var i;
+  var p[6] = [2251799813685229, 2251799813685247, 2251799813685247, 2251799813685247, 2251799813685247, 0];
+
+  component sub = BigSub(51, 6);
+
+  in[5] * (in[5] - 1) === 0;
+  for (i=0; i<6; i++) {
+    sub.a[i] <== in[i];
+    sub.b[i] <== p[i];
+  }
+
+  component mux = MultiMux1(6);
+  for (i=0; i<6; i++) {
+    mux.c[i][0] <== in[i];
+    mux.c[i][1] <== sub.out[i];
+  }
+
+  mux.s <== 1 + sub.underflow - 2*sub.underflow;
+  for (i=0; i<5; i++) {
+    out[i] <== mux.out[i];
+  }
+}
+
+template BigSub(n, k) {
+  assert(n <= 252);
+  signal input a[k];
+  signal input b[k];
+  signal output out[k];
+  signal output underflow;
+
+  component unit0 = ModSub(n);
+  unit0.a <== a[0];
+  unit0.b <== b[0];
+  out[0] <== unit0.out;
+
+  component unit[k - 1];
+  for (var i = 1; i < k; i++) {
+    unit[i - 1] = ModSubThree(n);
+    unit[i - 1].a <== a[i];
+    unit[i - 1].b <== b[i];
+    if (i == 1) {
+        unit[i - 1].c <== unit0.borrow;
+    } else {
+        unit[i - 1].c <== unit[i - 2].borrow;
+    }
+    out[i] <== unit[i - 1].out;
+  }
+  underflow <== unit[k - 2].borrow;
+}
+
+template ModSub(n) {
+  assert(n <= 252);
+  signal input a;
+  signal input b;
+  signal output out;
+  signal output borrow;
+  component lt = LessThan(n);
+  lt.in[0] <== a;
+  lt.in[1] <== b;
+  borrow <== lt.out;
+  out <== borrow * (1 << n) + a - b;
+}
+
+template ModSubThree(n) {
+  assert(n + 2 <= 253);
+  signal input a;
+  signal input b;
+  signal input c;
+  assert(a - b - c + (1 << n) >= 0);
+  signal output out;
+  signal output borrow;
+  signal b_plus_c;
+  b_plus_c <== b + c;
+  component lt = LessThan(n + 1);
+  lt.in[0] <== a;
+  lt.in[1] <== b_plus_c;
+  borrow <== lt.out;
+  out <== borrow * (1 << n) + a - b_plus_c;
+}
 
 component main = ModulusWith25519Chunked51(10);
