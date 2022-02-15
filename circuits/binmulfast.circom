@@ -132,6 +132,20 @@ template BinMulFastChunked51(m, n){ //base 2**51 multiplier
   signal carry[m+n];
   signal output product[m+n];
 
+  component lt1[m];
+  for(var i=0; i<m; i++) {
+    lt1[i] = LessThanPower51();
+    lt1[i].in <== a[i];
+    lt1[i].out === 1;
+  }
+
+  component lt2[n];
+  for(var i=0; i<n; i++) {
+    lt2[i] = LessThanPower51();
+    lt2[i].in <== b[i];
+    lt2[i].out === 1;
+  }
+
   for (var i=0; i<n; i++){
     for (var j=0; j<m+n-1; j++){
       if (j<i){
