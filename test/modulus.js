@@ -91,7 +91,7 @@ describe("Modulus Test", () => {
 			const witness = await cir.calculateWitness({"a":chunk},true);
 
 			const expected = utils.chunkBigInt(bigintModArith.modPow(a,1,p));		
-			assert.ok(witness.slice(1, 5).every((u, i)=>{
+			assert.ok(witness.slice(1, 6).every((u, i)=>{
 				return u === expected[i];
 			}));
 		});
