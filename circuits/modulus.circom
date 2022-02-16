@@ -289,4 +289,4 @@ template ModSubThree(n) {
   out <== borrow * (1 << n) + a - b_plus_c;
 }
 
-component main = ModulusWith25519Chunked51(10);
+// component main = ModulusWith25519Chunked51(6);
