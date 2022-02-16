@@ -150,62 +150,6 @@ template ModulusWith25519Chunked51(n) {
   }
 }
 
-// template ModulusAgainst2PChunked51() {
-//   signal input in[6];
-//   signal output out[5];
-//   var i;
-//   var j;
-//   var p[255] = [1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-//    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-//    1, 1, 1, 1, 1, 1, 1];
-
-//   component bitifier[6];
-//   var bitified[256];
-
-//   for (i=0; i<5; i++) {
-//     bitifier[i] = Num2Bits(51);
-//     bitifier[i].in <== in[i];
-
-//     for (j=0; j<51; j++) {
-//       bitified[i*51 + j] = bitifier[i].out[j];
-//     }
-//   }
-//   in[5] * (in[5] - 1) === 0;
-//   bitified[255] = in[5];
-
-//   component sub = BinSub(256);
-//   for (i=0; i<255; i++) {
-//     sub.in[0][i] <== bitified[i];
-//     sub.in[1][i] <== p[i];
-//   }
-//   sub.in[0][255] <== bitified[255];
-//   sub.in[1][255] <== 0;
-
-//   component mux = MultiMux1(255);
-//   for (i=0; i<255; i++) {
-//     mux.c[i][0] <== bitified[i];
-//     mux.c[i][1] <== sub.out[i];
-//   }
-
-//   mux.s <== 1 + sub.out[255] - 2*sub.out[255];
-  
-//   component chunkify = Chunkify(255);
-//   for (i=0; i<255; i++) {
-//     chunkify.in[i] <== mux.out[i];
-//   }
-//   for (i=0; i<5; i++) {
-//     out[i] <== chunkify.out[i];
-//   }
-// }
-
 template ModulusAgainst2PChunked51() {
   signal input in[6];
   signal output out[5];
