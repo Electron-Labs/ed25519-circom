@@ -80,4 +80,21 @@ describe("Modulus Test", () => {
 			}));
 		});
 	});
+
+	describe("when performing modular additon on two numbers using prime field of prime 25519", () => {
+		const p = BigInt("57896044618658097711785492504343953926634992332820282019728792003956564819949");
+
+		it("should add them correctly when sum is over global prime in circom",async () =>{
+			const cir = await wasm_tester(path.join(__dirname,"circuits", "chunkedmodulus.circom"));
+			const a = BigInt("1257896044618658097711785492504343953926634992332820282019728792003956564819949")
+			const chunk = utils.chunkBigInt(a);
+			const witness = await cir.calculateWitness({"a":chunk},true);
+
+			const expected = utils.chunkBigInt(bigintModArith.modPow(a,1,p));		
+			assert.ok(witness.slice(1, 6).every((u, i)=>{
+				return u === expected[i];
+			}));
+		});
+	});
 });
+      
