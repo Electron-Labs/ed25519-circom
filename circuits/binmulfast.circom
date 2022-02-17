@@ -84,65 +84,25 @@ template BinMulFast(m, n) {
   }
 }
 
-// template BinMulFastChunked51(m, n) {
-//   signal input in1[m];
-//   signal input in2[n];
-//   signal output out[m+n];
-
-//   var power51 = 2251799813685248;
-
-//   var i;
-//   var j;
-
-//   var pp[m+n];
-//   for(i=0; i<m+n; i++) {
-//     pp[i] = 0;
-//   }
-//   for (j=0; j<n; j++) {
-//     for (i=0; i<m; i++) {
-//       pp[i+j] += in1[i] * in2[j];
-//     }
-//   }
-  
-//   var temp;
-//   for(i=0; i<m+n; i++) {
-//     if (i < m+n-1 ) {
-//       if (pp[i] >= power51) {
-//         temp = pp[i] % power51;
-//         pp[i+1] += pp[i] / power51;
-//         pp[i] = temp;
-//       }
-//     }
-//   }
-
-//   component lt[m+n];
-//   for(i=0; i<m+n; i++) {
-//     out[i] <-- pp[i];
-//     lt[i] = LessThanPower51();
-//     lt[i].in <== out[i];
-//     lt[i].out === 1;
-//   }
-// }
-
 template BinMulFastChunked51(m, n){ //base 2**51 multiplier
-  signal input a[m];
-  signal input b[n];
+  signal input in1[m];
+  signal input in2[n];
   signal pp[n][m+n-1];
   signal sum[m+n-1];
   signal carry[m+n];
-  signal output product[m+n];
+  signal output out[m+n];
 
   component lt1[m];
   for(var i=0; i<m; i++) {
     lt1[i] = LessThanPower51();
-    lt1[i].in <== a[i];
+    lt1[i].in <== in1[i];
     lt1[i].out === 1;
   }
 
   component lt2[n];
   for(var i=0; i<n; i++) {
     lt2[i] = LessThanPower51();
-    lt2[i].in <== b[i];
+    lt2[i].in <== in2[i];
     lt2[i].out === 1;
   }
 
@@ -152,7 +112,7 @@ template BinMulFastChunked51(m, n){ //base 2**51 multiplier
         pp[i][j] <== 0;
       }
       else if (j>=i && j<=n-1+i){
-        pp[i][j] <== a[j-i]*b[i];
+        pp[i][j] <== in1[j-i]*in2[i];
       }
       else {
         pp[i][j] <== 0;
@@ -171,16 +131,15 @@ template BinMulFastChunked51(m, n){ //base 2**51 multiplier
   
   carry[0] <== 0;
   for (var j=0; j<m+n-1; j++){
-    product[j] <-- (sum[j]+carry[j])%2251799813685248;
+    out[j] <-- (sum[j]+carry[j])%2251799813685248;
     carry[j+1] <-- (sum[j]+carry[j])\2251799813685248;
     //Note: removing this line does not change the no of constraints
-    sum[j]+carry[j] === carry[j+1]*2251799813685248 + product[j];
+    sum[j]+carry[j] === carry[j+1]*2251799813685248 + out[j];
   }
-  product[m+n-1] <-- carry[m+n-1];
+  out[m+n-1] <-- carry[m+n-1];
+
 
   component lt3 = LessThanPower51();
-  lt3.in <== product[m+n-1];
+  lt3.in <== out[m+n-1];
   lt3.out === 1;
 }
-
-// component main = BinMulFastChunked51(5, 5);
