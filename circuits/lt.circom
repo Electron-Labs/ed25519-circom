@@ -5,9 +5,8 @@ template LessThanPower51() {
   signal input in;
   signal output out;
 
-  component n2b = Num2Bits(51+1);
-
-  n2b.in <== in+ (1<<51) - 2251799813685248;
-
-  out <== 1-n2b.out[51];
+  out <-- 1 - ((in >> 51) & 1);
+  out * (out - 1) === 0;
 }
+
+component main = LessThanPower51();
