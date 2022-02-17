@@ -27,21 +27,21 @@ template BinSub(nBits) {
   }
 }
 
-template BigSub(n, k) {
+template BigSubX(n, k) {
   assert(n <= 252);
   signal input a[k];
   signal input b[k];
   signal output out[k];
   signal output underflow;
 
-  component unit0 = ModSub(n);
+  component unit0 = ModSubX(n);
   unit0.a <== a[0];
   unit0.b <== b[0];
   out[0] <== unit0.out;
 
   component unit[k - 1];
   for (var i = 1; i < k; i++) {
-    unit[i - 1] = ModSubThree(n);
+    unit[i - 1] = ModSubThreeX(n);
     unit[i - 1].a <== a[i];
     unit[i - 1].b <== b[i];
     if (i == 1) {
@@ -54,7 +54,7 @@ template BigSub(n, k) {
   underflow <== unit[k - 2].borrow;
 }
 
-template ModSub(n) {
+template ModSubX(n) {
   assert(n <= 252);
   signal input a;
   signal input b;
@@ -67,7 +67,7 @@ template ModSub(n) {
   out <== borrow * (1 << n) + a - b;
 }
 
-template ModSubThree(n) {
+template ModSubThreeX(n) {
   assert(n + 2 <= 253);
   signal input a;
   signal input b;
