@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --max-old-space-size=4000"
+    "test": "mocha --max-old-space-size=4000 --timeout 150000"
   },
   "keywords": [
     "circuit",

@@ -84,46 +84,6 @@ template BinMulFast(m, n) {
   }
 }
 
-// template BinMulFastChunked51(m, n) {
-//   signal input in1[m];
-//   signal input in2[n];
-//   signal output out[m+n];
-
-//   var power51 = 2251799813685248;
-
-//   var i;
-//   var j;
-
-//   var pp[m+n];
-//   for(i=0; i<m+n; i++) {
-//     pp[i] = 0;
-//   }
-//   for (j=0; j<n; j++) {
-//     for (i=0; i<m; i++) {
-//       pp[i+j] += in1[i] * in2[j];
-//     }
-//   }
-  
-//   var temp;
-//   for(i=0; i<m+n; i++) {
-//     if (i < m+n-1 ) {
-//       if (pp[i] >= power51) {
-//         temp = pp[i] % power51;
-//         pp[i+1] += pp[i] / power51;
-//         pp[i] = temp;
-//       }
-//     }
-//   }
-
-//   component lt[m+n];
-//   for(i=0; i<m+n; i++) {
-//     out[i] <-- pp[i];
-//     lt[i] = LessThanPower51();
-//     lt[i].in <== out[i];
-//     lt[i].out === 1;
-//   }
-// }
-
 template BinMulFastChunked51(m, n){ //base 2**51 multiplier
   signal input a[m];
   signal input b[n];
@@ -178,9 +138,8 @@ template BinMulFastChunked51(m, n){ //base 2**51 multiplier
   }
   product[m+n-1] <-- carry[m+n-1];
 
+
   component lt3 = LessThanPower51();
   lt3.in <== product[m+n-1];
   lt3.out === 1;
 }
-
-// component main = BinMulFastChunked51(5, 5);
