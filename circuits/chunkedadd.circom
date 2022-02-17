@@ -33,11 +33,14 @@ template BinAddChunked51(m, n){
   out[numOutputs-1] <== carry[numOutputs-1];
 
   component lt[numOutputs];
-  for(var i=0; i<numOutputs; i++) {
-    lt[i] = LessThanPower51();
-    lt[i].in <== out[i];
-    lt[i].out === 1;
-  }
+
+  component lt1 = LessThanPower51();
+  lt1.in <== out[0];
+  lt1.out === 1;
+
+  component lt2 = LessThanPower51();
+  lt2.in <== out[numOutputs-1];
+  lt2.out === 1;
 }
 
 function calculateNumOutputs(m, n) {
