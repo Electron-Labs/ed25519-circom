@@ -124,13 +124,13 @@ template ModulusWith25519Chunked51(n) {
 
     mul = BinMulFastChunked51(n-5, 1);
     for(i=0; i<n-5; i++) {
-      mul.a[i] <== a[5+i];
+      mul.in1[i] <== a[5+i];
     }
-    mul.b[0] <== 19;
+    mul.in2[0] <== 19;
 
     mod = ModulusWith25519Chunked51(n-5+1);
     for (i=0; i<n-5+1; i++) {
-      mod.a[i] <== mul.product[i];
+      mod.a[i] <== mul.out[i];
     }
 
     adder = BinAddChunked51(5, 2);
