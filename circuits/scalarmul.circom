@@ -140,8 +140,6 @@ template ScalarMul(){
         finaladder.Q[1][i] <== bits[3].addOut[1][i];
         finaladder.Q[2][i] <== bits[3].addOut[2][i];
         finaladder.Q[3][i] <== sub_t.out[i];
-        
-
     }
     component lastSel = Multiplexor2();
     s[0] ==> lastSel.sel;
@@ -165,5 +163,3 @@ template ScalarMul(){
         sP[3][i] <== lastSel.out[3][i];
     }
 }
-
-component main = ScalarMul();
