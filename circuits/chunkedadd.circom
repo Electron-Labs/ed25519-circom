@@ -32,12 +32,43 @@ template BinAddChunked51(m, n){
   }
   out[numOutputs-1] <== carry[numOutputs-1];
 
-  component lt[numOutputs];
-  for(var i=0; i<numOutputs; i++) {
-    lt[i] = LessThanPower51();
-    lt[i].in <== out[i];
-    lt[i].out === 1;
-  }
+  component lt1 = LessThanPower51();
+  lt1.in <== out[0];
+  lt1.out === 1;
+
+  component lt2 = LessThanPower51();
+  lt2.in <== out[numOutputs-1];
+  lt2.out === 1;
+}
+
+template AddIrregularChunk51(m,n){ //assume m>=n
+    signal input a[m];
+    signal input b[n];
+    signal psum[m];
+    signal carry[m+1];
+    signal output sum[m+1];
+
+    for (var i=0; i<n ; i++){
+        psum[i] <== a[i] + b[i];
+    }
+    for (var i=n; i<m ; i++){
+        psum[i] <== a[i];
+    }
+    carry[0] <== 0;
+    for (var i=0; i<m; i++){
+        sum[i] <-- (psum[i]+carry[i])%2251799813685248;
+        carry[i+1] <-- (psum[i]+carry[i])\2251799813685248;
+        psum[i]+carry[i] === carry[i+1]*2251799813685248 + sum[i];
+    }
+    sum[m] <== carry[m];
+
+    component lt1 = LessThanPower51();
+    lt1.in <== sum[0];
+    lt1.out === 1;
+
+    component lt2 = LessThanPower51();
+    lt2.in <== sum[m];
+    lt2.out === 1;
 }
 
 function calculateNumOutputs(m, n) {

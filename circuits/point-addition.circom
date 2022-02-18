@@ -61,8 +61,8 @@ template PointAdd(){
         Z_1Z_2.in2[i] <== Q[2][i];
     }
 
-    component T_1T_2_d = BinMulFastChunked51(2*5,5);
-    component T_1T_2_neg_d = BinMulFastChunked51(2*5,5);
+    component T_1T_2_d = BinMulFastChunked51(10,5);
+    component T_1T_2_neg_d = BinMulFastChunked51(10,5);
 
     for(i=0;i<2*5;i++){
        T_1T_2_d.in1[i] <== T_1T_2.out[i];
@@ -73,73 +73,82 @@ template PointAdd(){
         T_1T_2_d.in2[i] <== constant_d[i];
         T_1T_2_neg_d.in2[i] <== constant_neg_d[i];
     }
-    component mod_X_1X_2 = ModulusWith25519Chunked51(2*5);
-    component mod_Y_1Y_2 = ModulusWith25519Chunked51(2*5);
-    component mod_X_1Y_2 = ModulusWith25519Chunked51(2*5);
-    component mod_X_2Y_1 = ModulusWith25519Chunked51(2*5);
-    component mod_Z_1Z_2 = ModulusWith25519Chunked51(2*5);
+    // component mod_X_1X_2 = ModulusWith25519Chunked51(2*5);
+    // component mod_Y_1Y_2 = ModulusWith25519Chunked51(2*5);
+    // component mod_X_1Y_2 = ModulusWith25519Chunked51(2*5);
+    // component mod_X_2Y_1 = ModulusWith25519Chunked51(2*5);
+    // component mod_Z_1Z_2 = ModulusWith25519Chunked51(2*5);
 
-    for(i=0;i<2*5;i++){
-        mod_X_1X_2.a[i] <== X_1X_2.out[i];
-        mod_Y_1Y_2.a[i] <== Y_1Y_2.out[i];
-        mod_X_1Y_2.a[i] <== X_1Y_2.out[i];
-        mod_X_2Y_1.a[i] <== X_2Y_1.out[i];
-        mod_Z_1Z_2.a[i] <== Z_1Z_2.out[i];
-    }
+    // for(i=0;i<2*5;i++){
+    //     mod_X_1X_2.a[i] <== X_1X_2.out[i];
+    //     mod_Y_1Y_2.a[i] <== Y_1Y_2.out[i];
+    //     mod_X_1Y_2.a[i] <== X_1Y_2.out[i];
+    //     mod_X_2Y_1.a[i] <== X_2Y_1.out[i];
+    //     mod_Z_1Z_2.a[i] <== Z_1Z_2.out[i];
+    // }
 
 
-    component mod_T_1T_2_d = ModulusWith25519Chunked51(2*5+5);
-    component mod_T_1T_2_neg_d = ModulusWith25519Chunked51(2*5+5);
+    // component mod_T_1T_2_d = ModulusWith25519Chunked51(2*5+5);
+    // component mod_T_1T_2_neg_d = ModulusWith25519Chunked51(2*5+5);
 
-    for(i=0;i<2*5+5;i++){
-        mod_T_1T_2_d.a[i] <== T_1T_2_d.out[i];
-        mod_T_1T_2_neg_d.a[i] <== T_1T_2_neg_d.out[i];
-    }
+    // for(i=0;i<2*5+5;i++){
+    //     mod_T_1T_2_d.a[i] <== T_1T_2_d.out[i];
+    //     mod_T_1T_2_neg_d.a[i] <== T_1T_2_neg_d.out[i];
+    // }
 
-    component e_add = BinAddChunked51(5,2);
-    component f_add = BinAddChunked51(5,2);
-    component g_add = BinAddChunked51(5,2);
-    component h_add = BinAddChunked51(5,2);
+    component e_add = BinAddChunked51(10,2);
+    component f_add = AddIrregularChunk51(15,10);
+    component g_add = AddIrregularChunk51(15,10);
+    component h_add = BinAddChunked51(10,2);
     
-    for(i=0;i<5;i++){
-        e_add.in[0][i] <== mod_X_1Y_2.out[i];
-        e_add.in[1][i] <== mod_X_2Y_1.out[i];
-        f_add.in[0][i] <== mod_Z_1Z_2.out[i];
-        f_add.in[1][i] <== mod_T_1T_2_neg_d.out[i];
-        g_add.in[0][i] <== mod_Z_1Z_2.out[i];
-        g_add.in[1][i] <== mod_T_1T_2_d.out[i];
-        h_add.in[0][i] <== mod_X_1X_2.out[i];
-        h_add.in[1][i] <== mod_Y_1Y_2.out[i];    
+    for(i=0;i<10;i++){
+        e_add.in[0][i] <== X_1Y_2.out[i];
+        e_add.in[1][i] <== X_2Y_1.out[i];
+        f_add.b[i] <== Z_1Z_2.out[i];  
+        g_add.b[i] <== Z_1Z_2.out[i];
+        h_add.in[0][i] <== X_1X_2.out[i];
+        h_add.in[1][i] <== Y_1Y_2.out[i];  
     }
 
-    component final_mul1 = BinMulFastChunked51(6,6);
-    component final_mul2 = BinMulFastChunked51(6,6);
-    component final_mul3 = BinMulFastChunked51(6,6);
-    component final_mul4 = BinMulFastChunked51(6,6);
-
-    for(i=0;i<6;i++){
-        final_mul1.in1[i] <== e_add.out[i];
-        final_mul1.in2[i] <== f_add.out[i];
-        final_mul3.in1[i] <== f_add.out[i];
-        final_mul4.in1[i] <== e_add.out[i];
+    for(i=0;i<15;i++){
+        f_add.a[i] <== T_1T_2_neg_d.out[i];
+        g_add.a[i] <== T_1T_2_d.out[i];
     }
 
-    for(i=0;i<6;i++){
-        final_mul2.in1[i] <== g_add.out[i];
+    component final_mul1 = BinMulFastChunked51(16,11);
+    component final_mul2 = BinMulFastChunked51(16,11);
+    component final_mul3 = BinMulFastChunked51(16,16);
+    component final_mul4 = BinMulFastChunked51(11,11);
+
+    for(i=0;i<11;i++){
+        final_mul1.in2[i] <== e_add.out[i];
         final_mul2.in2[i] <== h_add.out[i];
-        final_mul3.in2[i] <== g_add.out[i];
+        final_mul4.in1[i] <== e_add.out[i];
         final_mul4.in2[i] <== h_add.out[i];
     }
 
-    component final_modulo1 = ModulusWith25519Chunked51(2*(5+1));
-    component final_modulo2 = ModulusWith25519Chunked51(2*(5+1));
-    component final_modulo3 = ModulusWith25519Chunked51(2*(5+1));
-    component final_modulo4 = ModulusWith25519Chunked51(2*(5+1));
+    for(i=0;i<16;i++){
+        final_mul1.in1[i] <== f_add.sum[i];
+        final_mul2.in1[i] <== g_add.sum[i];
+        final_mul3.in1[i] <== f_add.sum[i];
+        final_mul3.in2[i] <== g_add.sum[i];
+    }
 
-    for(i=0;i<2*(5+1);i++){
+    component final_modulo1 = ModulusWith25519Chunked51(27);
+    component final_modulo2 = ModulusWith25519Chunked51(27);
+    component final_modulo3 = ModulusWith25519Chunked51(32);
+    component final_modulo4 = ModulusWith25519Chunked51(22);
+
+    for(i=0;i<27;i++){
         final_modulo1.a[i] <== final_mul1.out[i];
-        final_modulo2.a[i] <== final_mul2.out[i];
+        final_modulo2.a[i] <== final_mul2.out[i];    
+    }
+
+    for(i=0;i<32;i++){
         final_modulo3.a[i] <== final_mul3.out[i];
+    }
+
+    for(i=0;i<22;i++){
         final_modulo4.a[i] <== final_mul4.out[i];
     }
     
@@ -176,3 +185,5 @@ template DoublePt(){
         double.R[3][i] ==> out_2P[3][i];
     }
 }
+
+component main = PointAdd();

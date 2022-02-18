@@ -78,11 +78,11 @@ template BitElementMulAny() {
 }
 
 template ScalarMul(){
-    signal input s[5];
+    signal input s[255];
     signal input P[4][5];
     signal output sP[4][5];
 
-    component bits[4];
+    component bits[254];
 
     var i;
     var j;
@@ -101,7 +101,7 @@ template ScalarMul(){
     }
     bits[0].sel <== s[1];
 
-    for(i=1;i<4;i++){
+    for(i=1;i<254;i++){
         bits[i] = BitElementMulAny();
         for(j=0;j<5;j++){
             bits[i-1].dblOut[0][j] ==> bits[i].dblIn[0][j];
@@ -122,26 +122,24 @@ template ScalarMul(){
     component sub_x = BigSubX(51,5);
     for(i=0;i<5;i++){
         sub_x.a[i] <== prime_p[i];
-        sub_x.b[i] <== bits[3].addOut[0][i];
+        sub_x.b[i] <== bits[253].addOut[0][i];
     }
     component sub_t = BigSubX(51,5);
     for(i=0;i<5;i++){
         sub_t.a[i] <== prime_p[i];
-        sub_t.b[i] <== bits[3].addOut[3][i];
+        sub_t.b[i] <== bits[253].addOut[3][i];
     }
     component finaladder = PointAdd();
     for(i=0;i<5;i++){
-        finaladder.P[0][i] <== bits[3].addOut[0][i];
-        finaladder.P[1][i] <== bits[3].addOut[1][i];
-        finaladder.P[2][i] <== bits[3].addOut[2][i];
-        finaladder.P[3][i] <== bits[3].addOut[3][i];
+        finaladder.P[0][i] <== bits[253].addOut[0][i];
+        finaladder.P[1][i] <== bits[253].addOut[1][i];
+        finaladder.P[2][i] <== bits[253].addOut[2][i];
+        finaladder.P[3][i] <== bits[253].addOut[3][i];
 
         finaladder.Q[0][i] <== sub_x.out[i];
-        finaladder.Q[1][i] <== bits[3].addOut[1][i];
-        finaladder.Q[2][i] <== bits[3].addOut[2][i];
+        finaladder.Q[1][i] <== bits[253].addOut[1][i];
+        finaladder.Q[2][i] <== bits[253].addOut[2][i];
         finaladder.Q[3][i] <== sub_t.out[i];
-        
-
     }
     component lastSel = Multiplexor2();
     s[0] ==> lastSel.sel;
@@ -152,10 +150,10 @@ template ScalarMul(){
         finaladder.R[2][i] ==> lastSel.in[0][2][i]; 
         finaladder.R[3][i] ==> lastSel.in[0][3][i];
 
-        bits[3].addOut[0][i] ==> lastSel.in[1][0][i];
-        bits[3].addOut[1][i] ==> lastSel.in[1][1][i];
-        bits[3].addOut[2][i] ==> lastSel.in[1][2][i];
-        bits[3].addOut[3][i] ==> lastSel.in[1][3][i];
+        bits[253].addOut[0][i] ==> lastSel.in[1][0][i];
+        bits[253].addOut[1][i] ==> lastSel.in[1][1][i];
+        bits[253].addOut[2][i] ==> lastSel.in[1][2][i];
+        bits[253].addOut[3][i] ==> lastSel.in[1][3][i];
     }
 
     for(i=0;i<5;i++){
@@ -165,5 +163,3 @@ template ScalarMul(){
         sP[3][i] <== lastSel.out[3][i];
     }
 }
-
-component main = ScalarMul();
