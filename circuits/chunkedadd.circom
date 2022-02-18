@@ -9,8 +9,17 @@ template BinAddChunked51(m, n){
   signal carry[numOutputs];
   signal output out[numOutputs];
 
+  component lt1[n][m];
   var i;
   var j;
+  for(i=0; i<n; i++) {
+    for (j=0; j<m; j++) {
+      lt1[i][j] = LessThanPower51();
+      lt1[i][j].in <== in[i][j];
+      lt1[i][j].out === 1;
+    } 
+  }
+
   var acc;
   for (j=0; j<m; j++){
     acc = 0;
@@ -32,13 +41,12 @@ template BinAddChunked51(m, n){
   }
   out[numOutputs-1] <== carry[numOutputs-1];
 
-  component lt1 = LessThanPower51();
-  lt1.in <== out[0];
-  lt1.out === 1;
-
-  component lt2 = LessThanPower51();
-  lt2.in <== out[numOutputs-1];
-  lt2.out === 1;
+  component lt2[numOutputs];
+  for(i=0; i<numOutputs; i++) {
+    lt2[i] = LessThanPower51();
+    lt2[i].in <== out[i];
+    out[i] * lt2[i].out === out[i];
+  }
 }
 
 template AddIrregularChunk51(m,n){ //assume m>=n

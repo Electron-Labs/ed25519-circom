@@ -156,7 +156,7 @@ template ModulusAgainst2PChunked51() {
   var i;
   var p[6] = [2251799813685229, 2251799813685247, 2251799813685247, 2251799813685247, 2251799813685247, 0];
 
-  component sub = BigSub(51, 6);
+  component sub = BigSub51(6);
 
   in[5] * (in[5] - 1) === 0;
   for (i=0; i<6; i++) {
@@ -176,21 +176,20 @@ template ModulusAgainst2PChunked51() {
   }
 }
 
-template BigSub(n, k) {
-  assert(n <= 252);
+template BigSub51(k) {
   signal input a[k];
   signal input b[k];
   signal output out[k];
   signal output underflow;
 
-  component unit0 = ModSub(n);
+  component unit0 = ModSub51();
   unit0.a <== a[0];
   unit0.b <== b[0];
   out[0] <== unit0.out;
 
   component unit[k - 1];
   for (var i = 1; i < k; i++) {
-    unit[i - 1] = ModSubThree(n);
+    unit[i - 1] = ModSubThree51();
     unit[i - 1].a <== a[i];
     unit[i - 1].b <== b[i];
     if (i == 1) {
@@ -203,32 +202,30 @@ template BigSub(n, k) {
   underflow <== unit[k - 2].borrow;
 }
 
-template ModSub(n) {
-  assert(n <= 252);
+template ModSub51() {
   signal input a;
   signal input b;
   signal output out;
   signal output borrow;
-  component lt = LessThan(n);
+  component lt = LessThanOptimizedUpto51Bits();
   lt.in[0] <== a;
   lt.in[1] <== b;
   borrow <== lt.out;
-  out <== borrow * (1 << n) + a - b;
+  out <== borrow * (1 << 51) + a - b;
 }
 
-template ModSubThree(n) {
-  assert(n + 2 <= 253);
+template ModSubThree51() {
   signal input a;
   signal input b;
   signal input c;
-  assert(a - b - c + (1 << n) >= 0);
+  assert(a - b - c + (1 << 51) >= 0);
   signal output out;
   signal output borrow;
   signal b_plus_c;
   b_plus_c <== b + c;
-  component lt = LessThan(n + 1);
+  component lt = LessThanOptimizedUpto52Bits();
   lt.in[0] <== a;
   lt.in[1] <== b_plus_c;
   borrow <== lt.out;
-  out <== borrow * (1 << n) + a - b_plus_c;
+  out <== borrow * (1 << 51) + a - b_plus_c;
 }

@@ -92,8 +92,25 @@ template BinMulFastChunked51(m, n){ //base 2**51 multiplier
   signal carry[m+n];
   signal output out[m+n];
 
-  for (var i=0; i<n; i++){
-    for (var j=0; j<m+n-1; j++){
+  var i;
+  var j;
+
+  component lt1[m];
+  for (i=0; i<m; i++) {
+    lt1[i] = LessThanPower51();
+    lt1[i].in <== in1[i];
+    lt1[i].out === 1;
+  } 
+
+  component lt2[n];
+  for (i=0; i<n; i++) {
+    lt2[i] = LessThanPower51();
+    lt2[i].in <== in2[i];
+    lt2[i].out === 1;
+  } 
+  
+  for (i=0; i<n; i++){
+    for (j=0; j<m+n-1; j++){
       if (j<i){
         pp[i][j] <== 0;
       }
@@ -107,16 +124,16 @@ template BinMulFastChunked51(m, n){ //base 2**51 multiplier
   }
 
   var vsum = 0;
-  for (var j=0; j<m+n-1; j++){
+  for (j=0; j<m+n-1; j++){
     vsum = 0;
-    for (var i=0; i<n; i++){
+    for (i=0; i<n; i++){
       vsum = vsum + pp[i][j];
     }
     sum[j] <== vsum;
   }
   
   carry[0] <== 0;
-  for (var j=0; j<m+n-1; j++){
+  for (j=0; j<m+n-1; j++){
     out[j] <-- (sum[j]+carry[j])%2251799813685248;
     carry[j+1] <-- (sum[j]+carry[j])\2251799813685248;
     //Note: removing this line does not change the no of constraints
@@ -124,11 +141,11 @@ template BinMulFastChunked51(m, n){ //base 2**51 multiplier
   }
   out[m+n-1] <-- carry[m+n-1];
 
-  component lt1 = LessThanPower51();
-  lt1.in <== out[0];
-  lt1.out === 1;
-
-  component lt2 = LessThanPower51();
-  lt2.in <== out[m+n-1];
-  lt2.out === 1;
+  component lt[m+n];
+  for(i=0; i<m+n; i++) {
+    lt[i] = LessThanPower51();
+    lt[i].in <== out[i];
+    out[i] * lt[i].out === out[i];
+  }
 }
+
