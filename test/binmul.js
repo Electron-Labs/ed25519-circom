@@ -85,12 +85,8 @@ describe("Check bits less then 51",()=>{
 	describe("when a number is passed into it of greater than 52 bits",() =>{
 		it("should fail on witness calculation", async ()=>{
 			const cir = await wasm_tester(path.join(__dirname,"circuits","binmullessthan51.circom"));
-			try {
-				await cir.calculateWitness({"in": BigInt('45035996273704904503599627370490')});
-			} catch(e) {
-				return;
-			}
-			assert(false);
+			const witness = await cir.calculateWitness({"in": BigInt('45035996273704904503599627370490')});
+			assert.ok(witness[1] === 0n);
 		});
 	});
 });
