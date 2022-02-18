@@ -45,7 +45,7 @@ template BinAddChunked51(m, n){
   for(i=0; i<numOutputs; i++) {
     lt2[i] = LessThanPower51();
     lt2[i].in <== out[i];
-    lt2[i].out === 1;
+    out[i] * lt2[i].out === out[i];
   }
 }
 
