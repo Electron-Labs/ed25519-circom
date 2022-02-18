@@ -5,8 +5,6 @@ template LessThanPower51() {
   signal input in;
   signal output out;
 
-  out <-- 1 - ((in >> 51) & 1);
+  out <-- 1 - ((in >> 51) > 0);
   out * (out - 1) === 0;
 }
-
-component main = LessThanPower51();

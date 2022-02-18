@@ -145,6 +145,7 @@ template BinMulFastChunked51(m, n){ //base 2**51 multiplier
   for(i=0; i<m+n; i++) {
     lt[i] = LessThanPower51();
     lt[i].in <== out[i];
-    lt[i].out === 1;
+    out[i] * lt[i].out === out[i];
   }
 }
+
