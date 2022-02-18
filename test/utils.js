@@ -71,4 +71,4 @@ function point_add(P,Q){
     return [E*F, G*H, F*G, E*H];
 }
 
-module.exports = { buffer2bits, convertToEvenLength, normalize, bigIntToLEBuffer, pad, chunkBigInt };
+module.exports = { buffer2bits, convertToEvenLength, normalize, bigIntToLEBuffer, pad, chunkBigInt,point_add};
