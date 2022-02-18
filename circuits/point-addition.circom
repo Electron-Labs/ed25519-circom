@@ -26,8 +26,8 @@ template PointAdd(){
 
     //Points are represented as tuples (X, Y, Z, T) of extended coordinates, with x = X/Z, y = Y/Z, x*y = T/Z
 
-    var constant_d[5] = [1321844580190026,1785434093556034,589740348686294,217950738957124,809005158844672];
-    var constant_neg_d[5] = [929955233495203,466365720129213,1662059464998953,2033849074728123,1442794654840575];
+    var constant_neg_d[5] = [1321844580190026,1785434093556034,589740348686294,217950738957124,809005158844672];
+    var constant_d[5] = [929955233495203,466365720129213,1662059464998953,2033849074728123,1442794654840575];
     var i;
 
     signal input P[4][5];
@@ -186,4 +186,4 @@ template DoublePt(){
     }
 }
 
-component main = PointAdd();
+// component main = PointAdd();
