@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "mocha --max-old-space-size=4000 --timeout 150000 --exclude test/inversemodulo*",
+    "test-inverse-modulo": "mocha --max-old-space-size=4000 --timeout 150000 test/inversemodulo.test.js",
     "clean": "rm -rf node_modules && npm i"
   },
   "keywords": [
