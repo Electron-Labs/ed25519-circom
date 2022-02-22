@@ -42,12 +42,10 @@ function pad(x, n) {
   }
   return x;
 }
-<<<<<<< HEAD
 // This function will give the right modulud as expected 
 function modulus(num, p){
   return ((num%p)+p)%p;
 }
-=======
 
 function bitsToBigInt(arr) {
 	res = BigInt(0);
@@ -57,7 +55,6 @@ function bitsToBigInt(arr) {
 	return res;
 }
 
->>>>>>> master
 // This function will convert a bigInt into the chucks of Integers
 function chunkBigInt(n, mod=BigInt(2**51)){
 	if (!n) return [0];
