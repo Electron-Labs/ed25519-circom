@@ -114,7 +114,7 @@ template BinMulFastChunked51(m, n){ //base 2**51 multiplier
       if (j<i){
         pp[i][j] <== 0;
       }
-      else if (j>=i && j<=n-1+i){
+      else if (j>=i && j<=m-1+i){
         pp[i][j] <== in1[j-i]*in2[i];
       }
       else {

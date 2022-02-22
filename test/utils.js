@@ -43,6 +43,14 @@ function pad(x, n) {
   return x;
 }
 
+function bitsToBigInt(arr) {
+	res = BigInt(0);
+	for (var i=0; i<arr.length; i++) {
+		res += (BigInt(2) ** BigInt(i)) * BigInt(arr[i]);
+	}
+	return res;
+}
+
 // This function will convert a bigInt into the chucks of Integers
 function chunkBigInt(n, mod=BigInt(2**51)){
 	if (!n) return [0];
@@ -71,4 +79,4 @@ function point_add(P,Q){
     return [E*F, G*H, F*G, E*H];
 }
 
-module.exports = { buffer2bits, convertToEvenLength, normalize, bigIntToLEBuffer, pad, chunkBigInt };
+module.exports = { buffer2bits, convertToEvenLength, normalize, bigIntToLEBuffer, pad, chunkBigInt, bitsToBigInt };
