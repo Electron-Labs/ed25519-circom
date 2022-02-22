@@ -23,10 +23,10 @@
   "author": "rahulghangas, garvitgoel, BakerStreetPhantom, suniljalandhra",
   "license": "GPL-3.0",
   "devDependencies": {
-    "bigint-mod-arith": "^3.0.1",
-    "chai": "^4.3.4",
-    "circom_tester": "0.0.5",
+    "bigint-mod-arith": "^3.0.2",
+    "chai": "^4.3.6",
+    "circom_tester": "0.0.9",
     "circomlibjs": "^0.1.0",
-    "mocha": "^9.1.3"
+    "mocha": "^9.2.1"
   }
 }
