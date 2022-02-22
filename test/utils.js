@@ -42,10 +42,22 @@ function pad(x, n) {
   }
   return x;
 }
+<<<<<<< HEAD
 // This function will give the right modulud as expected 
 function modulus(num, p){
   return ((num%p)+p)%p;
 }
+=======
+
+function bitsToBigInt(arr) {
+	res = BigInt(0);
+	for (var i=0; i<arr.length; i++) {
+		res += (BigInt(2) ** BigInt(i)) * BigInt(arr[i]);
+	}
+	return res;
+}
+
+>>>>>>> master
 // This function will convert a bigInt into the chucks of Integers
 function chunkBigInt(n, mod=BigInt(2**51)){
 	if (!n) return [0];
@@ -84,5 +96,4 @@ function point_mul(s,P){
 	}
 	return Q;
 
-}
-module.exports = { buffer2bits, convertToEvenLength, normalize, bigIntToLEBuffer, pad, chunkBigInt,point_add,modulus,point_mul};
+module.exports = { buffer2bits, convertToEvenLength, normalize, bigIntToLEBuffer, pad, chunkBigInt, bitsToBigInt };
