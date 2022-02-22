@@ -44,7 +44,7 @@ jobs:
       with:
         path: |
           **/target
-        key: ${{ ed25519 }}-0.0.1  
+        key: ed25519-0.0.1  
     - run: cargo build --release --manifest-path=circom/Cargo.toml && cargo install --path circom/circom    
     - run: npm ci
     - run: npm run build --if-present
