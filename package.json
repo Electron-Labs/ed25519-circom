@@ -23,7 +23,7 @@
   "author": "rahulghangas, garvitgoel, BakerStreetPhantom, suniljalandhra",
   "license": "GPL-3.0",
   "devDependencies": {
-    "bigint-mod-arith": "^3.0.1",
+    "bigint-mod-arith": "^3.0.2",
     "chai": "^4.3.4",
     "circom_tester": "0.0.5",
     "circomlibjs": "^0.1.0",
