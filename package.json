@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --max-old-space-size=4000 --timeout 150000"
+    "test": "mocha --max-old-space-size=4000 --timeout 150000 --exclude test/inversemodulo*",
+    "clean": "rm -rf node_modules && npm i"
   },
   "keywords": [
     "circuit",

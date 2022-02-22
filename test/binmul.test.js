@@ -49,14 +49,33 @@ describe("Fast Binary Multiplier Test", () => {
 describe(" Fast Binary multiplication chunked 51 test", () =>{
 	describe("When Performing binary multiplication on 4 by 4 numbers chunked by 51 bits", () => {
 		it("should multiply them correctly", async ()=> {
-			const cir = await wasm_tester(path.join(__dirname,"circuits","binmulfast51.circom"));
+			const cir = await wasm_tester(path.join(__dirname,"circuits","binmulfast51_1.circom"));
 			const a = BigInt(2**200-10);
 			const b = BigInt(2**203-10);
 			const chunk1 = utils.chunkBigInt(a);
 			const chunk2 = utils.chunkBigInt(b);
-			const witness = await cir.calculateWitness({"a": chunk1, "b":chunk2});
+			const witness = await cir.calculateWitness({"in1": chunk1, "in2":chunk2});
 			const expected = utils.chunkBigInt(a*b);
 			assert.ok(witness.slice(1, 9).every((u,i) => {
+				return u === expected[i];
+			}));
+
+		});
+	});
+
+	describe("When Performing binary multiplication on 4 by 1 numbers chunked by 51 bits", () => {
+		it("should multiply them correctly", async ()=> {
+			const cir = await wasm_tester(path.join(__dirname,"circuits","binmulfast51_2.circom"));
+			const a = BigInt(2**200-10);
+			const b = BigInt(19);
+			const chunk1 = utils.chunkBigInt(a);
+			const chunk2 = utils.chunkBigInt(b);
+			console.log(chunk1);
+			console.log(chunk2);
+			const witness = await cir.calculateWitness({"in1": chunk1, "in2":chunk2});
+			const expected = utils.chunkBigInt(a*b);
+			assert.ok(witness.slice(1, 6).every((u,i) => {
+				console.log(u, expected[i]);
 				return u === expected[i];
 			}));
 
@@ -85,12 +104,8 @@ describe("Check bits less then 51",()=>{
 	describe("when a number is passed into it of greater than 52 bits",() =>{
 		it("should fail on witness calculation", async ()=>{
 			const cir = await wasm_tester(path.join(__dirname,"circuits","binmullessthan51.circom"));
-			try {
-				await cir.calculateWitness({"in": BigInt('45035996273704904503599627370490')});
-			} catch(e) {
-				return;
-			}
-			assert(false);
+			const witness = await cir.calculateWitness({"in": BigInt('45035996273704904503599627370490')});
+			assert.ok(witness[1] === 0n);
 		});
 	});
 });
