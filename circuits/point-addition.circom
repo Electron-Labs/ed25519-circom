@@ -185,5 +185,3 @@ template DoublePt(){
         double.R[3][i] ==> out_2P[3][i];
     }
 }
-
-// component main = PointAdd();

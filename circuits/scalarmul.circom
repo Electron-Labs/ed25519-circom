@@ -1,5 +1,4 @@
 pragma circom 2.0.0;
-include "binsub.circom";
 include "point-addition.circom";
 
 template Multiplexor2() {
@@ -119,12 +118,12 @@ template ScalarMul(){
     }
 
     var prime_p[5] = [2251799813685229,2251799813685247,2251799813685247,2251799813685247,2251799813685247];
-    component sub_x = BigSubX(51,5);
+    component sub_x = BigSub51(5);
     for(i=0;i<5;i++){
         sub_x.a[i] <== prime_p[i];
         sub_x.b[i] <== bits[253].addOut[0][i];
     }
-    component sub_t = BigSubX(51,5);
+    component sub_t = BigSub51(5);
     for(i=0;i<5;i++){
         sub_t.a[i] <== prime_p[i];
         sub_t.b[i] <== bits[253].addOut[3][i];
@@ -163,3 +162,5 @@ template ScalarMul(){
         sP[3][i] <== lastSel.out[3][i];
     }
 }
+
+component main = ScalarMul();
