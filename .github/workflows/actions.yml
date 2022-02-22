@@ -39,6 +39,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - name: Cache build artifacts
+      uses: actions/cache@v2
+      with:
+        path: |
+          **/target    
     - run: cargo build --release --manifest-path=circom/Cargo.toml && cargo install --path circom/circom    
     - run: npm ci
     - run: npm run build --if-present
