@@ -45,7 +45,6 @@ jobs:
         path: |
           **/target
           ~/.cargo
-          **/node_modules
         key: ed25519-0.0.1  
     - run: cargo build --release --manifest-path=circom/Cargo.toml && cargo install --path circom/circom    
     - run: npm ci
