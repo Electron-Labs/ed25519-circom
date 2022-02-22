@@ -92,5 +92,5 @@ function point_mul(s,P){
 		s >>= 1n;
 	}
 	return Q;
-
+}
 module.exports = { buffer2bits, convertToEvenLength, normalize, bigIntToLEBuffer, pad, chunkBigInt, bitsToBigInt };
