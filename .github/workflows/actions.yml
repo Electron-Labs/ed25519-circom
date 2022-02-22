@@ -37,7 +37,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: /home/ubuntu/.cargo/bin/cargo install --path ./circom    
+    - run: cargo install --path ./circom    
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
