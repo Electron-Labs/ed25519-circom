@@ -1,7 +1,7 @@
 {
-  "name": "binary-ops",
+  "name": "circom-ed25519",
   "version": "0.0.1",
-  "description": "Binary arithmetic circuits for Circom made by Electron Labs",
+  "description": "Circom circuits for ed25519 signature verification",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -20,7 +20,7 @@
     "type": "git",
     "url": "https://github.com/Electron-Labs/circom-binary-ops.git"
   },
-  "author": "rahulghangas, garvitgoel, BakerStreetPhantom",
+  "author": "rahulghangas, garvitgoel, BakerStreetPhantom, suniljalandhra",
   "license": "GPL-3.0",
   "devDependencies": {
     "bigint-mod-arith": "^3.0.1",
