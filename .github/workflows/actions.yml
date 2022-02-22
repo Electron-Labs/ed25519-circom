@@ -22,22 +22,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install latest rust stable
-      uses: actions-rs/toolchain@v1
-      with:
-        toolchain: stable
     - name: Clone and install circom
       uses: actions/checkout@v2
       with:
         repository: iden3/circom
         path: circom
         ref: master
-        command: install --path circom    
+    - name: Install latest rust stable
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: /home/ubuntu/.cargo/bin/cargo install --path ./circom    
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
