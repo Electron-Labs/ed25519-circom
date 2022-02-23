@@ -19,10 +19,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Electron-Labs/circom-binary-ops.git"
+    "url": "https://github.com/Electron-Labs/circom-ed25519.git"
   },
   "author": "rahulghangas, garvitgoel, BakerStreetPhantom, suniljalandhra",
-  "license": "GPL-3.0",
   "devDependencies": {
     "bigint-mod-arith": "^3.0.2",
     "chai": "^4.3.6",
