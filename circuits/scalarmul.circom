@@ -121,12 +121,12 @@ template ScalarMul(){
     component sub_x = BigSub51(5);
     for(i=0;i<5;i++){
         sub_x.a[i] <== prime_p[i];
-        sub_x.b[i] <== bits[253].addOut[0][i];
+        sub_x.b[i] <== P[0][i];
     }
     component sub_t = BigSub51(5);
     for(i=0;i<5;i++){
         sub_t.a[i] <== prime_p[i];
-        sub_t.b[i] <== bits[253].addOut[3][i];
+        sub_t.b[i] <== P[3][i];
     }
     component finaladder = PointAdd();
     for(i=0;i<5;i++){
@@ -136,8 +136,8 @@ template ScalarMul(){
         finaladder.P[3][i] <== bits[253].addOut[3][i];
 
         finaladder.Q[0][i] <== sub_x.out[i];
-        finaladder.Q[1][i] <== bits[253].addOut[1][i];
-        finaladder.Q[2][i] <== bits[253].addOut[2][i];
+        finaladder.Q[1][i] <== P[1][i];
+        finaladder.Q[2][i] <== P[2][i];
         finaladder.Q[3][i] <== sub_t.out[i];
     }
     component lastSel = Multiplexor2();

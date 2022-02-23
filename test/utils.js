@@ -102,6 +102,17 @@ function dechunk(x) {
 	}
 	return sum;
 }
+function point_equal(P, Q) {
+    //  x1 / z1 == x2 / z2  <==>  x1 * z2 == x2 * z1
+    if (modulus((P[0] * Q[2] - Q[0] * P[2]), p) != 0n){
+        return false
+	}	
+    if (modulus((P[1] * Q[2] - Q[1] * P[2]), p) != 0n){
+        return false
+	}
+    return true
+
+}
 module.exports = {
 	buffer2bits,
 	convertToEvenLength,
@@ -113,5 +124,6 @@ module.exports = {
 	point_add,
 	modulus,
 	point_mul,
-	dechunk
+	dechunk,
+	point_equal
 };
