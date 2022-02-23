@@ -93,4 +93,12 @@ function point_mul(s,P){
 	}
 	return Q;
 }
-module.exports = { buffer2bits, convertToEvenLength, normalize, bigIntToLEBuffer, pad, chunkBigInt, bitsToBigInt };
+function dechunk(x){
+	sum = 0n;
+	for (let i=0;i<x.length;i++){
+		const m = BigInt(2**51);
+		sum += (m**BigInt(i))*x[i];
+	}
+	return sum;
+}
+module.exports = { buffer2bits, convertToEvenLength, normalize, bigIntToLEBuffer, pad, chunkBigInt, bitsToBigInt, point_add, modulus, point_mul, dechunk};
