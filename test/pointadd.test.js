@@ -24,13 +24,8 @@ describe("Point Addition test on ed25519", ()=>{
                 utils.pad(chunk1[i],5);
                 utils.pad(chunk2[i],5);
             }            
-          
             const witness = await cir.calculateWitness({"P":chunk1,"Q":chunk2},true);
-
             const res  = utils.point_add(P,Q);
-            
-            
-           
             const expected = [];
             for(let i=0;i<4;i++){  
                 expected.push((utils.modulus(res[i],p))); 
@@ -45,14 +40,10 @@ describe("Point Addition test on ed25519", ()=>{
             for( let i=0;i<4;i++){
                 dechunked_wt.push(utils.dechunk(chunk[i]));
             }
-            const circom_wt = [];
-            for(i=0;i<4;i++){
-                circom_wt.push(utils.modulus(dechunked_wt[i]*4n,p));
-            }
-          
-           assert.ok(circom_wt.slice(0,4).every((u, i)=>{
-            return u === expected[i];
-           }));
+            
+            assert.ok(
+                utils.point_equal(expected,dechunked_wt)
+            );
         });
     });
 }); 
