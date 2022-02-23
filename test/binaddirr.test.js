@@ -19,7 +19,6 @@ describe("Binary addition test for irregular  bits", ()=>{
 			const buf2 = utils.bigIntToLEBuffer(b);
 			const bits1 = utils.buffer2bits(buf1);
 			const bits2 = utils.buffer2bits(buf2);
-			console.log(bits1.length, bits2.length);
 			const witness = await cir.calculateWitness({"in1":bits1,"in2":bits2},true);
 
 			const expected = utils.pad(utils.normalize(utils.buffer2bits(utils.bigIntToLEBuffer(a+b))), 57);

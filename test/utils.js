@@ -65,10 +65,10 @@ function chunkBigInt(n, mod=BigInt(2**51)){
 	}
 	return arr;
 }
-// This function will perform point addition on elliptic curve 25519 to check point addition circom
+
 let p = BigInt(2**255) - BigInt(19);
 let d = 37095705934669439343138083508754565189542113879843219016388785533085940283555n;
-
+// This function will perform point addition on elliptic curve 25519 to check point addition circom
 function point_add(P,Q){
   let A =  modulus((P[1]-P[0])*(Q[1]-Q[0]),p);
   let B =  modulus((P[1]+P[0])*(Q[1]+Q[0]),p); 
@@ -82,6 +82,7 @@ function point_add(P,Q){
   
   return [E*F, G*H, F*G, E*H];
 }
+//This funciton will give the point multiplcation on EC 25519
 function point_mul(s,P){
 	let Q = [0n,1n,1n,0n];
 	while (s > 0){
