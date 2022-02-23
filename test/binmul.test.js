@@ -70,12 +70,9 @@ describe(" Fast Binary multiplication chunked 51 test", () =>{
 			const b = BigInt(19);
 			const chunk1 = utils.chunkBigInt(a);
 			const chunk2 = utils.chunkBigInt(b);
-			console.log(chunk1);
-			console.log(chunk2);
 			const witness = await cir.calculateWitness({"in1": chunk1, "in2":chunk2});
 			const expected = utils.chunkBigInt(a*b);
 			assert.ok(witness.slice(1, 6).every((u,i) => {
-				console.log(u, expected[i]);
 				return u === expected[i];
 			}));
 
