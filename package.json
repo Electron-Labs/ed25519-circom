@@ -1,13 +1,14 @@
 {
-  "name": "binary-ops",
+  "name": "circom-ed25519",
   "version": "0.0.1",
-  "description": "Binary arithmetic circuits for Circom made by Electron Labs",
+  "description": "Circom circuits for ed25519 signature verification",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --max-old-space-size=4000 --timeout 150000 --exclude test/inversemodulo*",
+    "test": "mocha --colors --max-old-space-size=4000 --timeout 150000 --exclude test/inversemodulo*",
+    "test-inverse-modulo": "mocha --colors --max-old-space-size=4000 --timeout 150000 test/inversemodulo.test.js",
     "clean": "rm -rf node_modules && npm i"
   },
   "keywords": [
@@ -19,13 +20,13 @@
     "type": "git",
     "url": "https://github.com/Electron-Labs/circom-binary-ops.git"
   },
-  "author": "rahulghangas, garvitgoel, BakerStreetPhantom",
+  "author": "rahulghangas, garvitgoel, BakerStreetPhantom, suniljalandhra",
   "license": "GPL-3.0",
   "devDependencies": {
-    "bigint-mod-arith": "^3.0.1",
-    "chai": "^4.3.4",
-    "circom_tester": "0.0.5",
+    "bigint-mod-arith": "^3.0.2",
+    "chai": "^4.3.6",
+    "circom_tester": "0.0.9",
     "circomlibjs": "^0.1.0",
-    "mocha": "^9.1.3"
+    "mocha": "^9.2.1"
   }
 }
