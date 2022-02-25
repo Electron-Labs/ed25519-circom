@@ -162,5 +162,3 @@ template ScalarMul(){
         sP[3][i] <== lastSel.out[3][i];
     }
 }
-
-// component main = ScalarMul();
