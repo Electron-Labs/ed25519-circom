@@ -52,6 +52,6 @@ template PointCompress(){
     for(i=0;i<50;i++){
         out[i+204] <== bits_y[4].out[i];
     }
-    out[254] <== bits_x.out[0];
-
+    // Bitwise OR of first bit of x and last bit of y
+    out[254] <== bits_y[4][50] + bits_x.out[0] - bits_y[4][50]*bits_x.out[0];
 }
