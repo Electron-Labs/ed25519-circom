@@ -1,3 +1,4 @@
+const bigintModArith = require('bigint-mod-arith');
 function buffer2bits(buff) {
 	const res = [];
 	for (let i = 0; i < buff.length; i++) {
@@ -113,6 +114,15 @@ function point_equal(P, Q) {
     return true
 
 }
+function point_compress(P){
+    const zinv = bigintModArith.modInv(P[2],p);
+    let x = modulus(P[0] * zinv , p);
+    let y = modulus(P[1] * zinv , p);
+	const inter = y | ((x & 1n) << 255n) 
+	return buffer2bits(bigIntToLEBuffer(inter));
+
+    // return int.to_bytes(y | ((x & 1) << 255), 32, "little");
+}	
 module.exports = {
 	buffer2bits,
 	convertToEvenLength,
@@ -125,5 +135,6 @@ module.exports = {
 	modulus,
 	point_mul,
 	dechunk,
-	point_equal
+	point_equal,
+	point_compress
 };
