@@ -1,6 +1,6 @@
 pragma circom 2.0.0;
 
-include "./sha512/sha512.circom";
+include "../sha512/circuits/sha512/sha512.circom";
 include "./scalarmul.circom";
 include "./modulus.circom";
 include "./point-addition.circom";
