@@ -4,7 +4,7 @@ const wasmTester = require('circom_tester').wasm;
 const bigintModArith = require('bigint-mod-arith');
 const utils = require('./utils');
 const fc = require('fast-check');
-const { expect } = require('chai');
+
 
 describe('Inverse Modulo test for base51', () => {
   describe('When Performing inverse modulo on a 255 bit number', () => {
