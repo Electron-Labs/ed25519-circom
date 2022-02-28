@@ -50,3 +50,5 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
+    - run: npm run test-scalarmul
+    - run: npx eslint test/*.test.js --fix
