@@ -71,6 +71,21 @@ describe(' Fast Binary multiplication chunked 51 test', () => {
     });
   });
 
+  describe('When performing binary multiplication on 4 chunks of two randomly genrated  numbers chunked with base51', () => {
+    it('should multiply them correctly', async () => {
+      const cir = await wasmTester(path.join(__dirname, 'circuits', 'binmulfast51_1.circom'));
+      await fc.assert(
+        fc.asyncProperty(fc.bigInt(2n, BigInt(2 ** 200) - 10n), fc.bigInt(2n, BigInt(2 ** 203) - 10n), async (a, b) => {
+          const chunk1 = utils.pad(utils.chunkBigInt(a), 4);
+          const chunk2 = utils.pad(utils.chunkBigInt(b), 4);
+          const witness = await cir.calculateWitness({ in1: chunk1, in2: chunk2 });
+          const expected = utils.chunkBigInt(a * b);
+          witness.slice(1, 9).every((u, i) => u === expected[i]);
+        }),
+      );
+    });
+  });
+
   describe('When Performing binary multiplication on 4 by 1 numbers chunked by 51 bits', () => {
     it('should multiply them correctly', async () => {
       const cir = await wasmTester(path.join(__dirname, 'circuits', 'binmulfast51_2.circom'));
