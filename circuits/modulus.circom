@@ -4,9 +4,10 @@ include "binsub.circom";
 include "binadd.circom";
 include "binmulfast.circom";
 include "../circomlib/circuits/mux1.circom";
-include "../circomlib/circuits/gates.circom";
-include "chunkify.circom";
 include "chunkedadd.circom";
+include "chunkedsub.circom";
+include "lt.circom";
+include "utils.circom";
 
 template ModulusWith25519(n) {
   signal input a[n];
@@ -98,6 +99,111 @@ template ModulusAgainst2P() {
   }
 }
 
+template ModulusWith252c(n) {
+  signal input a[n];
+  signal output out[253];
+  var c[125] = [1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1,
+   1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0,
+   0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0,
+   1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1,
+   1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1];
+  var q[253] = [1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1,
+   1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0,
+   0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0,
+   1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1,
+   1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0,
+   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
+  var i;
+
+  component mul;
+  component mod;
+  component sub;
+  component adder;
+  component mod2pfinal;
+  if (n < 253) {
+    for (i=0; i<n; i++) {
+      out[i] <== a[i];
+    }
+    for (i=n; i<253; i++) {
+      out[i] <== 0;
+    }
+  } else {
+
+    mul = BinMulFast(n-252, 125);
+    for(i=0; i<n-252; i++) {
+      mul.in1[i] <== a[252+i];
+    }
+    for(i=0; i<125; i++) {
+      mul.in2[i] <== c[i];
+    }
+    mod = ModulusWith252c(n-252+125);
+    for (i=0; i<n-252+125; i++) {
+      mod.a[i] <== mul.out[i];
+    }
+    sub = BinSub(253);
+    for (i=0; i<253; i++) {
+      sub.in[0][i] <== q[i];
+      sub.in[1][i] <== mod.out[i];
+    }
+
+    adder = BinAdd(253);
+    for (i=0; i<252; i++) {
+      adder.in[0][i] <== a[i];
+      adder.in[1][i] <== sub.out[i];
+    }
+    adder.in[0][i] <== 0;
+    adder.in[1][252] <== sub.out[i];
+
+    mod2pfinal = ModulusAgainst2Q();
+    for (i=0; i<254; i++) {
+      mod2pfinal.in[i] <== adder.out[i];
+    }
+
+    for (i=0; i<253; i++) {
+      out[i] <== mod2pfinal.out[i];
+    }
+  }
+}
+
+template ModulusAgainst2Q() {
+  signal input in[254];
+  signal output out[253];
+  var i;
+  var q[253] = [1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1,
+   1, 1, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0,
+   0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 0,
+   1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1,
+   1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0,
+   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1];
+
+  component sub = BinSub(254);
+  for (i=0; i<253; i++) {
+    sub.in[0][i] <== in[i];
+    sub.in[1][i] <== q[i];
+  }
+  sub.in[0][253] <== in[253];
+  sub.in[1][253] <== 0;
+
+  component mux = MultiMux1(253);
+  for (i=0; i<253; i++) {
+    mux.c[i][0] <== in[i];
+    mux.c[i][1] <== sub.out[i];
+  }
+
+  mux.s <== 1 + sub.out[253] - 2*sub.out[253];
+  for (i=0; i<253; i++) {
+    out[i] <== mux.out[i];
+  }
+}
+
 template ModulusWith25519Chunked51(n) {
   signal input a[n];
   signal output out[5];
@@ -174,58 +280,4 @@ template ModulusAgainst2PChunked51() {
   for (i=0; i<5; i++) {
     out[i] <== mux.out[i];
   }
-}
-
-template BigSub51(k) {
-  signal input a[k];
-  signal input b[k];
-  signal output out[k];
-  signal output underflow;
-
-  component unit0 = ModSub51();
-  unit0.a <== a[0];
-  unit0.b <== b[0];
-  out[0] <== unit0.out;
-
-  component unit[k - 1];
-  for (var i = 1; i < k; i++) {
-    unit[i - 1] = ModSubThree51();
-    unit[i - 1].a <== a[i];
-    unit[i - 1].b <== b[i];
-    if (i == 1) {
-        unit[i - 1].c <== unit0.borrow;
-    } else {
-        unit[i - 1].c <== unit[i - 2].borrow;
-    }
-    out[i] <== unit[i - 1].out;
-  }
-  underflow <== unit[k - 2].borrow;
-}
-
-template ModSub51() {
-  signal input a;
-  signal input b;
-  signal output out;
-  signal output borrow;
-  component lt = LessThanOptimizedUpto51Bits();
-  lt.in[0] <== a;
-  lt.in[1] <== b;
-  borrow <== lt.out;
-  out <== borrow * (1 << 51) + a - b;
-}
-
-template ModSubThree51() {
-  signal input a;
-  signal input b;
-  signal input c;
-  assert(a - b - c + (1 << 51) >= 0);
-  signal output out;
-  signal output borrow;
-  signal b_plus_c;
-  b_plus_c <== b + c;
-  component lt = LessThanOptimizedUpto52Bits();
-  lt.in[0] <== a;
-  lt.in[1] <== b_plus_c;
-  borrow <== lt.out;
-  out <== borrow * (1 << 51) + a - b_plus_c;
 }
