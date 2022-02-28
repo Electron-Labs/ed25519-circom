@@ -51,5 +51,4 @@ jobs:
     - run: npm run build --if-present
     - run: npm test
     - run: npm run test-scalarmul
-    - run: npm run test-verify
     - run: npx eslint *.test.js --fix
