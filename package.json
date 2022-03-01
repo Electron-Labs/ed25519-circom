@@ -10,7 +10,8 @@
     "test": "mocha --colors --max-old-space-size=4000 --timeout 150000 --exclude test/inversemodulo* --exclude test/scalarmul*",
     "test-inverse-modulo": "mocha --colors --max-old-space-size=4000 --timeout 150000 test/inversemodulo.test.js",
     "test-scalarmul": "mocha --colors --max-old-space-size=4000 --timeout 150000 test/scalarmul.test.js",
-    "clean": "rm -rf node_modules && make clean && npm i"
+    "clean": "rm -rf node_modules && make clean && npm i",
+    "eslint": "eslint test/*.test.js --fix"
   },
   "keywords": [
     "circuit",

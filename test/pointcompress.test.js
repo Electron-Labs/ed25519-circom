@@ -1,54 +1,53 @@
 const path = require('path');
 const assert = require('assert');
 const wasmTester = require('circom_tester').wasm;
-const bigintModArith = require('bigint-mod-arith');
-const utils = require('./utils');
 const fc = require('fast-check');
-const { expect } = require('chai');
-const { asyncProperty } = require('fast-check');
+const utils = require('./utils');
 
-describe("Point compress test for base51", () => {
-    describe("when performing point compress on a point",()=>{
-        it("should compresss them correctly", async () => {
-            const cir = await wasmTester(path.join(__dirname,"circuits","pointcompress.circom"));
-            const P = [
-                15112221349535400772501151409588531511454012693041857206046113283949847762202n,
-                46316835694926478169428394003475163141307993866256225615783033603165251855960n,
-                1n,
-                46827403850823179245072216630277197565144205554125654976674165829533817101731n,
-              ];
+describe('Point compress test for base51', () => {
+  describe('when performing point compress on a point', () => {
+    it('should compresss them correctly', async () => {
+      const cir = await wasmTester(path.join(__dirname, 'circuits', 'pointcompress.circom'));
+      const P = [
+        15112221349535400772501151409588531511454012693041857206046113283949847762202n,
+        46316835694926478169428394003475163141307993866256225615783033603165251855960n,
+        1n,
+        46827403850823179245072216630277197565144205554125654976674165829533817101731n,
+      ];
+      const chunk = [];
+      for (let i = 0; i < 4; i++) {
+        chunk.push(utils.chunkBigInt(P[i]));
+      }
+      for (let i = 0; i < 4; i++) {
+        utils.pad(chunk[i], 5);
+      }
+      const witness = await cir.calculateWitness({ P: chunk }, true);
+      const res = utils.point_compress(P);
+      assert.ok(witness.slice(1, 256).every((u, i) => u === res[i]));
+    });
+  });
+  describe('when performing point compress on a point', () => {
+    it('should calculate the compress correctly', async () => {
+      const cir = await wasmTester(path.join(__dirname, 'circuits', 'pointcompress.circom'));
+      await fc.assert(
+        fc.asyncProperty(
+          fc.bigInt(2n, BigInt(2 ** 254) - 2000n),
+          fc.bigInt(2n, BigInt(2 ** 254) - 2025n),
+          fc.bigInt(1n, BigInt(2 ** 254) - 2203n),
+          fc.bigInt(3n, BigInt(2 ** 254) - 2403n),
+          async (a, b, c, d) => {
             const chunk = [];
-            for(let i=0;i<4;i++){
-                chunk.push(utils.chunkBigInt(P[i]));
-            }
-            for(let i=0;i<4;i++){
-                utils.pad(chunk[i],5);
-            }
-            const witness = await cir.calculateWitness({P:chunk},true);
-            const res = utils.point_compress(P); 
-            assert.ok(witness.slice(1, 256).every((u, i) => {
-                return u === res[i];
-            }));
-        });
+            chunk.push(utils.chunkBigInt(a));
+            chunk.push(utils.chunkBigInt(b));
+            chunk.push(utils.chunkBigInt(c));
+            chunk.push(utils.chunkBigInt(d));
+            const witness = await cir.calculateWitness({ P: chunk }, true);
+            const P = [a, b, c, d];
+            const res = utils.point_compress(P);
+            witness.slice(1, 256).every((u, i) => u === res[i]);
+          },
+        ),
+      );
     });
-    describe("when performing point compress on a point", () =>{
-        it("should calculate the compress correctly", async () => {
-            const cir = await wasmTester(path.join(__dirname,"circuits","pointcompress.circom"));
-            await fc.assert(
-                    fc.asyncProperty(fc.bigInt(2n,BigInt(2**254)-2000n),fc.bigInt(2n,BigInt(2**254)-2025n),fc.bigInt(1n,BigInt(2**254)-2203n),fc.bigInt(3n,BigInt(2**254)-2403n) , async (a,b,c,d) => {
-                        const chunk = [];
-                        chunk.push(utils.chunkBigInt(a));
-                        chunk.push(utils.chunkBigInt(b));
-                        chunk.push(utils.chunkBigInt(c));
-                        chunk.push(utils.chunkBigInt(d)); 
-                        const witness = await cir.calculateWitness({P:chunk},true);
-                        const P = [a,b,c,d];
-                        const res = utils.point_compress(P);
-                        witness.slice(1, 256).every((u, i) => {
-                            return u === res[i];
-                        });
-                    })
-            );
-        })
-    });
+  });
 });

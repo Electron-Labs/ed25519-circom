@@ -1,8 +1,9 @@
 const path = require('path');
 const assert = require('assert');
 const wasmTester = require('circom_tester').wasm;
-const utils = require('./utils');
 const fc = require('fast-check');
+const utils = require('./utils');
+
 describe('Binary Adder Test', () => {
   describe('when performing binary additon on two 8 bit numbers', () => {
     it('should add them correctly', async () => {
@@ -31,22 +32,25 @@ describe('Binary Adder Test', () => {
       assert.ok(witness.slice(1, 258).every((u, i) => u === expected[i]));
     });
   });
-  describe("when performing binary addition on two random number of 256 bits", () =>{
-    it("should add them correctly", async () => {
-      const cir = await wasmTester(path.join(__dirname,"circuits", "binadd2.circom"));
+  describe('when performing binary addition on two random number of 256 bits', () => {
+    it('should add them correctly', async () => {
+      const cir = await wasmTester(path.join(__dirname, 'circuits', 'binadd2.circom'));
       await fc.assert(
-        fc.asyncProperty(fc.bigInt(1n,BigInt(2**256)-1n),fc.bigInt(1n,BigInt(2**256)-1n), async(a,b) =>{
-          const buf1 = utils.bigIntToLEBuffer(a);
-          const buf2 = utils.bigIntToLEBuffer(b);
-          const asBits1 = utils.pad(utils.buffer2bits(buf1),256);
-          const asBits2 = utils.pad(utils.buffer2bits(buf2),256);
-          const witness = await cir.calculateWitness({ in: [asBits1, asBits2] }, true);
+        fc.asyncProperty(
+          fc.bigInt(1n, BigInt(2 ** 256) - 1n),
+          fc.bigInt(1n, BigInt(2 ** 256) - 1n),
+          async (a, b) => {
+            const buf1 = utils.bigIntToLEBuffer(a);
+            const buf2 = utils.bigIntToLEBuffer(b);
+            const asBits1 = utils.pad(utils.buffer2bits(buf1), 256);
+            const asBits2 = utils.pad(utils.buffer2bits(buf2), 256);
+            const witness = await cir.calculateWitness({ in: [asBits1, asBits2] }, true);
 
-          const expected = utils.normalize(utils.buffer2bits(utils.bigIntToLEBuffer(a + b)));
-          witness.slice(1, 258).every((u, i) => u === expected[i]);
-
-        }),
+            const expected = utils.normalize(utils.buffer2bits(utils.bigIntToLEBuffer(a + b)));
+            witness.slice(1, 258).every((u, i) => u === expected[i]);
+          },
+        ),
       );
-    })
-  })
+    });
+  });
 });
