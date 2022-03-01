@@ -7,9 +7,10 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --colors --max-old-space-size=4000 --timeout 150000 --exclude test/inversemodulo* --exclude test/scalarmul*",
+    "test": "mocha --colors --max-old-space-size=4000 --timeout 150000 --exclude test/inversemodulo* --exclude test/scalarmul* --exclude test/ed25519*",
     "test-inverse-modulo": "mocha --colors --max-old-space-size=4000 --timeout 150000 test/inversemodulo.test.js",
-    "test-scalarmul": "mocha --colors --max-old-space-size=4000 --timeout 150000 test/scalarmul.test.js",
+    "test-scalarmul": "mocha --colors --max-old-space-size=4000 --timeout 200000 test/scalarmul.test.js",
+    "test-verify": "mocha --colors --max-old-space-size=4000 --timeout 1000000 test/ed25519verfication.test.js ",
     "clean": "rm -rf node_modules && make clean && npm i",
     "eslint": "eslint test/*.test.js --fix"
   },
@@ -28,10 +29,11 @@
     "chai": "^4.3.6",
     "circom_tester": "0.0.9",
     "circomlibjs": "^0.1.0",
-    "eslint": "^8.9.0",
+    "eslint": "^8.10.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4",
     "fast-check": "^2.22.0",
-    "mocha": "^9.2.1"
+    "mocha": "^9.2.1",
+    "mocha-logger": "^1.0.7"
   }
 }
