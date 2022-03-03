@@ -22,8 +22,15 @@ https://docs.electronlabs.org/circom-ed25519/overview
 ## Important Circuits
 
 ### Modulus upto 2*(2^255-19) -> Mod2p
+```python
+  # for input in
+  def mod2p(in):
+    diff = (2**255-19) - in
+    return in if diff < 0 else diff
+```
+
 ```                                                                                
-                              ╔═══════════s255══════════╗                 
+                              ╔══════════~s255══════════╗                 
                               ║                         ║                 
                               ║                         ║                 
                               ║                         ║                 
@@ -51,6 +58,24 @@ in255────────────────┘
 ```                                                                                        
 
 ### Modulus with 2^255-19 -> Modulus25519
+```python
+  # for input `in` of unknown size, we explot that prime p
+  # is close to a power of 2
+  # input in broken down into an expression in = b + (p + 19)*c
+  # where b is the least significant 255 bits of input and,
+  # c is the rest of the bits. Then,
+  # in mod p = (b + (p + 19)*c) mod p
+  #          = (b mod p + 19*c mod p) mod p
+  def mod25519(in):
+    p = 2**255-19
+    if in < p:
+      return in
+    b = in & ((1 << 255) - 1)
+    c = in >> 255
+    bmodp = mod2p(b)
+    c19modp = mod25519(19*c)
+    return mod2p(bmodp + c19modp)
+```
 ```
                     ┌────────────┐
                     │            │
@@ -60,4 +85,42 @@ in255────────────────┘
   │(n < 255)│       │            │        │replicated input │
   └─────────┘       │            │        └─────────────────┘
                     └────────────┘
+```
+
+```
+                            ┌───────────┐                                       
+               ┌───────────▶│           ╠mod0═══╗                               
+               │  ┌────────▶│           │.      ║                               
+┌──────────┐   │  │         │   Mod2p   │.      ║                               
+│          │   │  │         │           │.      ║                               
+│          ├in0┘  │  ┌─────▶│           ╠mod254 ║                               
+│          ├in1───┘  │      └───────────┘   ║   ║                               
+│          │ .       │                      ║   ║                               
+│          │ .       │                      ║   ║  ┌───────────┐    ┌─────────┐
+│ n wires  ├in254────┘                      ║   ╚═▶│ a (n wire)│    │         │
+│(n >= 255)│                                ╚═════▶│ b (n wire)│    │         │
+│          │                                       │           ╠═══▶│  Mod2p  │
+│          ├in255────┐                             │    Add    │    │         │
+│          │ .       │                      ╔═════▶│           │    │         │
+│          │ .       │                      ║   ╔═▶│ out (n+1) │    │         │
+│          ├inN──┐   │      ┌───────────┐   ║   ║  └───────────┘    └─────────┘
+│          │     │   └─────▶│ a (n wire)│   ║   ║                               
+│          │     │          │ b (m wire)│   ║   ║                               
+└──────────┘     └─────────▶│           │   ║   ║                               
+┌──────────┐                │  Multiply │   ║   ║                               
+│          ├const0─────────▶│           │   ║   ║                               
+│   const  │ .      ┌──────▶│ out (m+n) │   ║   ║                               
+│    19    │ .      │       └─╦──────╦──┘   ║   ║                               
+│  5 wires ├const4──┘         ║......║      ║   ║                               
+│          │                  ║      ║      ║   ║                               
+└──────────┘                mult0 mult(m+n) ║   ║                               
+                              ║      ║      ║   ║                               
+                              ▼      ▼      ║   ║                               
+                           ┌──────────────┐ ║   ║                               
+                           │              ╠mod0 ║                               
+                           │ Modulus25519 │.    ║                               
+                           │  recursive   │.    ║                               
+                           │   circuit    ╠mod254                               
+                           └──────────────┘       
+                           
 ```
