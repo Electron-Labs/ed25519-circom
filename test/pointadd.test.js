@@ -1,6 +1,7 @@
 const path = require('path');
 const assert = require('assert');
 const wasmTester = require('circom_tester').wasm;
+const { default: fc } = require('fast-check');
 const utils = require('./utils');
 
 describe('Point Addition test on ed25519', () => {
@@ -50,6 +51,52 @@ describe('Point Addition test on ed25519', () => {
 
       assert.ok(
         utils.point_equal(expected, dechunkedWt),
+      );
+    });
+  });
+  describe('when performing point addition on EC', () => {
+    it('should add them correctly', async () => {
+      const cir = await wasmTester(path.join(__dirname, 'circuits', 'point-addition51.circom'));
+      const p = BigInt(2 ** 255) - BigInt(19);
+
+      await fc.assert(
+        fc.asyncProperty(
+          fc.bigInt(BigInt(2 ** 150), BigInt(2 ** 254) - 2000n),
+          fc.bigInt(BigInt(2 ** 155), BigInt(2 ** 254) - 2025n),
+          fc.bigInt(BigInt(2 ** 165), BigInt(2 ** 254) - 2203n),
+          fc.bigInt(BigInt(2 ** 175), BigInt(2 ** 254) - 2403n),
+          async (a, b, c, d) => {
+            const P = [a, b, c, d];
+            const Q = [a, b, c, d];
+            const chunk1 = [];
+            const chunk2 = [];
+            for (let i = 0; i < 4; i++) {
+              chunk1.push(utils.chunkBigInt(P[i]));
+              chunk2.push(utils.chunkBigInt(Q[i]));
+            }
+            for (let i = 0; i < 4; i++) {
+              utils.pad(chunk1[i], 5);
+              utils.pad(chunk2[i], 5);
+            }
+            const witness = await cir.calculateWitness({ P: chunk1, Q: chunk2 });
+            const res = utils.point_add(P, Q);
+            const expected = [];
+            for (let i = 0; i < 4; i++) {
+              expected.push(utils.modulus(res[i], p));
+            }
+            const wt = witness.slice(1, 21);
+            const chunk = [];
+            for (let i = 0; i < 4; i++) {
+              chunk.push(wt.slice(5 * i, 5 * i + 5));
+            }
+
+            const dechunkedWt = [];
+            for (let i = 0; i < 4; i++) {
+              dechunkedWt.push(utils.dechunk(chunk[i]));
+            }
+            return utils.point_equal(expected, dechunkedWt);
+          },
+        ),
       );
     });
   });
