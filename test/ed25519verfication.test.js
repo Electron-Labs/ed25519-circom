@@ -54,7 +54,7 @@ describe('ED25519 verifcation test', () => {
         mlog.success(`Call to calculate witness took ${endTime - startTime} milliseconds`);
         assert.ok(witness[0] === 1n);
       } catch (e) {
-        mlog.log(e);
+        mlog.error(e);
         assert.ok(false);
       } finally {
         assert.ok(true);
@@ -105,7 +105,7 @@ describe('ED25519 verifcation test', () => {
         });
         assert.ok(witness[0] === 1n);
       } catch (e) {
-        mlog.log(e);
+        mlog.error(e);
         assert.ok(true);
       } finally {
         assert.ok(false);
