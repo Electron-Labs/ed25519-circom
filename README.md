@@ -8,6 +8,8 @@ Curve operations and signature verification for Ed25519 digital signature scheme
 
 https://docs.electronlabs.org/circom-ed25519/overview
 
+The circuits follow the reference implementation from [IETF RFC8032](https://datatracker.ietf.org/doc/html/rfc8032#section-6)
+
 
 ## Installing dependencies
 - `npm install -g snarkjs`
@@ -126,6 +128,7 @@ in255────────────────┘
 
 ### Point Addition -> PointAdd
 ```python
+  # Add two points on Curve25519
   def point_add(P, Q):
     p = 2**255-19
     A, B = (P[1]-P[0]) * (Q[1]-Q[0]) % p, (P[1]+P[0]) * (Q[1]+Q[0]) % p
@@ -136,6 +139,7 @@ in255────────────────┘
 
 ### Scalar Multiplication -> ScalarMul
 ```python
+  # Multiply a point by scalar on Curve25519
   def point_mul(s, P):
     p = 2**255-19
     Q = (0, 1, 1, 0)  # Neutral element
@@ -150,6 +154,8 @@ in255────────────────┘
 ### Ed25519 Signature verification -> Verify
 ```python
   def verify(msg, public, Rs, s, A, R):
+    # Check that the compressed representation of a point 
+    # equates to the paramaters extracted from signature
     assert(Rs == point_compress(R))
     assert(public == point_compress(A))
     h = sha512_modq(Rs + public + msg)
