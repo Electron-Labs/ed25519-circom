@@ -107,9 +107,9 @@ describe('ED25519 verifcation test', () => {
       } catch (e) {
         mlog.error(e);
         assert.ok(true);
-      } finally {
-        assert.ok(false);
+        return;
       }
+      assert.ok(false);
     });
   });
 });
