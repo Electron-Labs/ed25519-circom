@@ -105,7 +105,6 @@ describe('ED25519 verifcation test', () => {
         });
         assert.ok(witness[0] === 1n);
       } catch (e) {
-        mlog.error(e);
         assert.ok(true);
         return;
       }
