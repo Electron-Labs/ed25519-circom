@@ -123,3 +123,37 @@ in255────────────────┘
                            │   circuit    ╠mod254                               
                            └──────────────┘                              
 ```
+
+### Point Addition -> PointAdd
+```python
+  def point_add(P, Q):
+    p = 2**255-19
+    A, B = (P[1]-P[0]) * (Q[1]-Q[0]) % p, (P[1]+P[0]) * (Q[1]+Q[0]) % p
+    C, D = 2 * P[3] * Q[3] * d % p, 2 * P[2] * Q[2] % p
+    E, F, G, H = B-A, D-C, D+C, B+A
+    return (E*F, G*H, F*G, E*H)
+```
+
+### Scalar Multiplication -> ScalarMul
+```python
+  def point_mul(s, P):
+    p = 2**255-19
+    Q = (0, 1, 1, 0)  # Neutral element
+    while s > 0:
+      if s & 1:
+        Q = point_add(Q, P)
+      P = point_add(P, P)
+      s >>= 1
+    return Q
+```
+
+### Ed25519 Signature verification -> Verify
+```python
+  def verify(msg, public, Rs, s, A, R):
+    assert(Rs == point_compress(R))
+    assert(public == point_compress(A))
+    h = sha512_modq(Rs + public + msg)
+    sB = point_mul(s, G)
+    hA = point_mul(h, A)
+    return point_equal(sB, point_add(R, hA))
+```
