@@ -129,6 +129,7 @@ The circuits follow the reference implementation from [IETF RFC8032](https://dat
     hA = point_mul(h, A)
     return point_equal(sB, point_add(R, hA))
 ```
+##### Available versions
 ```js
   (msg: [n], A: [256], R8: [256], S: [255], PointA: [4][5], PointR: [4][5]);
 ```
