@@ -6,7 +6,7 @@ const fc = require('fast-check');
 const utils = require('./utils');
 
 describe('Inverse Modulo test for base51', () => {
-  describe('When Performing inverse modulo on a 255 bit number', () => {
+  describe('when Performing inverse modulo on a 255 bit number', () => {
     const p = BigInt(2 ** 255) - BigInt(19);
     it('Should calculate the inverse correctly', async () => {
       const cir = await wasmTester(path.join(__dirname, 'circuits', 'modinv.circom'));
@@ -18,7 +18,7 @@ describe('Inverse Modulo test for base51', () => {
       assert.ok(witness.slice(1, 6).every((u, i) => u === expected[i]));
     });
   });
-  describe('When performing inverse modulo on numbers less then p - 1 ', () => {
+  describe('when calculating inverse modulo on field elements', () => {
     const p = BigInt(2 ** 255) - BigInt(19);
 
     it('Should calculate the inverse correctly', async () => {
