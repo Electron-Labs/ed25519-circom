@@ -23,7 +23,7 @@ describe('Point compress test for base51', () => {
       }
       const witness = await cir.calculateWitness({ P: chunk }, true);
       const res = utils.point_compress(P);
-      assert.ok(witness.slice(1, 256).every((u, i) => u === res[i]));
+      assert.ok(witness.slice(1, 257).every((u, i) => u === res[i]));
     });
   });
   describe('when performing point compress on a point', () => {
@@ -44,7 +44,7 @@ describe('Point compress test for base51', () => {
             const witness = await cir.calculateWitness({ P: chunk }, true);
             const P = [a, b, c, d];
             const res = utils.point_compress(P);
-            witness.slice(1, 256).every((u, i) => u === res[i]);
+            witness.slice(1, 257).every((u, i) => u === res[i]);
           },
         ),
       );
