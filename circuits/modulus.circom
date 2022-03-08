@@ -3,7 +3,7 @@ pragma circom 2.0.0;
 include "binsub.circom";
 include "binadd.circom";
 include "binmulfast.circom";
-include "../circomlib/circuits/mux1.circom";
+include "../node_modules/circomlib/circuits/mux1.circom";
 include "chunkedadd.circom";
 include "chunkedsub.circom";
 include "lt.circom";

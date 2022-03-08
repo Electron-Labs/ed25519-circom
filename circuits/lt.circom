@@ -1,6 +1,6 @@
 pragma circom 2.0.0;
 
-include "../circomlib/circuits/bitify.circom";
+include "../node_modules/circomlib/circuits/bitify.circom";
 template LessThanPower51() {
   signal input in;
   signal output out;
