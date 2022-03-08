@@ -29,7 +29,21 @@ The circuits follow the reference implementation from [IETF RFC8032](https://dat
   def mod2p(in):
     diff = (2**255-19) - in
     return in if diff < 0 else diff
-```                                                                                      
+```
+##### Available versions
+```js
+  // ModulusAgainst2P
+  // Elements are represented in binary
+  (in: [256]) -> (out: [255])
+
+  // ModulusAgainst2Q
+  // Elements are represented in binary
+  (in: [254]) -> (out: [253])
+
+  // ModulusAgainst2PChunked51
+  // Elements are represented in base 2^51
+  (in: [6]) -> (out: [5])
+```
 
 ### Modulus with 2^255-19 -> Modulus25519
 ```python
@@ -50,6 +64,20 @@ The circuits follow the reference implementation from [IETF RFC8032](https://dat
     c19modp = mod25519(19*c)
     return mod2p(bmodp + c19modp)
 ```
+##### Available versions
+```js
+  // ModulusWith25519
+  // Elements are represented in binary
+  (a: [n]) -> (out: [255])
+
+  // ModulusWith252c
+  // Elements are represented in binary
+  (a: [n]) -> (out: [253])
+
+  // ModulusWith25519Chunked51
+  // Elements are represented in base 2^51
+  (a: [n]) -> (out: [5])
+```
 
 ### Point Addition -> PointAdd
 ```python
@@ -60,6 +88,12 @@ The circuits follow the reference implementation from [IETF RFC8032](https://dat
     C, D = 2 * P[3] * Q[3] * d % p, 2 * P[2] * Q[2] % p
     E, F, G, H = B-A, D-C, D+C, B+A
     return (E*F, G*H, F*G, E*H)
+```
+##### Available versions
+```js
+  // PointAdd
+  // Elements are represented in base 2^51
+  (P: [4][5], Q: [4][5]) -> (R: [4][5]) 
 ```
 
 ### Scalar Multiplication -> ScalarMul
@@ -75,6 +109,13 @@ The circuits follow the reference implementation from [IETF RFC8032](https://dat
       s >>= 1
     return Q
 ```
+##### Available versions
+```js
+  // PointAdd
+  // scalar value is represented in binary
+  // Point elements are represented in base 2^51
+  (s: [255], P: [4][5]) -> (sP: [4][5]) 
+```
 
 ### Ed25519 Signature verification -> Verify
 ```python
@@ -87,4 +128,7 @@ The circuits follow the reference implementation from [IETF RFC8032](https://dat
     sB = point_mul(s, G)
     hA = point_mul(h, A)
     return point_equal(sB, point_add(R, hA))
+```
+```js
+  (msg: [n], A: [256], R8: [256], S: [255], PointA: [4][5], PointR: [4][5]);
 ```
