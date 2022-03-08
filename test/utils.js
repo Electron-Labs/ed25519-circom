@@ -120,8 +120,6 @@ function point_compress(P){
     let y = modulus(P[1] * zinv , p);
 	const inter = y | ((x & 1n) << 255n) 
 	return buffer2bits(bigIntToLEBuffer(inter));
-
-    // return int.to_bytes(y | ((x & 1) << 255), 32, "little");
 }	
 module.exports = {
 	buffer2bits,

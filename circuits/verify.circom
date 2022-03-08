@@ -4,6 +4,7 @@ include "../sha512/circuits/sha512/sha512.circom";
 include "./scalarmul.circom";
 include "./modulus.circom";
 include "./point-addition.circom";
+include "./pointcompress.circom";
 
 template Ed25519Verifier(n) {
   signal input msg[n];
@@ -43,10 +44,24 @@ template Ed25519Verifier(n) {
                  ]
                 ];
 
-  component hash = Sha512(n+256+256);
   var i;
   var j;
 
+  component compressA = PointCompress();
+  component compressR = PointCompress();
+  for (i=0; i<4; i++) {
+    for (j=0; j<5; j++) {
+      compressA.P[i][j] <== PointA[i][j];
+      compressR.P[i][j] <== PointR[i][j];
+    }
+  }
+
+  for (i=0; i<256; i++) {
+    compressA.out[i] === A[i];
+    compressR.out[i] === R8[i];
+  }
+
+  component hash = Sha512(n+256+256);
   for (i=0; i<256; i+=8) {
     for(j=0; j<8; j++) {
       hash.in[i+j] <== R8[i+(7-j)];
