@@ -34,15 +34,15 @@ The circuits follow the reference implementation from [IETF RFC8032](https://dat
 ```js
   // ModulusAgainst2P
   // Elements are represented in binary
-  (in: [256]) -> (out: [255])
+  (in: [256]) => (out: [255])
 
   // ModulusAgainst2Q
   // Elements are represented in binary
-  (in: [254]) -> (out: [253])
+  (in: [254]) => (out: [253])
 
   // ModulusAgainst2PChunked51
   // Elements are represented in base 2^51
-  (in: [6]) -> (out: [5])
+  (in: [6]) => (out: [5])
 ```
 
 ### Modulus with 2^255-19 -> Modulus25519
@@ -68,15 +68,15 @@ The circuits follow the reference implementation from [IETF RFC8032](https://dat
 ```js
   // ModulusWith25519
   // Elements are represented in binary
-  (a: [n]) -> (out: [255])
+  (a: [n]) => (out: [255])
 
   // ModulusWith252c
   // Elements are represented in binary
-  (a: [n]) -> (out: [253])
+  (a: [n]) => (out: [253])
 
   // ModulusWith25519Chunked51
   // Elements are represented in base 2^51
-  (a: [n]) -> (out: [5])
+  (a: [n]) => (out: [5])
 ```
 
 ### Point Addition -> PointAdd
@@ -93,7 +93,7 @@ The circuits follow the reference implementation from [IETF RFC8032](https://dat
 ```js
   // PointAdd
   // Elements are represented in base 2^51
-  (P: [4][5], Q: [4][5]) -> (R: [4][5]) 
+  (P: [4][5], Q: [4][5]) => (R: [4][5]) 
 ```
 
 ### Scalar Multiplication -> ScalarMul
@@ -114,7 +114,7 @@ The circuits follow the reference implementation from [IETF RFC8032](https://dat
   // PointAdd
   // scalar value is represented in binary
   // Point elements are represented in base 2^51
-  (s: [255], P: [4][5]) -> (sP: [4][5]) 
+  (s: [255], P: [4][5]) => (sP: [4][5]) 
 ```
 
 ### Ed25519 Signature verification -> Verify
@@ -131,5 +131,5 @@ The circuits follow the reference implementation from [IETF RFC8032](https://dat
 ```
 ##### Available versions
 ```js
-  (msg: [n], A: [256], R8: [256], S: [255], PointA: [4][5], PointR: [4][5]);
+  (msg: [n], A: [256], R8: [256], S: [255], PointA: [4][5], PointR: [4][5]) => ();
 ```
