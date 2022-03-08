@@ -7,7 +7,7 @@ include "../circomlib/circuits/bitify.circom";
 
 template PointCompress(){
     signal input P[4][5];
-    signal output out[255];
+    signal output out[256];
     var i;
 
     component mul_x = BinMulFastChunked51(5,5);
@@ -48,10 +48,9 @@ template PointCompress(){
         out[i+51] <== bits_y[1].out[i];
         out[i+102] <== bits_y[2].out[i];
         out[i+153] <== bits_y[3].out[i];
-    }
-    for(i=0;i<50;i++){
         out[i+204] <== bits_y[4].out[i];
     }
-    // Bitwise OR of first bit of x and last bit of y
-    out[254] <== bits_y[4].out[50] + bits_x.out[0] - bits_y[4].out[50]*bits_x.out[0];
+
+    out[255] <-- mod_x.out[0] & 1;
+    out[255] * (out[255] - 1) === 0;
 }
