@@ -2,9 +2,9 @@ pragma circom 2.0.0;
 
 include "../node_modules/circomlib/circuits/bitify.circom";
 
-template Chunkify(n) {
+template Chunkify(n, chunkSize) {
   signal input in[n];
-  var numChunks = calcChunks(n);
+  var numChunks = calcChunks(n, chunkSize);
   signal output out[numChunks];
 
   component bitifer[numChunks];
@@ -13,25 +13,25 @@ template Chunkify(n) {
   var offset;
   var numBitsToConvert;
   for (var chunkIndex=0; chunkIndex<numChunks; chunkIndex++) {
-    if (left < 51) {
+    if (left < chunkSize) {
       numBitsToConvert = left;
     } else {
-      numBitsToConvert = 51;
+      numBitsToConvert = chunkSize;
     }
 
     bitifer[chunkIndex] = Bits2Num(numBitsToConvert);
-    offset = 51 * chunkIndex;
+    offset = chunkSize * chunkIndex;
     for (i=0; i<numBitsToConvert; i++) {
       bitifer[chunkIndex].in[i] <== in[offset+i];
     }
     out[chunkIndex] <== bitifer[chunkIndex].out;
-    left -= 51;
+    left -= chunkSize;
   }
 }
 
-function calcChunks(n) {
-  var numChunks = n\51;
-  if (n % 51 != 0) {
+function calcChunks(n, chunkSize) {
+  var numChunks = n\chunkSize;
+  if (n % chunkSize != 0) {
     numChunks++;
   }
   return numChunks;
