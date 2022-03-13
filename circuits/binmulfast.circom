@@ -12,14 +12,14 @@ template BinMulFast(m, n) {
   var i;
   var j;
 
-  component chunkify1 = Chunkify(m);
-  var numChunks1 = calcChunks(m);
+  component chunkify1 = Chunkify(m, 51);
+  var numChunks1 = calcChunks(m, 51);
   for (i=0; i<m; i++) {
     chunkify1.in[i] <== in1[i];
   }
 
-  component chunkify2 = Chunkify(n);
-  var numChunks2 = calcChunks(n);
+  component chunkify2 = Chunkify(n, 51);
+  var numChunks2 = calcChunks(n, 51);
   for (i=0; i<n; i++) {
     chunkify2.in[i] <== in2[i];
   }
