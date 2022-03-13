@@ -12,7 +12,7 @@
     "test-scalarmul": "mocha --colors --max-old-space-size=4000 --timeout 300000 test/scalarmul.test.js",
     "test-verify": "mocha --colors --max-old-space-size=4000 --timeout 1000000 test/ed25519verfication.test.js ",
     "clean": "rm -rf node_modules && make clean && npm i",
-    "eslint": "eslint test/*.test.js --fix"
+    "lint": "eslint test/*.test.js --fix"
   },
   "keywords": [
     "circuit",
