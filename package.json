@@ -27,7 +27,7 @@
   "devDependencies": {
     "bigint-mod-arith": "^3.0.2",
     "chai": "^4.3.6",
-    "circom_tester": "0.0.9",
+    "circom_tester": "0.0.10",
     "circomlibjs": "^0.1.0",
     "eslint": "^8.11.0",
     "eslint-config-airbnb-base": "^15.0.0",
