@@ -51,4 +51,4 @@ jobs:
     - run: npm run build --if-present
     - run: npm test
     - run: npm run test-scalarmul
-    - run: npx lint
+    - run: npm run lint
