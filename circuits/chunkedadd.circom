@@ -4,7 +4,7 @@ include "./lt.circom";
 
 template BinAddChunked51(m, n){
   signal input in[n][m];
-  var numOutputs = calculateNumOutputs(m, n);
+  var numOutputs = calculateNumOutputs(m, n, 51);
   signal psum[m];
   signal carry[numOutputs];
   signal output out[numOutputs];
@@ -79,6 +79,6 @@ template AddIrregularChunk51(m,n){ //assume m>=n
     lt2.out === 1;
 }
 
-function calculateNumOutputs(m, n) {
-  return m + n\51 + 1;
+function calculateNumOutputs(m, n, base) {
+  return m + n\base + 1;
 }
