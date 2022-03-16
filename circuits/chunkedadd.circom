@@ -15,7 +15,7 @@ template BinAddChunked51(m, n, base){
   var modulo = 2**base;
   for(i=0; i<n; i++) {
     for (j=0; j<m; j++) {
-      lt1[i][j] = LessThanPower51();
+      lt1[i][j] = LessThanPower(base);
       lt1[i][j].in <== in[i][j];
       lt1[i][j].out === 1;
     } 
@@ -44,7 +44,7 @@ template BinAddChunked51(m, n, base){
 
   component lt2[numOutputs];
   for(i=0; i<numOutputs; i++) {
-    lt2[i] = LessThanPower51();
+    lt2[i] = LessThanPower(base);
     lt2[i].in <== out[i];
     out[i] * lt2[i].out === out[i];
   }
@@ -73,11 +73,11 @@ template AddIrregularChunk51(m,n, base){ //assume m>=n
     }
     sum[m] <== carry[m];
 
-    component lt1 = LessThanPower51();
+    component lt1 = LessThanPower(base);
     lt1.in <== sum[0];
     lt1.out === 1;
 
-    component lt2 = LessThanPower51();
+    component lt2 = LessThanPower(base);
     lt2.in <== sum[m];
     lt2.out === 1;
 }
