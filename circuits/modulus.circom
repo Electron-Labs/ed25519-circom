@@ -282,6 +282,7 @@ template ModulusWith25519Chunked51(n) {
   signal input a[n];
   signal output out[5];
   var i;
+  var base=51;
 
   component mod2p;
   component mul;
@@ -313,7 +314,7 @@ template ModulusWith25519Chunked51(n) {
       mod.a[i] <== mul.out[i];
     }
 
-    adder = BinAddChunked51(5, 2);
+    adder = BinAddChunked51(5, 2, base);
     for (i=0; i<5; i++) {
       adder.in[0][i] <== mod2p.out[i];
       adder.in[1][i] <== mod.out[i];
