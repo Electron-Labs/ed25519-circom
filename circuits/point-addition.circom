@@ -29,6 +29,7 @@ template PointAdd(){
     var constant_neg_d[5] = [1321844580190026,1785434093556034,589740348686294,217950738957124,809005158844672];
     var constant_d[5] = [929955233495203,466365720129213,1662059464998953,2033849074728123,1442794654840575];
     var i;
+    var base=51;
 
     signal input P[4][5];
     signal input Q[4][5];
@@ -96,10 +97,10 @@ template PointAdd(){
     //     mod_T_1T_2_neg_d.a[i] <== T_1T_2_neg_d.out[i];
     // }
 
-    component e_add = BinAddChunked51(10,2);
-    component f_add = AddIrregularChunk51(15,10);
-    component g_add = AddIrregularChunk51(15,10);
-    component h_add = BinAddChunked51(10,2);
+    component e_add = BinAddChunked51(10,2,base);
+    component f_add = AddIrregularChunk51(15,10,base);
+    component g_add = AddIrregularChunk51(15,10,base);
+    component h_add = BinAddChunked51(10,2,base);
     
     for(i=0;i<10;i++){
         e_add.in[0][i] <== X_1Y_2.out[i];
