@@ -82,6 +82,23 @@ template ModulusWith25519(n) {
       out[i] <== 0;
     }
   } else {
+    /*
+     * Let p = 2^255 - 19 and assume there is a number a;
+     * We want to calculate a % p, this can be broken down into this:
+     * b = a % 2^255;
+     * c = a \\ 2^255;
+     *
+     * a = b + (2^255 * c);
+     *   = b + (p + 19) * c;
+     *   = b + p * c + 19 * c;
+     *
+     * a % p = (b + p * c + 19 * c) % p;
+     *       = (b % p + (19 * c) % p) % p
+     */
+
+    /*
+     * Here we are trying to calculate b % p.
+     */
     mod2p = ModulusAgainst2P();
 
     for (i = 0; i < 255; i++) {
@@ -89,6 +106,10 @@ template ModulusWith25519(n) {
     }
 
     mod2p.in[255] <== 0;
+
+    /*
+     * Here we are trying to recursively calculate (19 * c) % p.
+     */
     mul = BinMulFast(n-255, 5);
 
     for(i = 0; i < n-255; i++) {
@@ -105,6 +126,9 @@ template ModulusWith25519(n) {
       mod.in[i] <== mul.out[i];
     }
 
+    /*
+     * Add the result for b % p  and (19 * c) % p and take modulus over p.
+     */
     adder = BinAdd(255);
 
     for (i = 0; i < 255; i++) {
