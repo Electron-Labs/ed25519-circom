@@ -266,7 +266,7 @@ template square(nBits){
   
   component mod_red = ModulusWith25519(2*nBits);
   for(i=0;i<2*nBits;i++){
-    mod_red.a[i] <== intermediate.out[i];
+    mod_red.in[i] <== intermediate.out[i];
   }
   for(i=0;i<255;i++){
     out[i] <== mod_red.out[i];
