@@ -77,7 +77,7 @@ template Ed25519Verifier(n) {
   component bitModulus = ModulusWith252c(512);
   for (i=0; i<512; i+=8) {
     for(j=0; j<8; j++) {
-      bitModulus.a[i+j] <== hash.out[i + (7-j)];
+      bitModulus.in[i+j] <== hash.out[i + (7-j)];
     }
   }
 
