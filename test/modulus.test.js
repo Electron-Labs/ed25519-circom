@@ -89,7 +89,7 @@ describe('Modulus Test', () => {
       const a = BigInt('44618658097711785492504343953926634992332820282019728792003956564819949');
       const buf = utils.bigIntToLEBuffer(a);
       const asBits = utils.buffer2bits(buf);
-      const witness = await cir.calculateWitness({ a: asBits }, true);
+      const witness = await cir.calculateWitness({ in: asBits }, true);
 
       const expected = utils.pad(
         utils.buffer2bits(utils.bigIntToLEBuffer(bigintModArith.modPow(a, 1, q))),
@@ -108,7 +108,7 @@ describe('Modulus Test', () => {
       const buf = utils.bigIntToLEBuffer(a);
       const asBits = utils.buffer2bits(buf);
       // var startTime = performance.now();
-      const witness = await cir.calculateWitness({ a: asBits }, true);
+      const witness = await cir.calculateWitness({ in: asBits }, true);
       // var endTime = performance.now();
       // console.log(`Call to calculate witness took ${endTime - startTime} milliseconds`);
 
