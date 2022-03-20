@@ -30,7 +30,7 @@ template BigModInv51() {
   }
   component mod = ModulusWith25519Chunked51(10);
   for (var i = 0; i < 10; i++) {
-    mod.a[i] <== mult.out[i];
+    mod.in[i] <== mult.out[i];
   }
   mod.out[0] === 1;
   for (var i = 1; i < 5; i++) {

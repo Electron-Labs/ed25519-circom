@@ -156,7 +156,7 @@ describe('Modulus Test', () => {
         2251799813685247n,
         2251799813685247n,
         2251799813685247n];
-      const witness = await cir.calculateWitness({ a: chunk }, true);
+      const witness = await cir.calculateWitness({ in: chunk }, true);
 
       const expected = [2251799813685247n, 2251799813685247n, 47045880n, 0n, 0n];
       assert.ok(witness.slice(1, 6).every((u, i) => u === expected[i]));

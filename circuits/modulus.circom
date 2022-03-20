@@ -337,8 +337,9 @@ template ModulusAgainst2Q() {
 }
 
 template ModulusWith25519Chunked51(n) {
-  signal input a[n];
+  signal input in[n];
   signal output out[5];
+
   var i;
   var base=51;
 
@@ -347,43 +348,47 @@ template ModulusWith25519Chunked51(n) {
   component mod;
   component adder;
   component mod2pfinal;
+
   if (n < 5) {
-    for (i=0; i<n; i++) {
-      out[i] <== a[i];
+    for (i = 0; i < n; i++) {
+      out[i] <== in[i];
     }
-    for (i=n; i<5; i++) {
+
+    for (i = n; i < 5; i++) {
       out[i] <== 0;
     }
   } else {
     mod2p = ModulusAgainst2PChunked51();
-    for (i=0; i<5; i++) {
-      mod2p.in[i] <== a[i];
+    for (i = 0; i < 5; i++) {
+      mod2p.in[i] <== in[i];
     }
+
     mod2p.in[5] <== 0;
 
     mul = BinMulFastChunked51(n-5, 1);
-    for(i=0; i<n-5; i++) {
-      mul.in1[i] <== a[5+i];
+    for(i = 0; i < n-5; i++) {
+      mul.in1[i] <== in[5+i];
     }
+
     mul.in2[0] <== 19;
 
     mod = ModulusWith25519Chunked51(n-5+1);
-    for (i=0; i<n-5+1; i++) {
-      mod.a[i] <== mul.out[i];
+    for (i = 0; i < n-5+1; i++) {
+      mod.in[i] <== mul.out[i];
     }
 
     adder = BinAddChunked51(5, 2, base);
-    for (i=0; i<5; i++) {
+    for (i = 0; i < 5; i++) {
       adder.in[0][i] <== mod2p.out[i];
       adder.in[1][i] <== mod.out[i];
     }
 
     mod2pfinal = ModulusAgainst2PChunked51();
-    for (i=0; i<6; i++) {
+    for (i = 0; i < 6; i++) {
       mod2pfinal.in[i] <== adder.out[i];
     }
 
-    for (i=0; i<5; i++) {
+    for (i = 0; i < 5; i++) {
       out[i] <== mod2pfinal.out[i];
     }
   }
@@ -398,19 +403,19 @@ template ModulusAgainst2PChunked51() {
   component sub = BigSub51(6);
 
   in[5] * (in[5] - 1) === 0;
-  for (i=0; i<6; i++) {
+  for (i = 0; i < 6; i++) {
     sub.a[i] <== in[i];
     sub.b[i] <== p[i];
   }
 
   component mux = MultiMux1(6);
-  for (i=0; i<6; i++) {
+  for (i = 0; i < 6; i++) {
     mux.c[i][0] <== in[i];
     mux.c[i][1] <== sub.out[i];
   }
 
   mux.s <== 1 + sub.underflow - 2*sub.underflow;
-  for (i=0; i<5; i++) {
+  for (i = 0; i < 5; i++) {
     out[i] <== mux.out[i];
   }
 }
