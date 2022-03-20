@@ -28,8 +28,8 @@ template PointCompress(){
     }
 
     for(i=0;i<10;i++){
-        mod_x.a[i] <== mul_x.out[i];
-        mod_y.a[i] <== mul_y.out[i];
+        mod_x.in[i] <== mul_x.out[i];
+        mod_y.in[i] <== mul_y.out[i];
     }   
 
     component bits_y[5];

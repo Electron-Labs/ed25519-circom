@@ -141,16 +141,16 @@ template PointAdd(){
     component final_modulo4 = ModulusWith25519Chunked51(22);
 
     for(i=0;i<27;i++){
-        final_modulo1.a[i] <== final_mul1.out[i];
-        final_modulo2.a[i] <== final_mul2.out[i];    
+        final_modulo1.in[i] <== final_mul1.out[i];
+        final_modulo2.in[i] <== final_mul2.out[i];
     }
 
     for(i=0;i<32;i++){
-        final_modulo3.a[i] <== final_mul3.out[i];
+        final_modulo3.in[i] <== final_mul3.out[i];
     }
 
     for(i=0;i<22;i++){
-        final_modulo4.a[i] <== final_mul4.out[i];
+        final_modulo4.in[i] <== final_mul4.out[i];
     }
     
     for(i=0;i<5;i++){
