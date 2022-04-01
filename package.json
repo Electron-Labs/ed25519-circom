@@ -25,7 +25,7 @@
   },
   "author": "rahulghangas, garvitgoel, BakerStreetPhantom, suniljalandhra",
   "devDependencies": {
-    "@electron-labs/sha512": "^1.0.1",
+    "@electron-labs/sha512": "^1.0.2",
     "bigint-mod-arith": "^3.0.2",
     "chai": "^4.3.6",
     "circom_tester": "0.0.10",
