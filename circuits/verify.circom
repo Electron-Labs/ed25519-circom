@@ -158,16 +158,16 @@ template PointEqual() {
   
   for(i=0; i<10; i++) {
     // (P[0] * Q[2]) % p
-    mod[0].a[i] <== mul[0].out[i];
+    mod[0].in[i] <== mul[0].out[i];
 
     // (Q[0] * P[2]) % p
-    mod[1].a[i] <== mul[1].out[i];
+    mod[1].in[i] <== mul[1].out[i];
 
     // (P[1] * Q[2]) % p
-    mod[2].a[i] <== mul[2].out[i];
+    mod[2].in[i] <== mul[2].out[i];
 
     // (Q[1] * P[2]) % p
-    mod[3].a[i] <== mul[3].out[i];
+    mod[3].in[i] <== mul[3].out[i];
   }
 
   for (i=0; i<5; i++) {
