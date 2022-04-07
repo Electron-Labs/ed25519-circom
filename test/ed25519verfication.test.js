@@ -53,11 +53,10 @@ describe('ED25519 verifcation test', () => {
         const endTime = performance.now();
         mlog.success(`Call to calculate witness took ${endTime - startTime} milliseconds`);
         assert.ok(witness[0] === 1n);
+        assert.ok(witness[1] === 1n);
       } catch (e) {
         mlog.error(e);
         assert.ok(false);
-      } finally {
-        assert.ok(true);
       }
     });
   });
@@ -104,11 +103,11 @@ describe('ED25519 verifcation test', () => {
           msg: bitsMsg, A: bitsA, R8: bitsR8, S: bitsS, PointA: chunkA, PointR: chunkR,
         });
         assert.ok(witness[0] === 1n);
+        assert.ok(witness[1] === 0n);
       } catch (e) {
-        assert.ok(true);
-        return;
+        mlog.error(e);
+        assert.ok(false);
       }
-      assert.ok(false);
     });
   });
 });
