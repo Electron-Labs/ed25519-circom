@@ -136,6 +136,7 @@ template PointEqual() {
   signal output out;
 
   var i;
+  var j;
   component mul[4];
   for (i=0; i<4; i++) {
     mul[i] = BinMulFastChunked51(5, 5);
@@ -178,36 +179,32 @@ template PointEqual() {
     mod[3].in[i] <== mul[3].out[i];
   }
 
+  // output = (P[0] * Q[2]) % p == (Q[0] * P[2]) % p && (P[1] * Q[2]) % p == (Q[1] * P[2]) % p
 
-  component equal1[5];
-  component equal2[5];
+  component equal[2][5];
   component and1[5];
   component and2[4];
 
-  equal1[0] = IsEqual();
-  equal1[0].in[0] <== mod[0].out[0];
-  equal1[0].in[1] <== mod[1].out[0];
-
-  equal2[0] = IsEqual();
-  equal2[0].in[0] <== mod[2].out[0];
-  equal2[0].in[1] <== mod[3].out[0];
+  for (j = 0; j < 2; j++) {
+    equal[j][0] = IsEqual();
+    equal[j][0].in[0] <== mod[2 * j].out[0];
+    equal[j][0].in[1] <== mod[2 * j + 1].out[0];
+  }
 
   and1[0] = AND();
-  and1[0].a <== equal1[0].out;
-  and1[0].b <== equal2[0].out;
+  and1[0].a <== equal[0][0].out;
+  and1[0].b <== equal[1][0].out;
 
   for (i=1; i<5; i++) {
-    equal1[i] = IsEqual();
-    equal1[i].in[0] <== mod[0].out[i];
-    equal1[i].in[1] <== mod[1].out[i];
-
-    equal2[i] = IsEqual();
-    equal2[i].in[0] <== mod[2].out[i];
-    equal2[i].in[1] <== mod[3].out[i];
+    for (j = 0; j < 2; j++) {
+      equal[j][i] = IsEqual();
+      equal[j][i].in[0] <== mod[2 * j].out[i];
+      equal[j][i].in[1] <== mod[2 * j + 1].out[i];
+    }
 
     and1[i] = AND();
-    and1[i].a <== equal1[i].out;
-    and1[i].b <== equal2[i].out;
+    and1[i].a <== equal[0][i].out;
+    and1[i].b <== equal[1][i].out;
 
     and2[i-1] = AND();
     and2[i-1].a <== and1[i-1].out;
