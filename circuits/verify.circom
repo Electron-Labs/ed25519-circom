@@ -1,10 +1,13 @@
 pragma circom 2.0.0;
 
-include "../node_modules/@electron-labs/sha512/circuits/sha512/sha512.circom";
 include "./scalarmul.circom";
 include "./modulus.circom";
 include "./point-addition.circom";
 include "./pointcompress.circom";
+
+include "../node_modules/@electron-labs/sha512/circuits/sha512/sha512.circom";
+include "../node_modules/circomlib/circuits/comparators.circom";
+include "../node_modules/circomlib/circuits/gates.circom";
 
 template Ed25519Verifier(n) {
   signal input msg[n];
@@ -15,6 +18,8 @@ template Ed25519Verifier(n) {
 
   signal input PointA[4][5];
   signal input PointR[4][5];
+
+  signal output out;
 
   var G[4][5] = [[1738742601995546,
                   1146398526822698,
@@ -121,11 +126,14 @@ template Ed25519Verifier(n) {
       equal.q[i][j] <== addRH.R[i][j];
     }
   }
+
+  out <== equal.out;
 }
 
 template PointEqual() {
   signal input p[3][5];
   signal input q[3][5];
+  signal output out;
 
   var i;
   component mul[4];
@@ -170,11 +178,41 @@ template PointEqual() {
     mod[3].in[i] <== mul[3].out[i];
   }
 
-  for (i=0; i<5; i++) {
-    // (P[0] * Q[2]) % p == (Q[0] * P[2]) % p
-    mod[0].out[i] === mod[1].out[i];
 
-    // (P[1] * Q[2]) % p == (Q[1] * P[2]) % p
-    mod[2].out[i] === mod[3].out[i];
+  component equal1[5];
+  component equal2[5];
+  component and1[5];
+  component and2[4];
+
+  equal1[0] = IsEqual();
+  equal1[0].in[0] <== mod[0].out[0];
+  equal1[0].in[1] <== mod[1].out[0];
+
+  equal2[0] = IsEqual();
+  equal2[0].in[0] <== mod[2].out[0];
+  equal2[0].in[1] <== mod[3].out[0];
+
+  and1[0] = AND();
+  and1[0].a <== equal1[0].out;
+  and1[0].b <== equal2[0].out;
+
+  for (i=1; i<5; i++) {
+    equal1[i] = IsEqual();
+    equal1[i].in[0] <== mod[0].out[i];
+    equal1[i].in[1] <== mod[1].out[i];
+
+    equal2[i] = IsEqual();
+    equal2[i].in[0] <== mod[2].out[i];
+    equal2[i].in[1] <== mod[3].out[i];
+
+    and1[i] = AND();
+    and1[i].a <== equal1[i].out;
+    and1[i].b <== equal2[i].out;
+
+    and2[i-1] = AND();
+    and2[i-1].a <== and1[i-1].out;
+    and2[i-1].b <== and1[i].out;
   }
+
+  out <== and2[3].out;
 }
