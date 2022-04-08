@@ -70,5 +70,3 @@ template BatchVerify(n, m) {
   hash[1] <== hashNum2.out;
   verified <== verifiedNum.out;
 }
-
-component main = BatchVerify(80, 1);
