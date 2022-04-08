@@ -10,6 +10,8 @@ include "../node_modules/circomlib/circuits/comparators.circom";
 include "../node_modules/circomlib/circuits/gates.circom";
 
 template Ed25519Verifier(n) {
+  assert(n\8 * 8 == n);
+  
   signal input msg[n];
   
   signal input A[256];
