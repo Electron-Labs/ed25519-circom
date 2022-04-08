@@ -1,6 +1,11 @@
 pragma circom 2.0.0;
 
 include "./verify.circom";
+include "../keccak256-circom/circuits/keccak.circom";
+include "../node_modules/circomlib/circuits/gates.circom";
+// include "../node_modules/circomlib/circuits/sha256/xor3.circom";
+// include "../node_modules/circomlib/circuits/sha256/shift.circom";
+include "../node_modules/circomlib/circuits/bitify.circom";
 
 template BatchVerify(n, m) {
   signal input msg[n];
@@ -12,11 +17,15 @@ template BatchVerify(n, m) {
   signal input PointA[m][4][5];
   signal input PointR[m][4][5];
 
+  signal output hash[2];
+  signal output verified;
+
   var i;
   var j;
   var k;
 
-  component verifiers[k];
+  component verifiers[m];
+  component keccak = Keccak(256 * m, 256);
   for (i=0; i<m; i++) {
     verifiers[i] = Ed25519Verifier(n);
   }
@@ -39,5 +48,27 @@ template BatchVerify(n, m) {
         verifiers[i].PointR[j][k] <== PointR[i][j][k];
       }
     }
+
+    for(j=0; j<256; j++) {
+      keccak.in[i * 256 + j] <== A[i][j];
+    }
   }
+
+  component hashNum1 = Bits2Num(128);
+  component hashNum2 = Bits2Num(128);
+  for(i=0; i<128; i++) {
+    hashNum1.in[i] <== keccak.out[i];
+    hashNum2.in[i] <== keccak.out[i + 128];
+  }
+
+  component verifiedNum = Bits2Num(m);
+  for (i=0; i<m; i++) {
+    verifiedNum.in[i] <== verifiers[i].out;
+  }
+
+  hash[0] <== hashNum1.out;
+  hash[1] <== hashNum2.out;
+  verified <== verifiedNum.out;
 }
+
+component main = BatchVerify(80, 1);
