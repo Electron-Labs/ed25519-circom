@@ -4,3 +4,6 @@
 [submodule "sha512"]
 	path = sha512
 	url = git@github.com:Electron-Labs/sha512.git
+[submodule "keccak256-circom"]
+	path = keccak256-circom
+	url = git@github.com:Electron-Labs/keccak256-circom.git
