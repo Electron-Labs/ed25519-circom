@@ -11,6 +11,7 @@
     "test-inverse-modulo": "mocha --colors --max-old-space-size=4000 --timeout 150000 test/inversemodulo.test.js",
     "test-scalarmul": "mocha --colors --max-old-space-size=4000 --timeout 300000 test/scalarmul.test.js",
     "test-verify": "mocha --colors --max-old-space-size=4000 --timeout 4000000 test/ed25519verfication.test.js ",
+    "test-batch-verify": "mocha --colors --max-old-space-size=4000 --timeout 12000000 test/batchverify.test.js",
     "clean": "rm -rf node_modules && make clean && npm i",
     "lint": "eslint test/*.test.js --fix"
   },
