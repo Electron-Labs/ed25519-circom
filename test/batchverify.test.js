@@ -103,10 +103,7 @@ describe('Batch Verification', () => {
       const witness = await cir.calculateWitness({
         msg: bitsMsg, A: bitsA, R8: bitsR8, S: bitsS, PointA: chunkA, PointR: chunkR,
       }, true);
-
-      console.log(witness[1]);
-      console.log(witness[2]);
-      console.log(witness[3]);
+      assert.ok(witness[3] === 7n);
     });
   });
 });
