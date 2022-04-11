@@ -63,14 +63,14 @@ describe('Batch Verification', () => {
         5004556735901913393272427758925840403246877222315506387332009764265656498271n,
         22493278956989295319831480986006851106061907369804654499116800046813764104n,
       ];
-      const bufMsg = [];
-      const bufR8 = [];
-      const bufS = [];
-      const bufA = [];
-      const bitsMsg = [];
-      const bitsR8 = [];
-      const bitsS = [];
-      const bitsA = [];
+      let bufMsg = [];
+      let bufR8 = [];
+      let bufS = [];
+      let bufA = [];
+      let bitsMsg = [];
+      let bitsR8 = [];
+      let bitsS = [];
+      let bitsA = [];
       for (let i = 0; i < 3; i++) {
         bufMsg.push(utils.bigIntToLEBuffer(msg[i]));
         bufR8.push(utils.bigIntToLEBuffer(R8[i]));
@@ -86,8 +86,8 @@ describe('Batch Verification', () => {
       const chunkA = [];
       const chunkR = [];
       for (let j = 0; j < 3; j++) {
-        const chunkATemp = [];
-        const chunkRTemp = [];
+        let chunkATemp = [];
+        let chunkRTemp = [];
         for (let i = 0; i < 4; i++) {
           chunkATemp.push(utils.chunkBigInt(pointA[j][i]));
           chunkRTemp.push(utils.chunkBigInt(pointR[j][i]));
