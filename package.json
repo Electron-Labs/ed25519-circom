@@ -37,6 +37,6 @@
     "fast-check": "^2.24.0",
     "mocha": "^9.2.2",
     "mocha-logger": "^1.0.7",
-    "keccak256": "1.0.3"
+    "keccak256": "1.0.6"
   }
 }
