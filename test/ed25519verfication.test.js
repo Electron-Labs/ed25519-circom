@@ -33,8 +33,8 @@ describe('ED25519 verifcation test', () => {
       const bitsR8 = utils.pad(utils.buffer2bits(bufR8), 256);
       const bitsS = utils.pad(utils.buffer2bits(bufS), 255).slice(0, 255);
       const bitsA = utils.pad(utils.buffer2bits(bufA), 256);
-      const chunkA = [];
-      const chunkR = [];
+      let chunkA = [];
+      let chunkR = [];
 
       for (let i = 0; i < 4; i++) {
         chunkA.push(utils.chunkBigInt(pointA[i]));
@@ -86,8 +86,8 @@ describe('ED25519 verifcation test', () => {
       const bitsR8 = utils.pad(utils.buffer2bits(bufR8), 256);
       const bitsS = utils.pad(utils.buffer2bits(bufS), 255).slice(0, 255);
       const bitsA = utils.pad(utils.buffer2bits(bufA), 256);
-      const chunkA = [];
-      const chunkR = [];
+      let chunkA = [];
+      let chunkR = [];
 
       for (let i = 0; i < 4; i++) {
         chunkA.push(utils.chunkBigInt(pointA[i]));
