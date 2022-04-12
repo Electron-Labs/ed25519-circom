@@ -246,7 +246,6 @@ describe('Batch Verification test', () => {
       const expected = keccak(utils.bigIntToLEBuffer(A));
       const h = BigInt(2 ** 128);
       const real = utils.bigIntToLEBuffer(BigInt(witness[1] + witness[2] * h));
-      console.log(real, expected);
       assert.deepEqual(expected, real);
     });
   });
