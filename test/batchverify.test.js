@@ -243,10 +243,11 @@ describe('Batch Verification test', () => {
         msg: bitsMsg, A: bitsA, R8: bitsR8, S: bitsS, PointA: chunkA, PointR: chunkR,
       }, true);
       assert.ok(witness[3] === 1n);
-      const expected = keccak(A.toString()).toString('hex');
+      const expected = keccak(utils.bigIntToLEBuffer(A));
       const h = BigInt(2 ** 128);
-      const real = (h * witness[1] + witness[2]).toString(16);
-      assert.ok(expected === real);
+      const real = utils.bigIntToLEBuffer(BigInt(witness[1] + witness[2] * h));
+      console.log(real, expected);
+      assert.deepEqual(expected, real);
     });
   });
 });
