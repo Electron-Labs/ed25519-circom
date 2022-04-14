@@ -27,6 +27,7 @@
   "author": "rahulghangas, garvitgoel, BakerStreetPhantom, suniljalandhra",
   "devDependencies": {
     "@electron-labs/sha512": "^1.0.3",
+    "@electron-labs/keccak-circom": "0.0.3",
     "bigint-mod-arith": "^3.0.2",
     "chai": "^4.3.6",
     "circom_tester": "0.0.10",

@@ -1,3 +1,0 @@
-[submodule "keccak256-circom"]
-	path = keccak256-circom
-	url = git@github.com:Electron-Labs/keccak256-circom.git

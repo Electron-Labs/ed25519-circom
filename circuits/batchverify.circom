@@ -1,7 +1,7 @@
 pragma circom 2.0.0;
 
 include "./verify.circom";
-include "../keccak256-circom/circuits/keccak.circom";
+include "../node_modules/@electron-labs/keccak-circom/circuits/keccak.circom";
 include "../node_modules/circomlib/circuits/gates.circom";
 // include "../node_modules/circomlib/circuits/sha256/xor3.circom";
 // include "../node_modules/circomlib/circuits/sha256/shift.circom";
