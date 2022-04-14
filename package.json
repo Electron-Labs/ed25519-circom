@@ -1,5 +1,5 @@
 {
-  "name": "circom-ed25519",
+  "name": "ed25519-circom",
   "version": "0.0.1",
   "description": "Circom circuits for ed25519 signature verification",
   "main": "index.js",
@@ -22,7 +22,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Electron-Labs/circom-ed25519.git"
+    "url": "https://github.com/Electron-Labs/ed25519-circom.git"
   },
   "author": "rahulghangas, garvitgoel, BakerStreetPhantom, suniljalandhra",
   "devDependencies": {
