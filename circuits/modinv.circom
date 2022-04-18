@@ -18,7 +18,7 @@ template BigModInv51() {
   }
   component lt[5];
   for (var i = 0; i < 5; i++) {
-    lt[i] = LessThanPower51();
+    lt[i] = LessThanPower(51);
     lt[i].in <== out[i];
     lt[i].out * out[i] === out[i];
   }
