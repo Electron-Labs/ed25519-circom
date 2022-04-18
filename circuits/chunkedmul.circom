@@ -98,14 +98,14 @@ template ChunkedMul(m, n, base){ //base 2**51 multiplier
 
   component lt1[m];
   for (i = 0; i < m; i++) {
-    lt1[i] = LessThanPower(51);
+    lt1[i] = LessThanPower(base);
     lt1[i].in <== in1[i];
     lt1[i].out === 1;
   } 
 
   component lt2[n];
   for (i = 0; i < n; i++) {
-    lt2[i] = LessThanPower(51);
+    lt2[i] = LessThanPower(base);
     lt2[i].in <== in2[i];
     lt2[i].out === 1;
   } 
