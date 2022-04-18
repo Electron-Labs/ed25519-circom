@@ -2,7 +2,7 @@ pragma circom 2.0.0;
 
 include "./lt.circom";
 
-template BinAddChunked51(m, n, base){
+template ChunkedAdd(m, n, base){
   var numOutputs = calculateNumOutputs(m, n, base);
   var i;
   var j;
@@ -57,7 +57,7 @@ template BinAddChunked51(m, n, base){
 }
 
 // This function assumes m>=n
-template AddIrregularChunk51(m, n, base){
+template ChunkedAdderIrregular(m, n, base){
     signal input a[m];
     signal input b[n];
     signal psum[m];

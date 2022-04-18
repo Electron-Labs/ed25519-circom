@@ -365,7 +365,7 @@ template ModulusWith25519Chunked51(n) {
 
     mod2p.in[5] <== 0;
 
-    mul = BinMulFastChunked51(n-5, 1, 51);
+    mul = ChunkedMul(n-5, 1, 51);
     for(i = 0; i < n-5; i++) {
       mul.in1[i] <== in[5+i];
     }
@@ -377,7 +377,7 @@ template ModulusWith25519Chunked51(n) {
       mod.in[i] <== mul.out[i];
     }
 
-    adder = BinAddChunked51(5, 2, base);
+    adder = ChunkedAdd(5, 2, base);
     for (i = 0; i < 5; i++) {
       adder.in[0][i] <== mod2p.out[i];
       adder.in[1][i] <== mod.out[i];
@@ -400,7 +400,7 @@ template ModulusAgainst2PChunked51() {
   var i;
   var p[6] = [2251799813685229, 2251799813685247, 2251799813685247, 2251799813685247, 2251799813685247, 0];
 
-  component sub = BigSub51(6);
+  component sub = ChunkedSub(6, 51);
 
   in[5] * (in[5] - 1) === 0;
   for (i = 0; i < 6; i++) {

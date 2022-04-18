@@ -26,28 +26,14 @@ template LessThanPower52() {
   out * (out - 1) === 0;
 }
 
-template LessThanOptimizedUpto51Bits() {
+template LessThanBounded(base) {
   signal input in[2];
   signal output out;
 
-  component lt1 = LessThanPower51();
+  component lt1 = LessThanPower(base);
   lt1.in <== in[0];
 
-  component lt2 = LessThanPower51();
-  lt2.in <== in[1];
-
-  out <-- in[0] < in[1];
-  out * (out - 1) === 0;
-}
-
-template LessThanOptimizedUpto52Bits() {
-  signal input in[2];
-  signal output out;
-
-  component lt1 = LessThanPower52();
-  lt1.in <== in[0];
-
-  component lt2 = LessThanPower52();
+  component lt2 = LessThanPower(base);
   lt2.in <== in[1];
 
   out <-- in[0] < in[1];

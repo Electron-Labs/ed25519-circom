@@ -35,12 +35,12 @@ template PointAdd(){
     signal input Q[4][5];
     signal output R[4][5];
 
-    component X_1X_2 = BinMulFastChunked51(5, 5, 51);
-    component Y_1Y_2 = BinMulFastChunked51(5, 5, 51);
-    component X_1Y_2 = BinMulFastChunked51(5, 5, 51);
-    component X_2Y_1 = BinMulFastChunked51(5, 5, 51);
-    component T_1T_2 = BinMulFastChunked51(5, 5, 51);
-    component Z_1Z_2 = BinMulFastChunked51(5, 5, 51);
+    component X_1X_2 = ChunkedMul(5, 5, 51);
+    component Y_1Y_2 = ChunkedMul(5, 5, 51);
+    component X_1Y_2 = ChunkedMul(5, 5, 51);
+    component X_2Y_1 = ChunkedMul(5, 5, 51);
+    component T_1T_2 = ChunkedMul(5, 5, 51);
+    component Z_1Z_2 = ChunkedMul(5, 5, 51);
 
     for(i=0;i<5;i++){
         X_1X_2.in1[i] <== P[0][i];
@@ -62,8 +62,8 @@ template PointAdd(){
         Z_1Z_2.in2[i] <== Q[2][i];
     }
 
-    component T_1T_2_d = BinMulFastChunked51(10, 5, 51);
-    component T_1T_2_neg_d = BinMulFastChunked51(10, 5, 51);
+    component T_1T_2_d = ChunkedMul(10, 5, 51);
+    component T_1T_2_neg_d = ChunkedMul(10, 5, 51);
 
     for(i=0;i<2*5;i++){
        T_1T_2_d.in1[i] <== T_1T_2.out[i];
@@ -97,10 +97,10 @@ template PointAdd(){
     //     mod_T_1T_2_neg_d.a[i] <== T_1T_2_neg_d.out[i];
     // }
 
-    component e_add = BinAddChunked51(10,2,base);
-    component f_add = AddIrregularChunk51(15,10,base);
-    component g_add = AddIrregularChunk51(15,10,base);
-    component h_add = BinAddChunked51(10,2,base);
+    component e_add = ChunkedAdd(10,2,base);
+    component f_add = ChunkedAdderIrregular(15,10,base);
+    component g_add = ChunkedAdderIrregular(15,10,base);
+    component h_add = ChunkedAdd(10,2,base);
     
     for(i=0;i<10;i++){
         e_add.in[0][i] <== X_1Y_2.out[i];
@@ -116,10 +116,10 @@ template PointAdd(){
         g_add.a[i] <== T_1T_2_d.out[i];
     }
 
-    component final_mul1 = BinMulFastChunked51(16, 11, 51);
-    component final_mul2 = BinMulFastChunked51(16, 11, 51);
-    component final_mul3 = BinMulFastChunked51(16, 16, 51);
-    component final_mul4 = BinMulFastChunked51(11, 11, 51);
+    component final_mul1 = ChunkedMul(16, 11, 51);
+    component final_mul2 = ChunkedMul(16, 11, 51);
+    component final_mul3 = ChunkedMul(16, 16, 51);
+    component final_mul4 = ChunkedMul(11, 11, 51);
 
     for(i=0;i<11;i++){
         final_mul1.in2[i] <== e_add.out[i];

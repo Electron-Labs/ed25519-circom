@@ -84,7 +84,7 @@ template BinMulFast(m, n) {
   }
 }
 
-template BinMulFastChunked51(m, n, base){ //base 2**51 multiplier
+template ChunkedMul(m, n, base){ //base 2**51 multiplier
   signal input in1[m];
   signal input in2[n];
   signal pp[n][m+n-1];
