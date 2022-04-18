@@ -1,5 +1,5 @@
 pragma circom 2.0.0;
 
-include "../../circuits/binmulfast.circom";
+include "../../circuits/chunkedmul.circom";
 
 component main = BinMulFast(104, 40);

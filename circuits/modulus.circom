@@ -2,7 +2,7 @@ pragma circom 2.0.0;
 
 include "binsub.circom";
 include "binadd.circom";
-include "binmulfast.circom";
+include "chunkedmul.circom";
 include "../node_modules/circomlib/circuits/mux1.circom";
 include "chunkedadd.circom";
 include "chunkedsub.circom";
@@ -365,7 +365,7 @@ template ModulusWith25519Chunked51(n) {
 
     mod2p.in[5] <== 0;
 
-    mul = BinMulFastChunked51(n-5, 1);
+    mul = BinMulFastChunked51(n-5, 1, 51);
     for(i = 0; i < n-5; i++) {
       mul.in1[i] <== in[5+i];
     }

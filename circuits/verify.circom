@@ -141,7 +141,7 @@ template PointEqual() {
   var j;
   component mul[4];
   for (i=0; i<4; i++) {
-    mul[i] = BinMulFastChunked51(5, 5);
+    mul[i] = BinMulFastChunked51(5, 5, 51);
   }
   
   for(i=0; i<5; i++) {
