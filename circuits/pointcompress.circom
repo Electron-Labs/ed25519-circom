@@ -10,8 +10,8 @@ template PointCompress(){
     signal output out[256];
     var i;
 
-    component mul_x = BinMulFastChunked51(5, 5, 51);
-    component mul_y = BinMulFastChunked51(5, 5, 51);
+    component mul_x = ChunkedMul(5, 5, 51);
+    component mul_y = ChunkedMul(5, 5, 51);
     component modinv_z = BigModInv51();
     component mod_x = ModulusWith25519Chunked51(10);
     component mod_y = ModulusWith25519Chunked51(10);

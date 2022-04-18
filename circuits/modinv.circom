@@ -23,7 +23,7 @@ template BigModInv51() {
     lt[i].out * out[i] === out[i];
   }
 
-  component mult = BinMulFastChunked51(5, 5, 51);
+  component mult = ChunkedMul(5, 5, 51);
   for (var i = 0; i < 5; i++) {
     mult.in1[i] <== in[i];
     mult.in2[i] <== out[i];

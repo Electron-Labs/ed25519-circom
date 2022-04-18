@@ -1,4 +1,4 @@
 pragma circom 2.0.0;
 
 include "../../circuits/chunkedmul.circom";
-component main = BinMulFastChunked51(4, 1, 51);
+component main = ChunkedMul(4, 1, 51);

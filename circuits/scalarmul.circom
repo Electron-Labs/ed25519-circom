@@ -118,12 +118,12 @@ template ScalarMul(){
     }
 
     var prime_p[5] = [2251799813685229,2251799813685247,2251799813685247,2251799813685247,2251799813685247];
-    component sub_x = BigSub51(5);
+    component sub_x = ChunkedSub(5, 51);
     for(i=0;i<5;i++){
         sub_x.a[i] <== prime_p[i];
         sub_x.b[i] <== P[0][i];
     }
-    component sub_t = BigSub51(5);
+    component sub_t = ChunkedSub(5, 51);
     for(i=0;i<5;i++){
         sub_t.a[i] <== prime_p[i];
         sub_t.b[i] <== P[3][i];
