@@ -1,7 +1,7 @@
 pragma circom 2.0.0;
 
 include "modinv.circom";
-include "binmulfast.circom";
+include "chunkedmul.circom";
 include "modulus.circom";
 include "../node_modules/circomlib/circuits/bitify.circom";
 
@@ -10,8 +10,8 @@ template PointCompress(){
     signal output out[256];
     var i;
 
-    component mul_x = BinMulFastChunked51(5,5);
-    component mul_y = BinMulFastChunked51(5,5);
+    component mul_x = BinMulFastChunked51(5, 5, 51);
+    component mul_y = BinMulFastChunked51(5, 5, 51);
     component modinv_z = BigModInv51();
     component mod_x = ModulusWith25519Chunked51(10);
     component mod_y = ModulusWith25519Chunked51(10);

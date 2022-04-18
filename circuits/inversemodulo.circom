@@ -1,6 +1,6 @@
 pragma circom 2.0.0;
 
-include "binmulfast.circom";
+include "chunkedmul.circom";
 include "modulus.circom";
 
 template InverseModulo(nBits){

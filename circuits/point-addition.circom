@@ -17,7 +17,7 @@ pragma circom 2.0.0;
 }*/
 
 //INCLUDE APPROPRIATE ADD, SUBTRACT AND MULTIPLY TEMPLATES
-include "binmulfast.circom";
+include "chunkedmul.circom";
 include "chunkedadd.circom";
 include "modulus.circom";
 
@@ -35,12 +35,12 @@ template PointAdd(){
     signal input Q[4][5];
     signal output R[4][5];
 
-    component X_1X_2 = BinMulFastChunked51(5,5);
-    component Y_1Y_2 = BinMulFastChunked51(5,5);
-    component X_1Y_2 = BinMulFastChunked51(5,5);
-    component X_2Y_1 = BinMulFastChunked51(5,5);
-    component T_1T_2 = BinMulFastChunked51(5,5);
-    component Z_1Z_2 = BinMulFastChunked51(5,5);
+    component X_1X_2 = BinMulFastChunked51(5, 5, 51);
+    component Y_1Y_2 = BinMulFastChunked51(5, 5, 51);
+    component X_1Y_2 = BinMulFastChunked51(5, 5, 51);
+    component X_2Y_1 = BinMulFastChunked51(5, 5, 51);
+    component T_1T_2 = BinMulFastChunked51(5, 5, 51);
+    component Z_1Z_2 = BinMulFastChunked51(5, 5, 51);
 
     for(i=0;i<5;i++){
         X_1X_2.in1[i] <== P[0][i];
@@ -62,8 +62,8 @@ template PointAdd(){
         Z_1Z_2.in2[i] <== Q[2][i];
     }
 
-    component T_1T_2_d = BinMulFastChunked51(10,5);
-    component T_1T_2_neg_d = BinMulFastChunked51(10,5);
+    component T_1T_2_d = BinMulFastChunked51(10, 5, 51);
+    component T_1T_2_neg_d = BinMulFastChunked51(10, 5, 51);
 
     for(i=0;i<2*5;i++){
        T_1T_2_d.in1[i] <== T_1T_2.out[i];
@@ -116,10 +116,10 @@ template PointAdd(){
         g_add.a[i] <== T_1T_2_d.out[i];
     }
 
-    component final_mul1 = BinMulFastChunked51(16,11);
-    component final_mul2 = BinMulFastChunked51(16,11);
-    component final_mul3 = BinMulFastChunked51(16,16);
-    component final_mul4 = BinMulFastChunked51(11,11);
+    component final_mul1 = BinMulFastChunked51(16, 11, 51);
+    component final_mul2 = BinMulFastChunked51(16, 11, 51);
+    component final_mul3 = BinMulFastChunked51(16, 16, 51);
+    component final_mul4 = BinMulFastChunked51(11, 11, 51);
 
     for(i=0;i<11;i++){
         final_mul1.in2[i] <== e_add.out[i];

@@ -1,6 +1,6 @@
 pragma circom 2.0.0;
 
-include "./binmulfast.circom";
+include "./chunkedmul.circom";
 include "./modulus.circom";
 include "./utils.circom";
 include "./lt.circom";
@@ -23,7 +23,7 @@ template BigModInv51() {
     lt[i].out * out[i] === out[i];
   }
 
-  component mult = BinMulFastChunked51(5, 5);
+  component mult = BinMulFastChunked51(5, 5, 51);
   for (var i = 0; i < 5; i++) {
     mult.in1[i] <== in[i];
     mult.in2[i] <== out[i];
