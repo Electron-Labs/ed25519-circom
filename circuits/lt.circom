@@ -10,22 +10,6 @@ template LessThanPower(base) {
   out * (out - 1) === 0;
 }
 
-template LessThanPower51() {
-  signal input in;
-  signal output out;
-
-  out <-- 1 - ((in >> 51) > 0);
-  out * (out - 1) === 0;
-}
-
-template LessThanPower52() {
-  signal input in;
-  signal output out;
-
-  out <-- 1 - ((in >> 52) > 0);
-  out * (out - 1) === 0;
-}
-
 template LessThanBounded(base) {
   signal input in[2];
   signal output out;
