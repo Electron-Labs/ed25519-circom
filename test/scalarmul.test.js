@@ -20,25 +20,25 @@ describe('Scalar multiplication for ed25519', () => {
       asBits.pop();
       const chunkP = [];
       for (let i = 0; i < 4; i++) {
-        chunkP.push(utils.chunkBigInt(P[i]));
+        chunkP.push(utils.chunkBigInt(P[i], BigInt(2**85)));
       }
       for (let i = 0; i < 4; i++) {
-        utils.pad(chunkP[i], 5);
+        utils.pad(chunkP[i], 3);
       }
       const witness = await cir.calculateWitness({ s: asBits, P: chunkP });
       const res = utils.point_mul(s, P);
       for (let i = 0; i < 4; i++) {
         res[i] = utils.modulus(res[i], p);
       }
-      const wt = witness.slice(1, 21);
+      const wt = witness.slice(1, 13);
       const chunk = [];
       for (let i = 0; i < 4; i++) {
-        chunk.push(wt.slice(5 * i, 5 * i + 5));
+        chunk.push(wt.slice(3 * i, 3 * i + 3));
       }
 
       const dechunkedWt = [];
       for (let i = 0; i < 4; i++) {
-        dechunkedWt.push(utils.dechunk(chunk[i]));
+        dechunkedWt.push(utils.dechunk(chunk[i], BigInt(2**85)));
       }
       assert.ok(
         utils.point_equal(res, dechunkedWt),
