@@ -27,10 +27,10 @@ describe('Modulus Test against 2P', () => {
       it('should ouput the correct value, less than p', async () => {
         const cir = await wasmTester(path.join(__dirname, 'circuits', 'modulusagainst2p.circom'));
 
-        const chunked = utils.pad(utils.chunkBigInt(num), 6);
+        const chunked = utils.pad(utils.chunkBigInt(num, BigInt(2**85)), 4);
         const witness = await cir.calculateWitness({ in: chunked }, true);
-        const expected = utils.chunkBigInt(bigintModArith.modPow(num, 1, p));
-        assert.ok(witness.slice(1, 6).every((u, i) => u === expected[i]));
+        const expected = utils.chunkBigInt(bigintModArith.modPow(num, 1, p), BigInt(2**85));
+        assert.ok(witness.slice(1, 4).every((u, i) => u === expected[i]));
       });
     });
   }
