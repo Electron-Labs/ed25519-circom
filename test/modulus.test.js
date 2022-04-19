@@ -146,14 +146,7 @@ describe('Modulus Test', () => {
         38685626227668133590597631n, 
         131071n];
       const witness = await cir.calculateWitness({ in: chunk }, true);
-
       const expected = [38685626227668133590597631n, 6166397714431n, 0n];
-      const real = witness.slice(1, 4);
-      for(let i=0; i<4; i++) {
-        console.log(expected[i], real[i]);
-      }
-      
-
       assert.ok(witness.slice(1, 4).every((u, i) => u === expected[i]));
     });
   });
