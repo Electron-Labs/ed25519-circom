@@ -18,37 +18,15 @@ template Ed25519Verifier(n) {
   signal input R8[256];
   signal input S[255];
 
-  signal input PointA[4][5];
-  signal input PointR[4][5];
+  signal input PointA[4][3];
+  signal input PointR[4][3];
 
   signal output out;
 
-  var G[4][5] = [[1738742601995546,
-                  1146398526822698,
-                  2070867633025821,
-                  562264141797630,
-                  587772402128613
-                 ],
-                 [
-                  1801439850948184,
-                  1351079888211148,
-                  450359962737049,
-                  900719925474099,
-                  1801439850948198
-                 ],
-                 [1,
-                  0,
-                  0,
-                  0,
-                  0
-                 ],
-                 [
-                  1841354044333475,
-                  16398895984059,
-                  755974180946558,
-                  900171276175154,
-                  1821297809914039
-                 ]
+  var G[4][3] = [[6836562328990639286768922, 21231440843933962135602345, 10097852978535018773096760],
+                 [7737125245533626718119512, 23211375736600880154358579, 30948500982134506872478105],
+                 [1, 0, 0],
+                 [20943500354259764865654179, 24722277920680796426601402, 31289658119428895172835987]
                 ];
 
   var i;
@@ -57,7 +35,7 @@ template Ed25519Verifier(n) {
   component compressA = PointCompress();
   component compressR = PointCompress();
   for (i=0; i<4; i++) {
-    for (j=0; j<5; j++) {
+    for (j=0; j<3; j++) {
       compressA.P[i][j] <== PointA[i][j];
       compressR.P[i][j] <== PointR[i][j];
     }
@@ -94,7 +72,7 @@ template Ed25519Verifier(n) {
     pMul1.s[i] <== S[i];
   }
   for (i=0; i<4; i++) {
-    for (j=0; j<5; j++) {
+    for (j=0; j<3; j++) {
       pMul1.P[i][j] <== G[i][j];
     }
   }
@@ -108,14 +86,14 @@ template Ed25519Verifier(n) {
   pMul2.s[254] <== 0;
 
   for (i=0; i<4; i++) {
-    for (j=0; j<5; j++) {
+    for (j=0; j<3; j++) {
       pMul2.P[i][j] <== PointA[i][j];
     }
   }
 
   component addRH = PointAdd();
   for (i=0; i<4; i++) {
-    for (j=0; j<5; j++) {
+    for (j=0; j<3; j++) {
       addRH.P[i][j] <== PointR[i][j];
       addRH.Q[i][j] <== pMul2.sP[i][j];
     }
@@ -123,7 +101,7 @@ template Ed25519Verifier(n) {
 
   component equal = PointEqual();
   for(i=0; i<3; i++) {
-    for(j=0; j<5; j++) {
+    for(j=0; j<3; j++) {
       equal.p[i][j] <== pMul1.sP[i][j];
       equal.q[i][j] <== addRH.R[i][j];
     }
@@ -133,18 +111,18 @@ template Ed25519Verifier(n) {
 }
 
 template PointEqual() {
-  signal input p[3][5];
-  signal input q[3][5];
+  signal input p[3][3];
+  signal input q[3][3];
   signal output out;
 
   var i;
   var j;
   component mul[4];
   for (i=0; i<4; i++) {
-    mul[i] = ChunkedMul(5, 5, 51);
+    mul[i] = ChunkedMul(3, 3, 85);
   }
   
-  for(i=0; i<5; i++) {
+  for(i=0; i<3; i++) {
     // P[0] * Q[2]
     mul[0].in1[i] <== p[0][i];
     mul[0].in2[i] <== q[2][i];
@@ -164,10 +142,10 @@ template PointEqual() {
 
   component mod[4];
   for (i=0; i<4; i++) {
-    mod[i] = ModulusWith25519Chunked51(10);
+    mod[i] = ModulusWith25519Chunked51(6);
   }
   
-  for(i=0; i<10; i++) {
+  for(i=0; i<6; i++) {
     // (P[0] * Q[2]) % p
     mod[0].in[i] <== mul[0].out[i];
 
@@ -183,9 +161,9 @@ template PointEqual() {
 
   // output = (P[0] * Q[2]) % p == (Q[0] * P[2]) % p && (P[1] * Q[2]) % p == (Q[1] * P[2]) % p
 
-  component equal[2][5];
-  component and1[5];
-  component and2[4];
+  component equal[2][3];
+  component and1[3];
+  component and2[2];
 
   for (j = 0; j < 2; j++) {
     equal[j][0] = IsEqual();
@@ -197,7 +175,7 @@ template PointEqual() {
   and1[0].a <== equal[0][0].out;
   and1[0].b <== equal[1][0].out;
 
-  for (i=1; i<5; i++) {
+  for (i=1; i<3; i++) {
     for (j = 0; j < 2; j++) {
       equal[j][i] = IsEqual();
       equal[j][i].in[0] <== mod[2 * j].out[i];
@@ -213,5 +191,7 @@ template PointEqual() {
     and2[i-1].b <== and1[i].out;
   }
 
-  out <== and2[3].out;
+  out <== and2[1].out;
 }
+
+component main = Ed25519Verifier(80);
