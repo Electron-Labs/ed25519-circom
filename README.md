@@ -21,6 +21,21 @@ The circuits follow the reference implementation from [IETF RFC8032](https://dat
 - You can run the entire testing suite (sans scalar multiplication and signature verification) using `npm run test`
 - You can test specific long running tests using `npm run test-scalarmul` or `npm run test-verify`
 
+## Benchmarks
+
+All benchmarks were run on a 16-core 3.0GHz, 32G RAM machine (AWS c5.4xlarge instance).
+
+||verify|
+|---|---|---|---|---|
+|Constraints                          |2564061 |
+|Circuit compilation                  |72s     |
+|Witness generation                   |6s      |
+|Trusted setup phase 2 key generation |841s    |
+|Trusted setup phase 2 contribution   |1040s   |
+|Proving key size                     |1.6G    |
+|Proving time (rapidsnark)            |6s      |
+|Proof verification time              |1s      |
+
 ## Important Circuits
 
 ### Modulus upto 2*(2^255-19) -> Mod2p
