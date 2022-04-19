@@ -25,12 +25,12 @@ describe('Point Addition test on ed25519', () => {
       const chunk1 = [];
       const chunk2 = [];
       for (let i = 0; i < 4; i++) {
-        chunk1.push(utils.chunkBigInt(P[i]));
-        chunk2.push(utils.chunkBigInt(Q[i]));
+        chunk1.push(utils.chunkBigInt(P[i], BigInt(2**85)));
+        chunk2.push(utils.chunkBigInt(Q[i], BigInt(2**85)));
       }
       for (let i = 0; i < 4; i++) {
-        utils.pad(chunk1[i], 5);
-        utils.pad(chunk2[i], 5);
+        utils.pad(chunk1[i], 3);
+        utils.pad(chunk2[i], 3);
       }
       const witness = await cir.calculateWitness({ P: chunk1, Q: chunk2 }, true);
       const res = utils.point_add(P, Q);
@@ -38,15 +38,15 @@ describe('Point Addition test on ed25519', () => {
       for (let i = 0; i < 4; i++) {
         expected.push((utils.modulus(res[i], p)));
       }
-      const wt = witness.slice(1, 21);
+      const wt = witness.slice(1, 13);
       const chunk = [];
       for (let i = 0; i < 4; i++) {
-        chunk.push(wt.slice(5 * i, 5 * i + 5));
+        chunk.push(wt.slice(3 * i, 3 * i + 3));
       }
 
       const dechunkedWt = [];
       for (let i = 0; i < 4; i++) {
-        dechunkedWt.push(utils.dechunk(chunk[i]));
+        dechunkedWt.push(utils.dechunk(chunk[i], BigInt(2**85)));
       }
 
       assert.ok(
@@ -71,12 +71,12 @@ describe('Point Addition test on ed25519', () => {
             const chunk1 = [];
             const chunk2 = [];
             for (let i = 0; i < 4; i++) {
-              chunk1.push(utils.chunkBigInt(P[i]));
-              chunk2.push(utils.chunkBigInt(Q[i]));
+              chunk1.push(utils.chunkBigInt(P[i], BigInt(2**85)));
+              chunk2.push(utils.chunkBigInt(Q[i], BigInt(2**85)));
             }
             for (let i = 0; i < 4; i++) {
-              utils.pad(chunk1[i], 5);
-              utils.pad(chunk2[i], 5);
+              utils.pad(chunk1[i], 3);
+              utils.pad(chunk2[i], 3);
             }
             const witness = await cir.calculateWitness({ P: chunk1, Q: chunk2 });
             const res = utils.point_add(P, Q);
@@ -84,15 +84,15 @@ describe('Point Addition test on ed25519', () => {
             for (let i = 0; i < 4; i++) {
               expected.push(utils.modulus(res[i], p));
             }
-            const wt = witness.slice(1, 21);
+            const wt = witness.slice(1, 13);
             const chunk = [];
             for (let i = 0; i < 4; i++) {
-              chunk.push(wt.slice(5 * i, 5 * i + 5));
+              chunk.push(wt.slice(3 * i, 3 * i + 3));
             }
 
             const dechunkedWt = [];
             for (let i = 0; i < 4; i++) {
-              dechunkedWt.push(utils.dechunk(chunk[i]));
+              dechunkedWt.push(utils.dechunk(chunk[i], BigInt(2**85)));
             }
             return utils.point_equal(expected, dechunkedWt);
           },
