@@ -23,7 +23,7 @@ The circuits follow the reference implementation from [IETF RFC8032](https://dat
 
 ## Benchmarks
 
-All benchmarks were run on a 16-core 3.0GHz, 32G RAM machine (AWS c5.4xlarge instance).
+All benchmarks were run on a 16-core 3.0GHz, 32G RAM machine (AWS c5a.4xlarge instance).
 
 ||verify.circom|
 |---|---|
