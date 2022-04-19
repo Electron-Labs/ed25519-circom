@@ -95,11 +95,10 @@ function point_mul(s, P) {
 	return Q;
 }
 
-function dechunk(x) {
+function dechunk(x, mod = BigInt(2 ** 51)) {
 	sum = 0n;
 	for (let i = 0; i < x.length; i++) {
-		const m = BigInt(2 ** 51);
-		sum += (m ** BigInt(i)) * x[i];
+		sum += (mod ** BigInt(i)) * x[i];
 	}
 	return sum;
 }
