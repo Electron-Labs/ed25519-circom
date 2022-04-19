@@ -193,5 +193,3 @@ template PointEqual() {
 
   out <== and2[1].out;
 }
-
-component main = Ed25519Verifier(80);
