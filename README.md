@@ -25,8 +25,8 @@ The circuits follow the reference implementation from [IETF RFC8032](https://dat
 
 All benchmarks were run on a 16-core 3.0GHz, 32G RAM machine (AWS c5.4xlarge instance).
 
-||verify|
-|---|---|---|---|---|
+||verify.circom|
+|---|---|
 |Constraints                          |2564061 |
 |Circuit compilation                  |72s     |
 |Witness generation                   |6s      |
