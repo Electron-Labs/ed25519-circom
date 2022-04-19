@@ -11,11 +11,11 @@ describe('Inverse Modulo test for base51', () => {
     it('Should calculate the inverse correctly', async () => {
       const cir = await wasmTester(path.join(__dirname, 'circuits', 'modinv.circom'));
       const a = BigInt(2 ** 255) - BigInt(20);
-      const chunk = utils.chunkBigInt(a);
+      const chunk = utils.chunkBigInt(a, BigInt(2**85));
       const witness = await cir.calculateWitness({ in: chunk }, true);
       const inv = bigintModArith.modInv(a, p);
-      const expected = utils.chunkBigInt(inv);
-      assert.ok(witness.slice(1, 6).every((u, i) => u === expected[i]));
+      const expected = utils.chunkBigInt(inv, BigInt(2**85));
+      assert.ok(witness.slice(1, 4).every((u, i) => u === expected[i]));
     });
   });
   describe('when calculating inverse modulo on field elements', () => {
@@ -25,9 +25,9 @@ describe('Inverse Modulo test for base51', () => {
       const cir = await wasmTester(path.join(__dirname, 'circuits', 'modinv.circom'));
       await fc.assert(
         fc.asyncProperty(fc.bigInt(1n, p - 1n), async (data) => {
-          const witness = await cir.calculateWitness({ in: utils.chunkBigInt(data) }, true);
-          const expected = utils.chunkBigInt(bigintModArith.modInv(data, p));
-          witness.slice(1, 6).every((u, i) => u === expected[i]);
+          const witness = await cir.calculateWitness({ in: utils.pad(utils.chunkBigInt(data, BigInt(2**85)), 3) }, true);
+          const expected = utils.chunkBigInt(bigintModArith.modInv(data, p), BigInt(2**85));
+          witness.slice(1, 4).every((u, i) => u === expected[i]);
         }),
       );
     });
