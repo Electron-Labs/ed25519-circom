@@ -37,13 +37,13 @@ describe('ED25519 verifcation test', () => {
       let chunkR = [];
 
       for (let i = 0; i < 4; i++) {
-        chunkA.push(utils.chunkBigInt(pointA[i]));
-        chunkR.push(utils.chunkBigInt(pointR[i]));
+        chunkA.push(utils.chunkBigInt(pointA[i], BigInt(2**85)));
+        chunkR.push(utils.chunkBigInt(pointR[i], BigInt(2**85)));
       }
 
       for (let i = 0; i < 4; i++) {
-        utils.pad(chunkA[i], 5);
-        utils.pad(chunkR[i], 5);
+        utils.pad(chunkA[i], 3);
+        utils.pad(chunkR[i], 3);
       }
       try {
         const startTime = performance.now();
@@ -90,13 +90,13 @@ describe('ED25519 verifcation test', () => {
       let chunkR = [];
 
       for (let i = 0; i < 4; i++) {
-        chunkA.push(utils.chunkBigInt(pointA[i]));
-        chunkR.push(utils.chunkBigInt(pointR[i]));
+        chunkA.push(utils.chunkBigInt(pointA[i], BigInt(2**85)));
+        chunkR.push(utils.chunkBigInt(pointR[i], BigInt(2**85)));
       }
 
       for (let i = 0; i < 4; i++) {
-        utils.pad(chunkA[i], 5);
-        utils.pad(chunkR[i], 5);
+        utils.pad(chunkA[i], 3);
+        utils.pad(chunkR[i], 3);
       }
       try {
         const witness = await cir.calculateWitness({
