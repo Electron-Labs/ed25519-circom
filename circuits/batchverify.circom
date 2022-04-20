@@ -49,7 +49,7 @@ template BatchVerify(n, m) {
       }
     }
 
-    for (j=0; i<256; j+=8) {
+    for (j=0; j<256; j+=8) {
       for(k=0; k<8; k++) {
         sha256.in[i * 256 + j] <== A[i][j + (7 - k)];
       }
