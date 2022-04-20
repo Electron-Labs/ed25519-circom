@@ -230,8 +230,8 @@ describe('Batch Verification test', () => {
       const chunkR = [];
 
       for (let i = 0; i < 4; i++) {
-        chunkA.push(utils.chunkBigInt(pointA[i], BigInt(2**85)));
-        chunkR.push(utils.chunkBigInt(pointR[i], BigInt(2**85)));
+        chunkA.push(utils.chunkBigInt(pointA[i], BigInt(2 ** 85)));
+        chunkR.push(utils.chunkBigInt(pointR[i], BigInt(2 ** 85)));
       }
 
       for (let i = 0; i < 4; i++) {
