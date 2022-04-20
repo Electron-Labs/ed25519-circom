@@ -20,7 +20,7 @@ describe('Scalar multiplication for ed25519', () => {
       asBits.pop();
       const chunkP = [];
       for (let i = 0; i < 4; i++) {
-        chunkP.push(utils.chunkBigInt(P[i], BigInt(2**85)));
+        chunkP.push(utils.chunkBigInt(P[i], BigInt(2 ** 85)));
       }
       for (let i = 0; i < 4; i++) {
         utils.pad(chunkP[i], 3);
@@ -38,7 +38,7 @@ describe('Scalar multiplication for ed25519', () => {
 
       const dechunkedWt = [];
       for (let i = 0; i < 4; i++) {
-        dechunkedWt.push(utils.dechunk(chunk[i], BigInt(2**85)));
+        dechunkedWt.push(utils.dechunk(chunk[i], BigInt(2 ** 85)));
       }
       assert.ok(
         utils.point_equal(res, dechunkedWt),

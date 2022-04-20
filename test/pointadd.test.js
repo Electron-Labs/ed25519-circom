@@ -25,8 +25,8 @@ describe('Point Addition test on ed25519', () => {
       const chunk1 = [];
       const chunk2 = [];
       for (let i = 0; i < 4; i++) {
-        chunk1.push(utils.chunkBigInt(P[i], BigInt(2**85)));
-        chunk2.push(utils.chunkBigInt(Q[i], BigInt(2**85)));
+        chunk1.push(utils.chunkBigInt(P[i], BigInt(2 ** 85)));
+        chunk2.push(utils.chunkBigInt(Q[i], BigInt(2 ** 85)));
       }
       for (let i = 0; i < 4; i++) {
         utils.pad(chunk1[i], 3);
@@ -46,7 +46,7 @@ describe('Point Addition test on ed25519', () => {
 
       const dechunkedWt = [];
       for (let i = 0; i < 4; i++) {
-        dechunkedWt.push(utils.dechunk(chunk[i], BigInt(2**85)));
+        dechunkedWt.push(utils.dechunk(chunk[i], BigInt(2 ** 85)));
       }
 
       assert.ok(
@@ -71,8 +71,8 @@ describe('Point Addition test on ed25519', () => {
             const chunk1 = [];
             const chunk2 = [];
             for (let i = 0; i < 4; i++) {
-              chunk1.push(utils.chunkBigInt(P[i], BigInt(2**85)));
-              chunk2.push(utils.chunkBigInt(Q[i], BigInt(2**85)));
+              chunk1.push(utils.chunkBigInt(P[i], BigInt(2 ** 85)));
+              chunk2.push(utils.chunkBigInt(Q[i], BigInt(2 ** 85)));
             }
             for (let i = 0; i < 4; i++) {
               utils.pad(chunk1[i], 3);
@@ -92,7 +92,7 @@ describe('Point Addition test on ed25519', () => {
 
             const dechunkedWt = [];
             for (let i = 0; i < 4; i++) {
-              dechunkedWt.push(utils.dechunk(chunk[i], BigInt(2**85)));
+              dechunkedWt.push(utils.dechunk(chunk[i], BigInt(2 ** 85)));
             }
             return utils.point_equal(expected, dechunkedWt);
           },
