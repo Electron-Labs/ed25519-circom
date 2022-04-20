@@ -14,8 +14,8 @@ template BatchVerify(n, m) {
   signal input R8[m][256];
   signal input S[m][255];
 
-  signal input PointA[m][4][5];
-  signal input PointR[m][4][5];
+  signal input PointA[m][4][3];
+  signal input PointR[m][4][3];
 
   signal output hash[2];
   signal output verified;
@@ -43,7 +43,7 @@ template BatchVerify(n, m) {
     verifiers[i].R8[255] <== R8[i][255];
 
     for (j=0; j<4; j++) {
-      for (k=0; k<5; k++) {
+      for (k=0; k<3; k++) {
         verifiers[i].PointA[j][k] <== PointA[i][j][k];
         verifiers[i].PointR[j][k] <== PointR[i][j][k];
       }
