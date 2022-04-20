@@ -56,8 +56,8 @@ All benchmarks were run on a 16-core 3.0GHz, 32G RAM machine (AWS c5a.4xlarge in
   (in: [254]) => (out: [253])
 
   // ModulusAgainst2PChunked51
-  // Elements are represented in base 2^51
-  (in: [6]) => (out: [5])
+  // Elements are represented in base 2^85
+  (in: [4]) => (out: [3])
 ```
 
 ### Modulus with 2^255-19 -> Modulus25519
@@ -90,8 +90,8 @@ All benchmarks were run on a 16-core 3.0GHz, 32G RAM machine (AWS c5a.4xlarge in
   (a: [n]) => (out: [253])
 
   // ModulusWith25519Chunked51
-  // Elements are represented in base 2^51
-  (a: [n]) => (out: [5])
+  // Elements are represented in base 2^85
+  (a: [n]) => (out: [3])
 ```
 
 ### Point Addition -> PointAdd
@@ -107,8 +107,8 @@ All benchmarks were run on a 16-core 3.0GHz, 32G RAM machine (AWS c5a.4xlarge in
 ##### Available versions
 ```js
   // PointAdd
-  // Elements are represented in base 2^51
-  (P: [4][5], Q: [4][5]) => (R: [4][5]) 
+  // Elements are represented in base 2^85
+  (P: [4][3], Q: [4][3]) => (R: [4][3]) 
 ```
 
 ### Scalar Multiplication -> ScalarMul
@@ -126,10 +126,10 @@ All benchmarks were run on a 16-core 3.0GHz, 32G RAM machine (AWS c5a.4xlarge in
 ```
 ##### Available versions
 ```js
-  // PointAdd
+  // ScalarMul
   // scalar value is represented in binary
-  // Point elements are represented in base 2^51
-  (s: [255], P: [4][5]) => (sP: [4][5]) 
+  // Point elements are represented in base 2^85
+  (s: [255], P: [4][3]) => (sP: [4][3]) 
 ```
 
 ### Ed25519 Signature verification -> Verify
@@ -146,5 +146,6 @@ All benchmarks were run on a 16-core 3.0GHz, 32G RAM machine (AWS c5a.4xlarge in
 ```
 ##### Available versions
 ```js
-  (msg: [n], A: [256], R8: [256], S: [255], PointA: [4][5], PointR: [4][5]) => ();
+  // out signal value is 0 or 1 depending on whether the signature validation failed or passed
+  (msg: [n], A: [256], R8: [256], S: [255], PointA: [4][3], PointR: [4][3]) => (out);
 ```
