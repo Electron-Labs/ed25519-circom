@@ -58,9 +58,11 @@ template BatchVerify(n, m) {
 
   component hashNum1 = Bits2Num(128);
   component hashNum2 = Bits2Num(128);
-  for(i=0; i<128; i++) {
-    hashNum1.in[i] <== sha256.out[i];
-    hashNum2.in[i] <== sha256.out[i + 128];
+  for(i=0; i<128; i+=8) {
+    for(j=0; j<8; j++) {
+      hashNum1.in[i + j] <== sha256.out[i + (7-j)];
+      hashNum2.in[i + j] <== sha256.out[i + (7-j) + 128];
+    }
   }
 
   component verifiedNum = Bits2Num(m);
