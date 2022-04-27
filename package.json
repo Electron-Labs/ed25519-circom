@@ -33,7 +33,7 @@
     "circom_tester": "0.0.10",
     "circomlib": "^2.0.3",
     "circomlibjs": "^0.1.2",
-    "eslint": "^8.13.0",
+    "eslint": "^8.14.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "fast-check": "^2.24.0",
