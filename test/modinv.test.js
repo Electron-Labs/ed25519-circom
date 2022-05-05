@@ -25,11 +25,14 @@ describe('Inverse Modulo test for base51', () => {
       const cir = await wasmTester(path.join(__dirname, 'circuits', 'modinv.circom'));
       await fc.assert(
         fc.asyncProperty(fc.bigInt(1n, p - 1n), async (data) => {
-          const witness = await cir.calculateWitness({ 
-            in: utils.pad(utils.chunkBigInt(data, BigInt(2 ** 85)), 3) }, 
-            true
+          const witness = await cir.calculateWitness(
+            { in: utils.pad(utils.chunkBigInt(data, BigInt(2 ** 85)), 3) },
+            true,
           );
-          const expected = utils.pad(utils.chunkBigInt(bigintModArith.modInv(data, p), BigInt(2 ** 85)), 3);
+          const expected = utils.pad(utils.chunkBigInt(
+            bigintModArith.modInv(data, p),
+            BigInt(2 ** 85),
+          ), 3);
           return witness.slice(1, 4).every((u, i) => u === expected[i]);
         }),
       );
