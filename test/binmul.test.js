@@ -34,8 +34,8 @@ describe('Binary Multiplier Test', () => {
             const asBits2 = utils.pad(utils.buffer2bits(buf2), 40).slice(0, 40);
             const witness = await cir.calculateWitness({ in1: asBits1, in2: asBits2 }, true);
 
-            const expected = utils.normalize(utils.buffer2bits(utils.bigIntToLEBuffer(a * b)));
-            witness.slice(1, 145).every((u, i) => u === expected[i]);
+            const expected = utils.pad(utils.buffer2bits(utils.bigIntToLEBuffer(a * b)), 144);
+            return witness.slice(1, 145).every((u, i) => u === expected[i]);
           },
         ),
       );
@@ -86,8 +86,8 @@ describe(' Fast Binary multiplication chunked 51 test', () => {
             const chunk1 = utils.pad(utils.chunkBigInt(a), 4);
             const chunk2 = utils.pad(utils.chunkBigInt(b), 4);
             const witness = await cir.calculateWitness({ in1: chunk1, in2: chunk2 });
-            const expected = utils.chunkBigInt(a * b);
-            witness.slice(1, 9).every((u, i) => u === expected[i]);
+            const expected = utils.pad(utils.chunkBigInt(a * b), 8);
+            return witness.slice(1, 9).every((u, i) => u === expected[i]);
           },
         ),
       );
