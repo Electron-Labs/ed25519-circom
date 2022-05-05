@@ -39,8 +39,8 @@ describe('base 51 addition test', () => {
               { in: [chunk1, chunk2, chunk3, chunk4] },
               true,
             );
-            const expected = utils.chunkBigInt(a + b + c + d);
-            witness.slice(1, 9).every((u, i) => u === expected[i]);
+            const expected = utils.pad(utils.chunkBigInt(a + b + c + d), 8);
+            return witness.slice(1, 9).every((u, i) => u === expected[i]);
           },
         ),
       );
