@@ -17,7 +17,7 @@ describe('Binary addition test for irregular  bits', () => {
       const witness = await cir.calculateWitness({ in1: bits1, in2: bits2 }, true);
 
       const expected = utils.pad(
-        utils.normalize(utils.buffer2bits(utils.bigIntToLEBuffer(a + b))),
+        utils.buffer2bits(utils.bigIntToLEBuffer(a + b)),
         57,
       );
       assert.ok(witness.slice(1, 58).every((u, i) => u === expected[i]));
@@ -38,10 +38,10 @@ describe('Binary addition test for irregular  bits', () => {
             const witness = await cir.calculateWitness({ in1: bits1, in2: bits2 }, true);
 
             const expected = utils.pad(
-              utils.normalize(utils.buffer2bits(utils.bigIntToLEBuffer(a + b))),
+              utils.buffer2bits(utils.bigIntToLEBuffer(a + b)),
               57,
             );
-            witness.slice(1, 58).every((u, i) => u === expected[i]);
+            return witness.slice(1, 58).every((u, i) => u === expected[i]);
           },
         ),
       );
