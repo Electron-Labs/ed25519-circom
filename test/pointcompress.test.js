@@ -43,7 +43,7 @@ describe('Point compress test for base51', () => {
             chunk.push(utils.pad(utils.chunkBigInt(d, BigInt(2 ** 85)), 3));
             const witness = await cir.calculateWitness({ P: chunk }, true);
             const P = [a, b, c, d];
-            const res = utils.point_compress(P);
+            const res = utils.pad(utils.point_compress(P), 256);
             return witness.slice(1, 257).every((u, i) => u === res[i]);
           },
         ),
