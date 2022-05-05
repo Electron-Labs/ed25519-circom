@@ -13,7 +13,7 @@ describe('Binary Adder Test', () => {
       const asBits = utils.buffer2bits(buf);
       const witness = await cir.calculateWitness({ in: [asBits, asBits] }, true);
 
-      const expected = utils.normalize(utils.buffer2bits(utils.bigIntToLEBuffer(a + a)));
+      const expected = utils.pad(utils.buffer2bits(utils.bigIntToLEBuffer(a + a)), 9);
       assert.ok(witness.slice(1, 10).every((u, i) => u === expected[i]));
     });
   });
@@ -28,7 +28,7 @@ describe('Binary Adder Test', () => {
       const asBits2 = utils.buffer2bits(buf2);
       const witness = await cir.calculateWitness({ in: [asBits1, asBits2] }, true);
 
-      const expected = utils.normalize(utils.buffer2bits(utils.bigIntToLEBuffer(a + b)));
+      const expected = utils.pad(utils.buffer2bits(utils.bigIntToLEBuffer(a + b)), 257);
       assert.ok(witness.slice(1, 258).every((u, i) => u === expected[i]));
     });
   });
@@ -46,8 +46,8 @@ describe('Binary Adder Test', () => {
             const asBits2 = utils.pad(utils.buffer2bits(buf2), 256);
             const witness = await cir.calculateWitness({ in: [asBits1, asBits2] }, true);
 
-            const expected = utils.normalize(utils.buffer2bits(utils.bigIntToLEBuffer(a + b)));
-            witness.slice(1, 258).every((u, i) => u === expected[i]);
+            const expected = utils.pad(utils.buffer2bits(utils.bigIntToLEBuffer(a + b)), 257);
+            return witness.slice(1, 258).every((u, i) => u === expected[i]);
           },
         ),
       );
