@@ -30,7 +30,7 @@
     "@electron-labs/keccak-circom": "0.0.3",
     "bigint-mod-arith": "^3.0.2",
     "chai": "^4.3.6",
-    "circom_tester": "0.0.10",
+    "circom_tester": "0.0.11",
     "circomlib": "^2.0.3",
     "circomlibjs": "^0.1.2",
     "eslint": "^8.14.0",
