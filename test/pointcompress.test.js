@@ -37,14 +37,14 @@ describe('Point compress test for base51', () => {
           fc.bigInt(3n, BigInt(2 ** 254) - 2403n),
           async (a, b, c, d) => {
             const chunk = [];
-            chunk.push(utils.chunkBigInt(a, BigInt(2 ** 85)));
-            chunk.push(utils.chunkBigInt(b, BigInt(2 ** 85)));
-            chunk.push(utils.chunkBigInt(c, BigInt(2 ** 85)));
-            chunk.push(utils.chunkBigInt(d, BigInt(2 ** 85)));
+            chunk.push(utils.pad(utils.chunkBigInt(a, BigInt(2 ** 85)), 3));
+            chunk.push(utils.pad(utils.chunkBigInt(b, BigInt(2 ** 85)), 3));
+            chunk.push(utils.pad(utils.chunkBigInt(c, BigInt(2 ** 85)), 3));
+            chunk.push(utils.pad(utils.chunkBigInt(d, BigInt(2 ** 85)), 3));
             const witness = await cir.calculateWitness({ P: chunk }, true);
             const P = [a, b, c, d];
-            const res = utils.point_compress(P);
-            witness.slice(1, 257).every((u, i) => u === res[i]);
+            const res = utils.pad(utils.point_compress(P), 256);
+            return witness.slice(1, 257).every((u, i) => u === res[i]);
           },
         ),
       );

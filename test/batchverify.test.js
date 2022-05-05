@@ -1,7 +1,7 @@
 const path = require('path');
 const assert = require('assert');
 const wasmTester = require('circom_tester').wasm;
-const crypto = require("crypto");
+const crypto = require('crypto');
 const utils = require('./utils');
 
 // describe('Batch Verification', () => {
@@ -243,9 +243,9 @@ describe('Batch Verification test', () => {
         msg: bitsMsg, A: bitsA, R8: bitsR8, S: bitsS, PointA: chunkA, PointR: chunkR,
       }, true);
       assert.ok(witness[3] === 1n);
-      const expected = crypto.createHash("sha256")
+      const expected = crypto.createHash('sha256')
         .update(utils.bigIntToLEBuffer(A))
-        .digest("hex");
+        .digest('hex');
       const h = BigInt(2 ** 128);
       const real = utils.bigIntToLEBuffer(BigInt(witness[1] + witness[2] * h)).toString('hex');
       assert.equal(expected, real);
