@@ -43,6 +43,8 @@ template BinAdd(nBits){
 // }
 
 template BinAddIrregular(mBits, nBits) {
+    assert(mBits > nBits);
+
     signal input in1[mBits];
     signal input in2[nBits];
 
@@ -79,6 +81,8 @@ template BinAddIrregular(mBits, nBits) {
         addcarry[i].carry <== addcarry[i-1].carry_out;
         out[nBits + i] <== addcarry[i].val;
     }
+
+    out[mBits] <== addcarry[mBits-nBits-1].carry_out;
 }
 
 template fulladder() {
