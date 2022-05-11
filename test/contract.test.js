@@ -2,7 +2,7 @@ const { expect } = require("chai");
 const hre = require("hardhat");
 const axios = require("axios");
 
-describe("Verifier", () => {
+describe("Verifier Contract", () => {
   // it("should query ", async () => {
   //   const options = {
 
