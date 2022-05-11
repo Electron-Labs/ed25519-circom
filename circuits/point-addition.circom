@@ -135,10 +135,10 @@ template PointAdd(){
         final_mul3.in2[i] <== g_add.sum[i];
     }
 
-    component final_modulo1 = ModulusWith25519Chunked51(17);
-    component final_modulo2 = ModulusWith25519Chunked51(17);
-    component final_modulo3 = ModulusWith25519Chunked51(20);
-    component final_modulo4 = ModulusWith25519Chunked51(14);
+    component final_modulo1 = ModulusWith25519Chunked51(17, base);
+    component final_modulo2 = ModulusWith25519Chunked51(17, base);
+    component final_modulo3 = ModulusWith25519Chunked51(20, base);
+    component final_modulo4 = ModulusWith25519Chunked51(14, base);
 
     for(i=0;i<17;i++){
         final_modulo1.in[i] <== final_mul1.out[i];

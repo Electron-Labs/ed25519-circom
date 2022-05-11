@@ -9,6 +9,8 @@ template BigModInv51() {
   signal input in[3];
   signal output out[3];
 
+  var base = 85;
+
   var p[3] = [38685626227668133590597613, 38685626227668133590597631, 38685626227668133590597631];
 
   // length k
@@ -28,7 +30,7 @@ template BigModInv51() {
     mult.in1[i] <== in[i];
     mult.in2[i] <== out[i];
   }
-  component mod = ModulusWith25519Chunked51(6);
+  component mod = ModulusWith25519Chunked51(6, base);
   for (var i = 0; i < 6; i++) {
     mod.in[i] <== mult.out[i];
   }
