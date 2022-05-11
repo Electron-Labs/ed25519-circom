@@ -1,3 +1,4 @@
+/* eslint-disable */
 const { expect } = require("chai");
 const hre = require("hardhat");
 const axios = require("axios");
