@@ -211,7 +211,7 @@ template ModulusAgainst2P() {
     mux.c[i][1] <== sub.out[i];
   }
 
-  mux.s <== 1 + sub.out[255] - (2 * sub.out[255]);
+  mux.s <== 1 - sub.out[255];
 
   for (i = 0; i < 255; i++) {
     out[i] <== mux.out[i];
