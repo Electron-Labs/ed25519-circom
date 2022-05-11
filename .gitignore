@@ -5,3 +5,4 @@ node_modules
 *.sym
 .DS_Store
 .vscode
+/cache
