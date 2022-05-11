@@ -270,7 +270,7 @@ describe("Verifier", () => {
     expect(await verifier.verifyProof(a, b, c, message)).to.equal(true);
   })
 
-  it("should not be able to verify invalid proof", async() => {
+  it("should not be able to refute invalid proof", async() => {
 
     const a = ["0x2c152847192bbc68704d841847be59f26151e69b5174746b1db7b8d8df2f7640", "0x2a488d51057b3f023b053da4ef12e3c7160854dd869275c0dbf0a15cf63fe471"]
     const b = [["0x06a91e09be841bf650e1c53f73bc3a2ca8a90647f8a13b0861e628bc7d59ed0c", 
