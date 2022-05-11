@@ -1,5 +1,5 @@
 const { expect } = require("chai");
-const { ethers } = require("hardhat");
+const hre = require("hardhat");
 const axios = require("axios");
 
 describe("Verifier", () => {
