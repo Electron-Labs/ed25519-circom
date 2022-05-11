@@ -117,6 +117,8 @@ template PointEqual() {
 
   var i;
   var j;
+  var base=85;
+
   component mul[4];
   for (i=0; i<4; i++) {
     mul[i] = ChunkedMul(3, 3, 85);
@@ -142,7 +144,7 @@ template PointEqual() {
 
   component mod[4];
   for (i=0; i<4; i++) {
-    mod[i] = ModulusWith25519Chunked51(6);
+    mod[i] = ModulusWith25519Chunked51(6, base);
   }
   
   for(i=0; i<6; i++) {

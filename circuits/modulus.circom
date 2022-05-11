@@ -336,12 +336,15 @@ template ModulusAgainst2Q() {
   }
 }
 
-template ModulusWith25519Chunked51(n) {
+template ModulusWith25519Chunked51(n, base) {
+  assert(255 % base == 0);
+
+  var out_bytes = 255 / base;
+
   signal input in[n];
-  signal output out[3];
+  signal output out[out_bytes];
 
   var i;
-  var base=85;
 
   component mod2p;
   component mul;
@@ -349,46 +352,46 @@ template ModulusWith25519Chunked51(n) {
   component adder;
   component mod2pfinal;
 
-  if (n < 3) {
+  if (n < out_bytes) {
     for (i = 0; i < n; i++) {
       out[i] <== in[i];
     }
 
-    for (i = n; i < 3; i++) {
+    for (i = n; i < out_bytes; i++) {
       out[i] <== 0;
     }
   } else {
     mod2p = ModulusAgainst2PChunked51();
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < out_bytes; i++) {
       mod2p.in[i] <== in[i];
     }
 
-    mod2p.in[3] <== 0;
+    mod2p.in[out_bytes] <== 0;
 
-    mul = ChunkedMul(n-3, 1, base);
-    for(i = 0; i < n-3; i++) {
-      mul.in1[i] <== in[3+i];
+    mul = ChunkedMul(n-out_bytes, 1, base);
+    for(i = 0; i < n-out_bytes; i++) {
+      mul.in1[i] <== in[out_bytes+i];
     }
 
     mul.in2[0] <== 19;
 
-    mod = ModulusWith25519Chunked51(n-3+1);
-    for (i = 0; i < n-3+1; i++) {
+    mod = ModulusWith25519Chunked51(n-out_bytes+1, base);
+    for (i = 0; i < n-out_bytes+1; i++) {
       mod.in[i] <== mul.out[i];
     }
 
-    adder = ChunkedAdd(3, 2, base);
-    for (i = 0; i < 3; i++) {
+    adder = ChunkedAdd(out_bytes, 2, base);
+    for (i = 0; i < out_bytes; i++) {
       adder.in[0][i] <== mod2p.out[i];
       adder.in[1][i] <== mod.out[i];
     }
 
     mod2pfinal = ModulusAgainst2PChunked51();
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i <= out_bytes; i++) {
       mod2pfinal.in[i] <== adder.out[i];
     }
 
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < out_bytes; i++) {
       out[i] <== mod2pfinal.out[i];
     }
   }
