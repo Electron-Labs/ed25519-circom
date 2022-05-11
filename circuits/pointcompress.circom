@@ -9,13 +9,12 @@ template PointCompress(){
     signal input P[4][3];
     signal output out[256];
     var i;
-    var base=85;
 
     component mul_x = ChunkedMul(3, 3, 85);
     component mul_y = ChunkedMul(3, 3, 85);
     component modinv_z = BigModInv51();
-    component mod_x = ModulusWith25519Chunked51(6, base);
-    component mod_y = ModulusWith25519Chunked51(6, base);
+    component mod_x = ModulusWith25519Chunked51(6);
+    component mod_y = ModulusWith25519Chunked51(6);
     
     for(i=0;i<3;i++){
         modinv_z.in[i] <== P[2][i];
