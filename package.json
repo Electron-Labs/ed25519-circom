@@ -27,6 +27,7 @@
     "url": "https://github.com/Electron-Labs/ed25519-circom.git"
   },
   "author": "rahulghangas, garvitgoel, BakerStreetPhantom, suniljalandhra",
+  "license": "UNLICENSED",
   "dependencies": {
     "@electron-labs/sha512": "^1.0.4"
   },
