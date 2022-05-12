@@ -13,7 +13,9 @@
     "test-verify": "mocha --colors --max-old-space-size=4000 --timeout 4000000 test/ed25519verfication.test.js ",
     "test-batch-verify": "mocha --colors --max-old-space-size=4000 --timeout 12000000 test/batchverify.test.js",
     "clean": "rm -rf node_modules && make clean && npm i",
-    "lint": "eslint test/*.test.js --fix"
+    "lint": "eslint test/*.test.js --fix",
+    "publish-npm": "npm publish --access public --ignore-scripts --@OWNER:registry='https://registry.npmjs.org'",
+    "publish-github": "npm publish --access public --ignore-scripts --@electron-labs:registry='https://npm.pkg.github.com'"
   },
   "keywords": [
     "circuit",
@@ -25,9 +27,10 @@
     "url": "https://github.com/Electron-Labs/ed25519-circom.git"
   },
   "author": "rahulghangas, garvitgoel, BakerStreetPhantom, suniljalandhra",
+  "dependencies": {
+    "@electron-labs/sha512": "^1.0.4"
+  },
   "devDependencies": {
-    "@electron-labs/keccak-circom": "0.0.3",
-    "@electron-labs/sha512": "^1.0.4",
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
     "axios": "^0.27.2",
