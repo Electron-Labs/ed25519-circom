@@ -2,3 +2,7 @@
 test/
 contracts/
 artifacts/
+.eslint*
+hardhat*
+*.json
+Makefile
