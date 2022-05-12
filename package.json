@@ -1,5 +1,5 @@
 {
-  "name": "ed25519-circom",
+  "name": "@electron-labs/ed25519-circom",
   "version": "0.0.1",
   "description": "Circom circuits for ed25519 signature verification",
   "main": "index.js",
