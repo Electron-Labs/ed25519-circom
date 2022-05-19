@@ -10,6 +10,7 @@ pipeline {
 
     stage('Test') {
       steps {
+        sh 'cd $HOME/workspace/ed25519-circom_gaurav-ci'
         sh '''npm run build --if-present
 '''
         sh '''npm test
