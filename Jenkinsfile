@@ -4,7 +4,7 @@ pipeline {
     stage('Build') {
       steps {
         sh 'curl --proto \'=https\' --tlsv1.2 https://sh.rustup.rs -sSf -y | sh'
-        sh 'git clone https://github.com/iden3/circom.git && cd circom && cargo build --release --manifest-path=circom/Cargo.toml && cargo install --path circom/circom  '
+        sh 'cd circom && cargo build --release --manifest-path=circom/Cargo.toml && cargo install --path circom/circom  '
         sh 'npm install -g snarkjs. && npm install'
       }
     }
