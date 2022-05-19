@@ -4,7 +4,12 @@ pipeline {
     stage('Build/Test') {
       steps {
         sh 'cd $HOME && ./test.sh'
-        sh 'echo "Tested Test-1 "'
+      }
+    }
+
+    stage('Done') {
+      steps {
+        echo 'Tested Successfully '
       }
     }
 
