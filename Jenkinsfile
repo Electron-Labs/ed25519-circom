@@ -10,18 +10,14 @@ pipeline {
 
     stage('Test') {
       steps {
-        sh 'cd $HOME/workspace/ed25519-circom_gaurav-ci'
-        sh '''npm run build --if-present
+        sh 'cd $HOME/workspace/ed25519-circom_gaurav-ci && npm install && npm test'
+        sh '''cd $HOME/workspace/ed25519-circom_gaurav-ci  && npm run test-scalarmul
 '''
-        sh '''npm test
+        sh '''cd $HOME/workspace/ed25519-circom_gaurav-ci  && npm run test-verify
 '''
-        sh '''npm run test-scalarmul
+        sh '''cd $HOME/workspace/ed25519-circom_gaurav-ci  && npm run test-batch-verify
 '''
-        sh '''npm run test-verify
-'''
-        sh '''npm run test-batch-verify
-'''
-        sh 'npm run lint'
+        sh 'cd $HOME/workspace/ed25519-circom_gaurav-ci  && npm run lint'
       }
     }
 
