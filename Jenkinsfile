@@ -1,10 +1,10 @@
 pipeline {
   agent any
   stages {
-    stage('Testing Environment variable') {
+    stage('Test') {
       steps {
-        echo '$GIT_BRANCH'
-        sh 'echo "$GIT_BRANCH"'
+        sh '''echo $GIT_URL
+echo $GIT_BRANCH'''
       }
     }
 
