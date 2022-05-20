@@ -1,16 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('Build/Test') {
+    stage('Testing Environment variable') {
       steps {
-        sh 'cd $HOME && ./test.sh'
         echo '$GIT_BRANCH'
-      }
-    }
-
-    stage('Done') {
-      steps {
-        echo 'Tested Successfully '
       }
     }
 
