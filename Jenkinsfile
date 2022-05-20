@@ -4,6 +4,7 @@ pipeline {
     stage('Build/Test') {
       steps {
         sh 'cd $HOME && ./test.sh'
+        echo '$GIT_BRANCH'
       }
     }
 
