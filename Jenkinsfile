@@ -3,8 +3,11 @@ pipeline {
   stages {
     stage('Test') {
       steps {
-        sh '''echo $GIT_BRANCH
-echo $JOB_NAME'''
+        sh '''export PATH="$PATH:$HOME/.cargo/bin"
+cd $JOB_NAME
+npm install
+npm run test
+'''
       }
     }
 
