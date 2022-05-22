@@ -1,15 +1,14 @@
 pipeline {
   agent any
   stages {
-    stage('Build/Test') {
+    stage('Test') {
       steps {
-        sh 'cd $HOME && ./test.sh'
-      }
-    }
-
-    stage('Done') {
-      steps {
-        echo 'Tested Successfully '
+        sh '''export PATH="$PATH:$HOME/.cargo/bin"
+dir=`echo $JOB_NAME | sed \'s/\\//_/g\'`
+cd /var/lib/jenkins/workspace/$dir
+npm install
+npm run test
+'''
       }
     }
 
