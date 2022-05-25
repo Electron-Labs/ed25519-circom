@@ -15,6 +15,7 @@ cd /var/lib/jenkins/workspace/$dir
     stage('postBuild') {
       steps {
         sh 'echo $BUILD_STATUS'
+        setGitHubPullRequestStatus(context: 'post build', message: 'Successful', state: 'SUCCESS')
       }
     }
 
