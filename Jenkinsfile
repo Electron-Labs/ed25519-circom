@@ -14,7 +14,7 @@ cd /var/lib/jenkins/workspace/$dir
 
     stage('postBuild') {
       steps {
-        sh '''if [[ $BUILD_STATUS == "success" ]]
+        sh '''if [ $BUILD_STATUS = "success" ]
 then
 export STATUS="success"
 else
