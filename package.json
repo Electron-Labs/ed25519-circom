@@ -44,7 +44,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "ethereum-waffle": "^3.4.4",
-    "ethers": "^5.6.8",
+    "ethers": "^5.6.9",
     "fast-check": "^3.0.0",
     "hardhat": "^2.9.9",
     "keccak256": "1.0.6",
