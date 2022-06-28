@@ -1,8 +1,11 @@
 # Circom Ed25519
 
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/labs_electron.svg?style=social&label=Follow%20%40labs_electron)](https://twitter.com/labs_electron)
-[![CI status](https://github.com/Electron-Labs/circom-ed25519/actions/workflows/actions.yml/badge.svg?branch=master")](CI)
+[![Build Status](http://ci.electronlabs.org/buildStatus/icon?job=ed25519-circom%2Fmaster)](http://ci.electronlabs.org/job/ed25519-circom/job/master/)
 [![License](https://img.shields.io/badge/license-UNLICENSED-red)](LICENSE)
+<!--- 
+[![CI status](https://github.com/Electron-Labs/circom-ed25519/actions/workflows/actions.yml/badge.svg?branch=master")](CI) 
+-->
 
 Curve operations and signature verification for Ed25519 digital signature scheme in circom 
 
