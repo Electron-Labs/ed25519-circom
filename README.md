@@ -43,13 +43,18 @@ All benchmarks were run on a 16-core 3.0GHz, 32G RAM machine (AWS c5a.4xlarge in
 
 ## Inputs
 `msg` is the data for the signature
-`R8` is the first 256 bits of the signature (LSB to MSB)
-`S` is the first 255 bits of the last 256 bits of the signature (LSB to MSB)
-`A` is the public key in binary (LSB to MSB)
-`PointA` is the point representing the public key on the elliptic curve (encoded in base 2^85 for brevity)
-`PointR` is the point representing the R8 value on the elliptic curve (encoded in base 2^85)
 
-Ideally, the [algorithm](https://datatracker.ietf.org/doc/html/rfc8032#section-6) we follow only takes in `A` and `R8` in binary form, and is decompressed to get `PointA` and `PointR` respectively. However, decompression is an expensive algorithm to perform in a circuit. On the other hand, compression is cheap and easy to implement. So, we use a nifty little trick to push the onus of providing both on the `prover` and perform equality checks after compressing the points within the circuit. [Ref](https://github.com/Electron-Labs/ed25519-circom/blob/532f638b4d6ae4684a1f0907df6c92676f0ae8df/circuits/verify.circom#L57)
+`R8` is the first 256 bits of the signature (LSB to MSB)
+
+`S` is the first 255 bits of the last 256 bits of the signature (LSB to MSB)
+
+`A` is the public key in binary (LSB to MSB)
+
+`PointA` is the point representing the public key on the elliptic curve (encoded in base 2^85 for brevity)
+
+`PointR` is the point representing the R8 value on the elliptic curve (encoded in base 2^85) 
+
+The [algorithm](https://datatracker.ietf.org/doc/html/rfc8032#section-6) we follow only takes in `A` and `R8` in binary form, and is decompressed to get `PointA` and `PointR` respectively. However, decompression is an expensive algorithm to perform in a circuit. On the other hand, compression is cheap and easy to implement. So, we use a nifty little trick to push the onus of providing both on the `prover` and perform equality checks after compressing the points within the circuit. [Ref](https://github.com/Electron-Labs/ed25519-circom/blob/532f638b4d6ae4684a1f0907df6c92676f0ae8df/circuits/verify.circom#L57)
 
 You can find all helper functions to change encodings from well-known formats to circuit friendly formats [here](https://github.com/Electron-Labs/ed25519-circom/blob/master/test/utils.js)
 
