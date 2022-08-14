@@ -23,6 +23,9 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - name: Install git
+      run: |
+        apt install git -y
     - name: Clone current repo
       uses: actions/checkout@v2
       with:
