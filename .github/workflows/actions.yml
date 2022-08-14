@@ -23,10 +23,12 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - name: Clone current repo
-      uses: actions/checkout@v2
-      with:
-        submodules: 'true'
+    - name: Install git
+      run: |
+        apk add git
+    - name: Checkout submodules
+      run: |
+        git submodule update --init --recursive
     - name: Clone circom
       uses: actions/checkout@v2
       with:
