@@ -23,11 +23,8 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - name: Set Swap Space
-      uses: pierotofy/set-swap-space@master
-      with:
-        swap-size-gb: 10
-    - uses: actions/checkout@v2
+    - name: Clone current repo
+      uses: actions/checkout@v2
       with:
         submodules: 'true'
     - name: Clone circom
