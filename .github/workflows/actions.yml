@@ -28,7 +28,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: 'true'
-    - name: Clone and install circom
+    - name: Clone circom
       uses: actions/checkout@v2
       with:
         repository: iden3/circom
