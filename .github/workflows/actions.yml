@@ -15,7 +15,7 @@ jobs:
 
     runs-on: self-hosted
     container:
-      image: ubuntu-lastest
+      image: ubuntu:20.0.4
 
     strategy:
       matrix:
