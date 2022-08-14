@@ -26,9 +26,10 @@ jobs:
     - name: Install git
       run: |
         apk add git
-    - name: Checkout submodules
-      run: |
-        git submodule update --init --recursive
+    - name: Clone current repo
+      uses: actions/checkout@v2
+      with:
+        submodules: 'true'
     - name: Clone circom
       uses: actions/checkout@v2
       with:
