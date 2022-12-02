@@ -399,8 +399,9 @@ template ModulusAgainst2PChunked51() {
   signal output out[3];
   var i;
   var p[4] = [38685626227668133590597613, 38685626227668133590597631, 38685626227668133590597631, 0];
+  var base = 85;
 
-  component sub = ChunkedSub(4, 85);
+  component sub = ChunkedSub(4, base);
 
   in[3] * (in[3] - 1) === 0;
   for (i = 0; i < 4; i++) {
