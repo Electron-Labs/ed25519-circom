@@ -35,12 +35,12 @@ template PointAdd(){
     signal input Q[4][3];
     signal output R[4][3];
 
-    component X_1X_2 = ChunkedMul(3, 3, 85);
-    component Y_1Y_2 = ChunkedMul(3, 3, 85);
-    component X_1Y_2 = ChunkedMul(3, 3, 85);
-    component X_2Y_1 = ChunkedMul(3, 3, 85);
-    component T_1T_2 = ChunkedMul(3, 3, 85);
-    component Z_1Z_2 = ChunkedMul(3, 3, 85);
+    component X_1X_2 = ChunkedMul(3, 3, base);
+    component Y_1Y_2 = ChunkedMul(3, 3, base);
+    component X_1Y_2 = ChunkedMul(3, 3, base);
+    component X_2Y_1 = ChunkedMul(3, 3, base);
+    component T_1T_2 = ChunkedMul(3, 3, base);
+    component Z_1Z_2 = ChunkedMul(3, 3, base);
 
     for(i=0;i<3;i++){
         X_1X_2.in1[i] <== P[0][i];
@@ -116,10 +116,10 @@ template PointAdd(){
         g_add.a[i] <== T_1T_2_d.out[i];
     }
 
-    component final_mul1 = ChunkedMul(10, 7, 85);
-    component final_mul2 = ChunkedMul(10, 7, 85);
-    component final_mul3 = ChunkedMul(10, 10, 85);
-    component final_mul4 = ChunkedMul(7, 7, 85);
+    component final_mul1 = ChunkedMul(10, 7, base);
+    component final_mul2 = ChunkedMul(10, 7, base);
+    component final_mul3 = ChunkedMul(10, 10, base);
+    component final_mul4 = ChunkedMul(7, 7, base);
 
     for(i=0;i<7;i++){
         final_mul1.in2[i] <== e_add.out[i];
