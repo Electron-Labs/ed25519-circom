@@ -48,8 +48,11 @@ if ! test -f "$ptau"; then
         wget "https://hermez.s3-eu-west-1.amazonaws.com/$ptau"
 fi
 
+echo "Running groth16 setup command..."
 ${nodex} ${node_params} ${snarkjs} groth16 setup ${circuit}.r1cs powersOfTau28_hez_final_${constraints}.ptau ${circuit}_0000.zkey
-${nodex} ${node_params} ${snarkjs} zkey contribute ${circuit}_0000.zkey ${circuit}_0001.zkey --name="Jinank Jain" -v
+echo "Running zkey contribute command..."
+${nodex} ${node_params} ${snarkjs} zkey contribute ${circuit}_0000.zkey ${circuit}_0001.zkey --name="Jinank Jain" -v -e="randomtext123"
+echo "Running zkey export verificationkey command..."
 ${nodex} ${node_params} ${snarkjs} zkey export verificationkey ${circuit}_0001.zkey verification_key.json
 popd
 
